@@ -37,7 +37,9 @@ export default function Navbar() {
       } py-4 px-8 z-50`}
     >
       <div className="flex justify-between items-center">
-        <div className="text-2xl font-bold">Logo</div>
+        <div className="text-2xl font-bold">
+          <img src="/asset_2.jpg" className="w-20 rounded-lg"></img>
+        </div>
 
         <ul className="flex space-x-8">
           <li className="hover:text-blue-600 transition-all cursor-pointer font-semibold tracking-tighter text-lg p-1">
