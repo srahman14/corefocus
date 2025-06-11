@@ -1,11 +1,51 @@
-import Image from "next/image";
+import Head from "next/head";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-white text-black flex flex-wrap items-center justify-center">
       {/* HERO SECTION */}
-      <section className="w-full h-screen bg-[url('/landing_page_2.svg')] bg-no-repeat bg-cover bg-center flex items-center justify-center text-center flex-row gap-30">
-          <h1 className="font-bold text-9xl">Build habits today <br></br> Achieve your goals</h1>
+      <section className="w-full h-screen flex items-center justify-center text-center flex-row gap-30">
+          <div>
+            <h1 className="font-bold text-6xl mb-16">Build habits today. <br></br> Achieve your goals.</h1>
+            <div className="x-space-4">
+                <a href="#" className="bg-gray-200 mr-4 hover:bg-gray-300/70 p-5 rounded-lg font-bold text-2xl">Sign-Up</a>
+                <a href="#" className="bg-gray-200 hover:bg-gray-300/70 p-5 rounded-lg font-bold text-2xl">Plans</a>
+            </div>
+          </div>
+          <img src="/asset_1.webp" className="w-90"></img>
+      </section>
+      {/* ABOUT US SECTION */}
+      <section className="container flex flex-col justify-center">
+        <header className="flex flex-row items-center justify-between w-full">
+            <h1 className="font-bold text-6xl ml-20">What is <i className="tracking-tighter">Corefocus</i>?</h1>
+            <p className="font-light text-xl mr-20">Designed to help you stay on track, effortlessly</p>
+        </header>
+        {/* To hold all the cards */}
+        <div className="flex flex-wrap p-3 gap-10 ml-20"> 
+          <div className="bg-gray-300/40 w-70 min-h-60 mt-10 rounded-lg flex flex-col justify-center">
+            <span className="flex items-center p-3 justify-center gap-3">
+              <i className="fa-solid fa-bell text-lg text-blue-400 text-xl"></i>
+              <h2 className="font-semibold text-2xl tracking-tighter">Smart reminders</h2>
+            </span>
+            <p className="p-3 font-semibold text-xl">Reminders everyday to keep you on track with your desired goals.</p>
+          </div>
+
+          <div className="bg-gray-300/40 w-70 min-h-60 mt-10 rounded-lg flex flex-col justify-center">
+            <span className="flex items-center p-3 justify-center gap-3">
+              <i class="fa-solid fa-chart-bar text-red-600 text-xl"></i>
+              <h2 className="font-semibold text-2xl tracking-tighter">Progress analytics</h2>
+            </span>
+            <p className="p-3 font-semibold text-xl">Reminders everyday to keep you on track with your desired goals.</p>
+          </div>
+
+          <div className="bg-gray-300/40 w-70 min-h-60 mt-10 rounded-lg flex flex-col justify-center">
+            <span className="flex items-center p-3 justify-center gap-3">
+              <i class="fa-solid fa-fire text-orange-400 font-bold text-xl"></i>
+              <h2 className="font-semibold text-2xl tracking-tighter">Streak tracking</h2>
+            </span>
+            <p className="p-3 font-semibold text-xl">Reminders everyday to keep you on track with your desired goals.</p>
+          </div>
+        </div>
       </section>
     </main>
   );
