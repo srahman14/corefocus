@@ -46,10 +46,10 @@ export default function Navbar() {
             <Link href="/">Home</Link>
           </li>
           <li className="hover:text-blue-600 cursor-pointer font-semibold tracking-tighter text-lg p-1">
-            <Link href="/blog">Blogs</Link>
+            <Link href="/">Blogs</Link>
           </li>
           <li className="hover:text-blue-600 cursor-pointer font-semibold tracking-tighter text-lg p-1">
-            <Link href="/blog/new">Create</Link>
+            <Link href="/">Plans</Link>
           </li>
         </ul>
       </div>
