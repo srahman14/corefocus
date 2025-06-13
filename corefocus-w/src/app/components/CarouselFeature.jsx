@@ -12,25 +12,25 @@ const DEFAULT_ITEMS = [
     title: "GoalBoard",
     description: "Set and reflect on your monthly and yearly goals. Build discipline with intentional planning.",
     id: 2,
-    icon: <i className="fa-solid fa-bell h-[16px] w-[16px] text-white" />,
+    icon: <i className="fa-solid fa-chart-area h-[16px] w-[16px] text-white" />,
   },
   {
     title: "TaskSync",
     description: "Integrate with your calendar to sync daily to-dos and spiritual goals effortlessly.",
     id: 3,
-    icon: <i className="fa-solid fa-bell h-[16px] w-[16px] text-white" />,
+    icon: <i className="fa-solid fa-list-check h-[16px] w-[16px] text-white" />,
   },
   {
     title: "ReadRoute",
     description: "Capture insights from your readings and reflections with our minimal journaling system.",
     id: 4,
-    icon: <i className="fa-solid fa-bell h-[16px] w-[16px] text-white" />,
+    icon: <i className="fa-solid fa-pen-to-square h-[16px] w-[16px] text-white" />,
   },
   {
     title: "FocusCamp",
     description: "Use a goal-based timer to stay focused during Qur’an study, workouts, or deep work.",
     id: 5,
-    icon: <i className="fa-solid fa-bell h-[16px] w-[16px] text-white" />,
+    icon: <i className="fa-solid fa-stopwatch h-[16px] w-[16px] text-white" />,
   },
 ];
 
