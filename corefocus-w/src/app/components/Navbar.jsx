@@ -1,14 +1,11 @@
 'use client';
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const router = useRouter();
-  const dropdownRef = useRef(null);
 
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
