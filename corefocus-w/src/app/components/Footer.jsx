@@ -29,7 +29,7 @@ export default function Footer() {
             <h2 className="font-semibold mb-4">Legal</h2>
             <a href="/" className="hover:underline text-gray-800 font-light">Terms and conditions</a>
             <a href="/blog" className="hover:underline text-gray-800 font-light">Privacy policy</a>
-            <p className="text-gray-800 font-light max-w-46 tracking-tighter">The Daily Scribbler is not affiliated with any news organistaion</p>
+            <p className="text-gray-800 font-light max-w-46 tracking-tighter">Corefocus is not affiliated with any organistaion and is independent</p>
             <p className="text-gray-800 max-w-46 font-normal tracking-tighter">Copyright &copy; 2025 - All rights reserved</p>
 
           </div>
