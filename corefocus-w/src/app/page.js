@@ -2,43 +2,58 @@
 
 import Carousel, { TESTIMONIALS } from "./components/CarouselFeature";
 import Magnet from "./components/Magnet";
-import Threads from "./components/Threads";
 import SpotlightCard from "./components/SpotlightCard";
 import TiltedCard from "./components/TiltedCard";
-import Squares from "./components/Squares";
+import AnimatedContent from "./components/AnimatedContent";
+import ImageMarquee from "./components/ReactMarquee";
 
 export default function Home() {
 
   return (
     <main className="min-h-screen bg-white text-black flex flex-col flex-wrap items-center justify-center">
       {/* HERO SECTION */}
-      <section className="w-full h-200 flex items-center justify-center text-center flex-row gap-30 mb-40" 
-        style={{
-    backgroundImage: `
-      linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px)
-    `,
-    backgroundSize: '40px 40px',
-  }}>  
-          <div>
-            <div className="flex flex-col justify-center">
-              <h1 className="font-bold text-left lg:text-7xl md:text-7xl sm:text-6xl mb-6 tracking-tighter max-w-200">
-                Master your <i className="underline decoration-sky-500">habits</i> <br /> Achieve what <i className="underline decoration-sky-500">matters</i>
-              </h1>              
-              <p className="font-semibold lg:text-2xl md:text-7xl sm:text-6xl mb-12 tracking-tight text-gray-500 w-120 text-left">
-                Build consistent routines, align your actions with your goals, and stay accountable.
-              </p>
-            </div>
+      <section className="w-full h-220 flex flex-col justify-center items-center mb-32 mt-70 p-16">  
+        <AnimatedContent
+          direction="vertical"
+          reverse={false}
+          duration={1}
+          ease="in"
+          animateOpacity
+          threshold={0.2}
+        >
+          <div className="flex items-center justify-center text-center flex-row gap-30">
+            <div className="p-17 rounded-lg"       
+                style={{
+                backgroundImage: `
+                  linear-gradient(to right, rgba(0,0,0,0.07) 1px, transparent 1px),
+                  linear-gradient(to bottom, rgba(0,0,0,0.07) 1px, transparent 1px)
+                `,
+                backgroundSize: '45px 45px',
+              }}>
+              <div>
+                <h1 className="font-bold text-left lg:text-7xl md:text-7xl sm:text-6xl mb-6 tracking-tighter max-w-200">
+                  Master your <i className="underline decoration-sky-500">habits</i> <br /> Achieve what <i className="underline decoration-sky-500">matters</i>
+                </h1>              
+                <p className="font-light lg:text-3xl md:text-7xl sm:text-6xl mb-12 tracking-tight text-gray-500 w-120 text-left">
+                  Build consistent routines, align your actions with your goals, and stay accountable.
+                </p>
+              </div>
 
-            <div className="flex  x-space-4 justify-start">
-                <a href="#" className="bg-gray-600/80 text-white mr-4 hover:bg-gray-600/70 p-5 rounded-3xl font-semibold tracking-tighter text-2xl">Get Started</a>
-                <a href="#" className="bg-gray-600/80 text-white hover:bg-gray-600/70 p-5 rounded-3xl font-semibold tracking-tighter text-2xl">Explore Plans</a>
-            </div>
-          <img src="/asset_6.png" className="w-120 h-120"></img>
+              <div className="flex mt-30 x-space-4 justify-start">
+                  <a href="#" className="bg-gray-600/80 text-white mr-4 hover:bg-gray-600/70 p-5 rounded-3xl font-semibold tracking-tighter text-2xl">Get Started</a>
+                  <a href="#" className="bg-gray-600/80 text-white hover:bg-gray-600/70 p-5 rounded-3xl font-semibold tracking-tighter text-2xl">Explore Plans</a>
+              </div>
 
+            </div>
+            <img src="/asset_6.png" className="w-120 h-120 rounded-3xl"></img>
           </div>
+        </AnimatedContent>
+        
       </section>
-      
+
+      <div className="container mb-42">
+        <ImageMarquee></ImageMarquee>
+      </div>
       {/* KEY FEATURES SECTION */}
       <section className="container flex flex-col justify-center">
         <header className="flex flex-row items-center justify-between w-full">
