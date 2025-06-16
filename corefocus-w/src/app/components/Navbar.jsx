@@ -12,7 +12,7 @@ export default function Navbar() {
 
     if (currentScrollY > 100 && currentScrollY > lastScrollY) {
       setIsScrolled(true);
-    } else if (currentScrollY < 100 || currentScrollY < lastScrollY) {
+    } else if (currentScrollY < 50) {
       setIsScrolled(false);
     }
 
@@ -29,8 +29,8 @@ export default function Navbar() {
     <nav
       className={`transition-all duration-400 fixed top-0 left-1/2 transform -translate-x-1/2 ${
         isScrolled
-          ? "w-11/12 mt-4 bg-gray-500/50 backdrop-blur shadow-lg rounded-lg"
-          : "w-full mt-2 bg-transparent border-2 border-b-gray-200 border-t-0 border-l-0 border-r-0"
+          ? "w-11/12 mt-4 bg-gray-500/50 backdrop-blur shadow-lg rounded-lg border-b-2 border-b-transparent"
+          : "w-full mt-2 bg-transparent border-b-2 border-b-gray-200"
       } py-4 px-8 z-50`}
     >
       <div className="flex justify-between items-center">

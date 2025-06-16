@@ -34,6 +34,39 @@ const DEFAULT_ITEMS = [
   },
 ];
 
+export const TESTIMONIALS = [
+  {
+    title: "Forename Surname",
+    description: "Content of testimonial",
+    id: 1,
+    icon: <i className="fa-solid fa-user h-[16px] w-[16px] text-white"></i>,
+  },
+  {
+    title: "Forename Surname",
+    description: "Content of testimonial",
+    id: 2,
+    icon: <i className="fa-solid fa-user h-[16px] w-[16px] text-white"></i>,
+  },
+  {
+    title: "Forename Surname",
+    description: "Content of testimonial",
+    id: 3,
+    icon: <i className="fa-solid fa-user h-[16px] w-[16px] text-white"></i>,
+  },
+  {
+    title: "Forename Surname",
+    description: "Content of testimonial",
+    id: 4,
+    icon: <i className="fa-solid fa-user h-[16px] w-[16px] text-white"></i>,
+  },
+  {
+    title: "Forename Surname",
+    description: "Content of testimonial",
+    id: 5,
+    icon: <i className="fa-solid fa-user h-[16px] w-[16px] text-white"></i>,
+  }
+]
+
 
 const DRAG_BUFFER = 0;
 const VELOCITY_THRESHOLD = 500;
@@ -141,8 +174,8 @@ export default function Carousel({
     <div
       ref={containerRef}
       className={`relative overflow-hidden p-4 ${round
-        ? "rounded-full border border-white"
-        : "rounded-[24px] border border-[#222]"
+        ? "rounded-full border border-none"
+        : "rounded-[24px] border-none"
         }`}
       style={{
         width: `${baseWidth}px`,
