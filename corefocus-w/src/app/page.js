@@ -1,53 +1,44 @@
 "use client";
 
-import Carousel from "./components/CarouselFeature";
+import Carousel, { TESTIMONIALS } from "./components/CarouselFeature";
 import Magnet from "./components/Magnet";
 import Threads from "./components/Threads";
 import SpotlightCard from "./components/SpotlightCard";
 import TiltedCard from "./components/TiltedCard";
+import Squares from "./components/Squares";
 
 export default function Home() {
+
   return (
     <main className="min-h-screen bg-white text-black flex flex-col flex-wrap items-center justify-center">
-
       {/* HERO SECTION */}
-      {/* <section className="w-full h-screen flex items-center justify-center text-center flex-row gap-30">  
+      <section className="w-full h-200 flex items-center justify-center text-center flex-row gap-30 mb-40" 
+        style={{
+    backgroundImage: `
+      linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px)
+    `,
+    backgroundSize: '40px 40px',
+  }}>  
           <div>
-            <h1 className="font-bold text-6xl mb-16">Build habits today. <br></br> Achieve your goals.</h1>
-            <div className="x-space-4">
-                <a href="#" className="bg-gray-200 mr-4 hover:bg-gray-300/70 p-5 rounded-lg font-bold text-2xl">Sign-Up</a>
-                <a href="#" className="bg-gray-200 hover:bg-gray-300/70 p-5 rounded-lg font-bold text-2xl">Plans</a>
+            <div className="flex flex-col justify-center">
+              <h1 className="font-bold text-left lg:text-7xl md:text-7xl sm:text-6xl mb-6 tracking-tighter max-w-200">
+                Master your <i className="underline decoration-sky-500">habits</i> <br /> Achieve what <i className="underline decoration-sky-500">matters</i>
+              </h1>              
+              <p className="font-semibold lg:text-2xl md:text-7xl sm:text-6xl mb-12 tracking-tight text-gray-500 w-120 text-left">
+                Build consistent routines, align your actions with your goals, and stay accountable.
+              </p>
             </div>
-          </div>
-          <img src="/asset_1.webp" className="w-90"></img>
-      </section> */}
 
-      <section className="relative w-full h-screen overflow-hidden flex items-center justify-center bg-white text-black">
-        {/* Threads background */}
-        <div className="absolute inset-0 z-0">
-          <Threads
-            amplitude={1}
-            distance={0}
-            enableMouseInteraction={true}
-          />
-        </div>
+            <div className="flex  x-space-4 justify-start">
+                <a href="#" className="bg-gray-600/80 text-white mr-4 hover:bg-gray-600/70 p-5 rounded-3xl font-semibold tracking-tighter text-2xl">Get Started</a>
+                <a href="#" className="bg-gray-600/80 text-white hover:bg-gray-600/70 p-5 rounded-3xl font-semibold tracking-tighter text-2xl">Explore Plans</a>
+            </div>
+          <img src="/asset_6.png" className="w-120 h-120"></img>
 
-        {/* Hero content */}
-        <div className="relative z-10 text-center px-4">
-          <h1 className="font-bold lg:text-8xl md:text-7xl sm:text-6xl mb-16 tracking-tighter bg-gradient-to-r from-gray-600 via-black-500 to-gray-300/80 inline-block text-transparent bg-clip-text min-h-55">
-            Build habits <i>today</i> <br /> Achieve your <i>goals</i>
-          </h1>
-          <div className="space-x-4">
-            <a href="#" className="bg-gray-200 hover:bg-gray-300/70 p-5 rounded-lg font-bold text-2xl">
-              Sign-Up
-            </a>
-            <a href="#" className="bg-gray-200 hover:bg-gray-300/70 p-5 rounded-lg font-bold text-2xl">
-              Plans
-            </a>
           </div>
-        </div>
       </section>
-
+      
       {/* KEY FEATURES SECTION */}
       <section className="container flex flex-col justify-center">
         <header className="flex flex-row items-center justify-between w-full">
@@ -108,7 +99,7 @@ export default function Home() {
               </div>
             </div>
 
-          <div style={{ height: '400px', position: 'relative' }} className="m-20">
+          <div style={{ height: '400px', position: 'relative' }} className="m-20 w-90">
             <Carousel
               baseWidth={400}
               autoplay={true}
@@ -217,24 +208,24 @@ export default function Home() {
       <section className="container flex flex-col justify-center">
         <header className="flex flex-row items-center justify-between w-full">
             <h1 className="font-bold text-6xl ml-20">Our <i className="tracking-tighter">testimonials</i></h1>
-            <p className="font-light text-xl mr-20">3 simple steps to get you started</p>
         </header>
 
-        <div className="flex flex-wrap flex-row justify-center items-center p-3 m-20 mt-10 bg-gray-300/20 rounded-2xl"> 
-          <SpotlightCard className="custom-spotlight-card m-10 min-h-100 w-100 text-center cursor-default text-white flex flex-col items-center justify-center" spotlightColor="rgba(234, 230, 238, 0.2)">
+        <div className="flex flex-wrap flex-row justify-between items-center p-3 m-20 mt-0 rounded-2xl"> 
+          <div style={{ height: '400px', position: 'relative' }} className="m-16">
+            <Carousel
+              items={TESTIMONIALS}
+              baseWidth={800}
+              autoplay={true}
+              autoplayDelay={3000}
+              pauseOnHover={true}
+              loop={true}
+              round={false}
+            />
+          </div>
+          <SpotlightCard className="custom-spotlight-card mr-40 min-h-30 w-60 text-center cursor-default text-white flex flex-col items-center justify-center" spotlightColor="rgba(234, 230, 238, 0.2)">
             <h2 className="text-4xl font-bold mb-3">Step 1: Sign-Up</h2>
             <p>Create an account to join the Corefocus community today</p>
-          </SpotlightCard>
-
-          <SpotlightCard className="custom-spotlight-card m-10 min-h-100 w-100 text-center cursor-default text-white flex flex-col items-center justify-center" spotlightColor="rgba(234, 230, 238, 0.2)">
-            <h2 className="text-4xl font-bold mb-3">Step 2: Set Habits & End Goals</h2>
-            <p>Establish long-term and short-term commitments to meet your goals</p>
-          </SpotlightCard>
-
-          <SpotlightCard className="custom-spotlight-card m-10 min-h-100 w-100 text-center cursor-default text-white flex flex-col items-center justify-center" spotlightColor="rgba(234, 230, 238, 0.2)">
-            <h2 className="text-4xl font-bold mb-3">Step 3: Track & Reflect</h2>
-            <p>Regularly check-in to maintain your goals and reflect on wins and shortcomings</p>
-          </SpotlightCard>
+          </SpotlightCard>          
         </div>
       </section>
 
