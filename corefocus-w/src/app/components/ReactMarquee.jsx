@@ -30,7 +30,7 @@ const cards = [
 
 export default function ImageMarquee() {
   return (
-    <Marquee gradient={false} speed={40}>
+    <Marquee gradient={true} speed={35}>
       {[...cards, ...cards].map((card, idx) => (
         <div
           key={idx}
