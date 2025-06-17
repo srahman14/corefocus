@@ -3,9 +3,9 @@
 import Carousel, { TESTIMONIALS } from "./components/CarouselFeature";
 import Magnet from "./components/Magnet";
 import SpotlightCard from "./components/SpotlightCard";
-import TiltedCard from "./components/TiltedCard";
 import AnimatedContent from "./components/AnimatedContent";
 import ImageMarquee from "./components/ReactMarquee";
+import FAQItem from "./components/FAQComponent";
 
 export default function Home() {
 
@@ -14,9 +14,9 @@ export default function Home() {
       {/* HERO SECTION */}
       <section className="w-full h-220 flex flex-col justify-center items-center mb-32 mt-70 p-16">  
         <AnimatedContent
-          direction="vertical"
-          reverse={false}
-          duration={1}
+          direction="horizontal"
+          reverse={true}
+          duration={0.6}
           ease="in"
           animateOpacity
           threshold={0.2}
@@ -40,8 +40,8 @@ export default function Home() {
               </div>
 
               <div className="flex mt-30 x-space-4 justify-start">
-                  <a href="#" className="bg-gray-600/80 text-white mr-4 hover:bg-gray-600/70 p-5 rounded-3xl font-semibold tracking-tighter text-2xl">Get Started</a>
-                  <a href="#" className="bg-gray-600/80 text-white hover:bg-gray-600/70 p-5 rounded-3xl font-semibold tracking-tighter text-2xl">Explore Plans</a>
+                  <a href="#" className="bg-[#222] text-white mr-4 hover:bg-[#222]/90 p-5 rounded-3xl font-semibold tracking-tighter text-2xl">Get Started</a>
+                  <a href="#" className="bg-[#222] text-white hover:bg-[#222]/90 p-5 rounded-3xl font-semibold tracking-tighter text-2xl">Explore Plans</a>
               </div>
 
             </div>
@@ -61,188 +61,152 @@ export default function Home() {
             <p className="font-light text-xl mr-20">Designed to help you stay on track, effortlessly</p>
         </header>
         {/* To hold all the cards */}
-         <div className="flex flex-wrap justify-center gap-8 items-center p-3 m-20 mt-10 bg-gray-300/20 rounded-2xl"> 
-          <div className="bg-gray-300/40 p-7 m-8 flex flex-col items-center rounded-2xl ">
-              <h2 className="text-2xl font-bold tracking-tighter">Quick <i>links</i></h2>
-              
+         <div className="flex flex-wrap justify-center gap-8 items-center p-3 m-20 mt-10 rounded-2xl"> 
+          <div className="p-2 flex flex-col items-center rounded-2xl ">              
               {/* NEED TO ADD LINKS LATER ON */}
-              <div className="p-3 flex flex-col gap-8">
+              <div className="flex flex-row flex-wrap gap-12">
                   <Magnet padding={50} disabled={false} magnetStrength={13}>
-                      <div className="container bg-[#222] text-white p-2 rounded-lg">
-                          <span className="flex justify-center items-center w-70">
+                      <div className="container bg-[#222] text-white p-2 rounded-lg min-h-100 max-w-100 cursor-default">
+                          <span className="flex justify-between items-center text-3xl m-3">
+                            <p className="font-bold tracking-tighter text-center">Habit Tracker</p>
                             <i className="fa-solid fa-bell"></i>
-                            <p className="text-xl font-bold p-3 cursor-pointer tracking-tighter text-center">Habit Tracker</p>
                           </span>
+
+                          {/* CONTENT */}
+                          <p className="m-3 text-white font-semibold text-xl tracking-tight">Keep up to your habits and goals with our custom dashboard</p>
+                          <ul className="ml-9 text-white font-semibold text-xl tracking-tight list-disc">
+                            <li>Keep up with streaks for each day you complete</li>
+                            <li>Heatmaps for day, week, month and year</li>
+                            <li>View custom analytics to track your progress</li>
+                          </ul>
                       </div>
                   </Magnet>
 
                   <Magnet padding={50} disabled={false} magnetStrength={13}>
-                      <div className="container bg-[#222] text-white p-2 rounded-lg">
-                          <span className="flex justify-center items-center w-70">
+                      <div className="container bg-[#222] text-white p-2 rounded-lg min-h-100 max-w-100 cursor-default">
+                          <span className="flex justify-between m-3 items-center text-3xl">
                             <i className="fa-solid fa-chart-area"></i>
-                            <p className="text-xl font-bold p-3 cursor-pointer tracking-tighter text-center">Goal Board</p>
+                            <p className="font-bold p-3 cursor-pointer tracking-tighter text-center">Goal Board</p>
                           </span>
+
+                          <p className="m-3 text-white font-semibold text-xl tracking-tight">Keep up to your habits and goals with our custom dashboard</p>
+                          <ul className="ml-9 text-white font-semibold text-xl tracking-tight list-disc">
+                            <li>Keep up with streaks for each day you complete</li>
+                            <li>Heatmaps for day, week, month and year</li>
+                            <li>View custom analytics to track your progress</li>
+                          </ul>
                       </div>
                   </Magnet>
 
                   <Magnet padding={50} disabled={false} magnetStrength={13}>
-                      <div className="container bg-[#222] text-white p-2 rounded-lg">
-                          <span className="flex justify-center items-center w-70">
+                      <div className="container bg-[#222] text-white p-2 rounded-lg min-h-100 max-w-100 cursor-default">
+                          <span className="flex justify-between m-3 items-center text-3xl">
                             <i className="fa-solid fa-list-check"></i>
-                            <p className="text-xl font-bold p-3 cursor-pointer tracking-tighter text-center">Task Sync</p>
+                            <p className="font-bold p-3 cursor-pointer tracking-tighter text-center">Task Sync</p>
                           </span>
+                          
+                          <p className="m-3 text-white font-semibold text-xl tracking-tight">Keep up to your habits and goals with our custom dashboard</p>
+                          <ul className="ml-9 text-white font-semibold text-xl tracking-tight list-disc">
+                            <li>Keep up with streaks for each day you complete</li>
+                            <li>Heatmaps for day, week, month and year</li>
+                            <li>View custom analytics to track your progress</li>
+                          </ul>
                       </div>
                   </Magnet>
 
                   <Magnet padding={50} disabled={false} magnetStrength={13}>
-                      <div className="container bg-[#222] text-white p-2 rounded-lg">
-                          <span className="flex justify-center items-center w-70">
+                      <div className="container bg-[#222] text-white p-2 rounded-lg min-h-100 max-w-100 cursor-default">
+                          <span className="flex justify-between m-3 items-center text-3xl">
                             <i className="fa-solid fa-pen-to-square"></i>
-                            <p className="text-xl font-bold p-3 cursor-pointer tracking-tighter text-center">Read Route</p>
+                            <p className="font-bold p-3 cursor-pointer tracking-tighter text-center">Read Route</p>
                           </span>
+
+                          <p className="m-3 text-white font-semibold text-xl tracking-tight">Keep up to your habits and goals with our custom dashboard</p>
+                          <ul className="ml-9 text-white font-semibold text-xl tracking-tight list-disc">
+                            <li>Keep up with streaks for each day you complete</li>
+                            <li>Heatmaps for day, week, month and year</li>
+                            <li>View custom analytics to track your progress</li>
+                          </ul>
                       </div>
                   </Magnet>
 
                   <Magnet padding={50} disabled={false} magnetStrength={13}>
-                      <div className="container bg-[#222] text-white p-2 rounded-lg">
-                          <span className="flex justify-center items-center w-70">
+                      <div className="container bg-[#222] text-white p-2 rounded-lg min-h-100 max-w-100 cursor-default">
+                          <span className="flex justify-between m-3 items-center text-3xl">
                             <i className="fa-solid fa-stopwatch"></i>
-                            <p className="text-xl font-bold p-3 cursor-pointer tracking-tighter text-center">Focus Camp</p>
+                            <p className="font-bold p-3 cursor-pointer tracking-tighter text-center">Focus Camp</p>
                           </span>
+
+                          <p className="m-3 text-white font-semibold text-xl tracking-tight">Keep up to your habits and goals with our custom dashboard</p>
+                          <ul className="ml-9 text-white font-semibold text-xl tracking-tight list-disc">
+                            <li>Keep up with streaks for each day you complete</li>
+                            <li>Heatmaps for day, week, month and year</li>
+                            <li>View custom analytics to track your progress</li>
+                          </ul>
                       </div>
                   </Magnet>
               </div>
             </div>
-
-          <div style={{ height: '400px', position: 'relative' }} className="m-20 w-90">
-            <Carousel
-              baseWidth={400}
-              autoplay={true}
-              autoplayDelay={3000}
-              pauseOnHover={true}
-              loop={true}
-              round={false}
-            />
-          </div>
         </div>
       </section>
       
       {/* HOW IT WORKS SECTION */}
       <section className="container flex flex-col justify-center">
-        <header className="flex flex-row items-center justify-between w-full">
-            <h1 className="font-bold text-6xl ml-20">How it <i className="tracking-tighter">works?</i></h1>
-            <p className="font-light text-xl mr-20">3 simple steps to get you started</p>
-        </header>
+          <AnimatedContent
+          direction="horizontal"
+          reverse={true}
+          duration={0.6}
+          ease="in"
+          animateOpacity
+          threshold={0.2}
+          >
+            <header className="flex flex-row items-center justify-center w-full">
+                <h1 className="font-bold text-5xl ml-20">How to get <i className="tracking-tighter">started?</i></h1>
+            </header>
 
-        <div className="flex flex-wrap flex-row justify-center items-center p-3 m-20 mt-10 bg-gray-300/20 rounded-2xl"> 
-          <SpotlightCard className="custom-spotlight-card bg-[#222] m-10 min-h-100 w-100 text-center cursor-default text-white flex flex-col items-center justify-center" spotlightColor="rgba(234, 230, 238, 0.2)">
-            <h2 className="text-4xl font-bold mb-3">Step 1: Sign-Up</h2>
-            <p>Create an account to join the Corefocus community today</p>
-          </SpotlightCard>
+            <div className="flex flex-wrap flex-row justify-center items-center p-3 m-20 mt-10"> 
+              <SpotlightCard className="custom-spotlight-card bg-[#222] m-10 min-h-100 w-92 text-center cursor-default text-white flex flex-col items-center justify-center" spotlightColor="rgba(234, 230, 238, 0.2)">
+                <h2 className="text-4xl font-bold mb-3">Step 1: Sign-Up</h2>
+                <p>Create an account to join the Corefocus community today</p>
+              </SpotlightCard>
 
-          <SpotlightCard className="custom-spotlight-card m-10 min-h-100 w-100 text-center cursor-default text-white flex flex-col items-center justify-center" spotlightColor="rgba(234, 230, 238, 0.2)">
-            <h2 className="text-4xl font-bold mb-3">Step 2: Set Habits & End Goals</h2>
-            <p>Establish long-term and short-term commitments to meet your goals</p>
-          </SpotlightCard>
+              <SpotlightCard className="custom-spotlight-card m-10 min-h-100 w-92 text-center cursor-default text-white flex flex-col items-center justify-center" spotlightColor="rgba(234, 230, 238, 0.2)">
+                <h2 className="text-4xl font-bold mb-3">Step 2: Set Habits & End Goals</h2>
+                <p>Establish long-term and short-term commitments to meet your goals</p>
+              </SpotlightCard>
 
-          <SpotlightCard className="custom-spotlight-card m-10 min-h-100 w-100 text-center cursor-default text-white flex flex-col items-center justify-center" spotlightColor="rgba(234, 230, 238, 0.2)">
-            <h2 className="text-4xl font-bold mb-3">Step 3: Track & Reflect</h2>
-            <p>Regularly check-in to maintain your goals and reflect on wins and shortcomings</p>
-          </SpotlightCard>
-        </div>
+              <SpotlightCard className="custom-spotlight-card m-10 min-h-100 w-92 text-center cursor-default text-white flex flex-col items-center justify-center" spotlightColor="rgba(234, 230, 238, 0.2)">
+                <h2 className="text-4xl font-bold mb-3">Step 3: Track & Reflect</h2>
+                <p>Regularly check-in to maintain your goals and reflect on wins and shortcomings</p>
+              </SpotlightCard>
+            </div>
+          </AnimatedContent>
       </section>
 
-      {/* BENEFITS AND VALUE PROPOSITION SECTION */}
-      <section className="container flex flex-col justify-center">
-        <header className="flex flex-row items-center w-full">
-            <h1 className="font-bold text-6xl ml-20">How <i className="tracking-tighter">Corefocus</i> benefits <i className="tracking-tighter">you?</i></h1>
-        </header>
+    {/* FAQ SECTION  */}
+    <section className="container flex flex-col justify-center">
+      <div className="flex flex-row items-start justify-between m-16">
+        <div className="w-75">
+          <h2 className="text-6xl font-semibold">FAQs</h2>
+          <p className="text-2xl font-light">Got a different question? Email support@corefocus.ai</p>
+        </div>
 
-        <div className="flex flex-wrap flex-row justify-between items-center p-3 m-20 mt-10 rounded-2xl"> 
-            <TiltedCard
-            imageSrc="/asset_3.png"
-            altText="Flow State"
-            captionText="Flow State"
-            containerHeight="300px"
-            containerWidth="300px"
-            imageHeight="300px"
-            imageWidth="300px"
-            rotateAmplitude={12}
-            scaleOnHover={1.2}
-            showMobileWarning={false}
-            showTooltip={true}
-            displayOverlayContent={true}
-            overlayContent={
-              <span className="mt-10 text-gray-900">
-                <h2 className="ml-5 mb-3 font-bold text-2xl  bg-gradient-to-r from-indigo-800 via-black-500 to-gray-300/80 inline-block text-transparent bg-clip-text">Designed for deep focus, not dopamine loops</h2>
-              </span>
-            }
+        <div className="mr-20 w-[70%] max-h-[400px] overflow-y-auto pr-4">
+          <FAQItem
+            question="How do I create an account?"
+            answer="The steps to create an account can be found here."
           />
-            <TiltedCard
-            imageSrc="/asset_4.png"
-            altText="Chart"
-            captionText="Unified goals"
-            containerHeight="300px"
-            containerWidth="300px"
-            imageHeight="300px"
-            imageWidth="300px"
-            rotateAmplitude={12}
-            scaleOnHover={1.2}
-            showMobileWarning={false}
-            showTooltip={true}
-            displayOverlayContent={true}
-            overlayContent={
-              <span className="mt-10 text-gray-900">
-                <h2 className="ml-5 mb-3 font-bold text-2xl  bg-gradient-to-r from-indigo-800 via-black-500 to-gray-300/80 inline-block text-transparent bg-clip-text">Unified goals, habits, and reflections</h2>
-              </span>
-            }
+          <FAQItem
+            question="Is Corefocus free for all users?"
+            answer="Corefocus has options for everyone, plans can be found here."
           />
-            <TiltedCard
-            imageSrc="/asset_5.png"
-            altText="Light bulb image"
-            captionText="Distraction-free"
-            containerHeight="300px"
-            containerWidth="300px"
-            imageHeight="300px"
-            imageWidth="300px"
-            rotateAmplitude={12}
-            scaleOnHover={1.2}
-            showMobileWarning={false}
-            showTooltip={true}
-            displayOverlayContent={true}
-            overlayContent={
-              <span className="mt-10 text-gray-900">
-                <h2 className="ml-5 mb-3 font-bold text-2xl  bg-gradient-to-r from-indigo-800 via-black-500 to-gray-300/80 inline-block text-transparent bg-clip-text">Privacy-focused and distraction-free</h2>
-              </span>
-            }
+          <FAQItem
+            question="How is my data managed?"
+            answer="Corefocus is in lines with the GDPR 2010, the privacy policy can be found here."
           />
+        </div>
       </div>
-      </section>
-
-      {/* TESTIMONIALS SECTION */}
-      <section className="container flex flex-col justify-center">
-        <header className="flex flex-row items-center justify-between w-full">
-            <h1 className="font-bold text-6xl ml-20">Our <i className="tracking-tighter">testimonials</i></h1>
-        </header>
-
-        <div className="flex flex-wrap flex-row justify-between items-center p-3 m-20 mt-0 rounded-2xl"> 
-          <div style={{ height: '400px', position: 'relative' }} className="m-16">
-            <Carousel
-              items={TESTIMONIALS}
-              baseWidth={800}
-              autoplay={true}
-              autoplayDelay={3000}
-              pauseOnHover={true}
-              loop={true}
-              round={false}
-            />
-          </div>
-          <SpotlightCard className="custom-spotlight-card mr-40 min-h-30 w-60 text-center cursor-default text-white flex flex-col items-center justify-center" spotlightColor="rgba(234, 230, 238, 0.2)">
-            <h2 className="text-4xl font-bold mb-3">Step 1: Sign-Up</h2>
-            <p>Create an account to join the Corefocus community today</p>
-          </SpotlightCard>          
-        </div>
-      </section>
+    </section>
 
     </main>
   );
