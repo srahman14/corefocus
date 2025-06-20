@@ -2,10 +2,52 @@
 
 import MetaBalls from "@/app/components/MetaBalls";
 import AnimatedContent from "@/app/components/AnimatedContent";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/app/firebase";
+import { useRouter } from "next/navigation";
+
 import { useState } from "react";
 export default function SignUp() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [Email, setEmail] = useState("");
+  const [EmailError, setEmailError] = useState("");
+  const [Password, setPassword] = useState("");
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const router = useRouter();
+  const validateEmail = (value) => {
+    setEmail(value)
+
+    if (!value) {
+      setEmailError("Email is required.");
+    } else if (!emailRegex.test(value)) {
+      setEmailError("Please enter a valid email address.");
+    } else {
+      setEmailError("");
+    }
+  }
+
+    const SignInWithEmail = async (e) => {
+      e.preventDefault();
+      if (EmailError) {
+        console.error("Credentials incomplete or invalid.");
+        return;
+    }
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        Email,
+        Password
+      );
+  
+      const user = userCredential.user;
+      console.log(user)
+      router.push("/")
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+  
+      console.log("errorCode:", errorCode, "errorMessage:", errorMessage);
+    };
+  }
   return (
     <>
       {/* HERO SECTION */}
@@ -39,25 +81,22 @@ export default function SignUp() {
                  <h1 className="text-center text-4xl font-bold mb-2">Welcome back!</h1>
                  <p className="mb-4">Enter your email and password to login</p>
 
-                 <form className="flex flex-col justify-center gap-2">
-                    <label>
-                        <input
-                        className="p-2 rounded-xl bg-[#222] border-none w-full focus:bg-[#222]/70"
-                        type="text"
-                        value={email}
-                        placeholder="name@example.com"
-                        onChange={(e) => setEmail(e.target.value)}
-                        />
-                    </label>
-                    <label>
-                        <input
-                        className="p-2 rounded-xl bg-[#222] border-none w-full focus:bg-[#222]/70 mb-2"
-                        type="password"
-                        value={password}
-                        placeholder="password"
-                        onChange={(e) => setPassword(e.target.value)}
-                        />
-                    </label>
+                 <form onSubmit={SignInWithEmail} className="flex flex-col justify-center gap-2">
+                      <input
+                      className="p-2 rounded-xl bg-[#222] border-none w-full focus:bg-[#222]/70"
+                      type="text"
+                      value={Email}
+                      placeholder="name@example.com"
+                      onChange={(e) => validateEmail(e.target.value)}
+                      />
+                      {EmailError && <p className="text-red-500 text-sm mt-1">{EmailError}</p>}
+                      <input
+                      className="p-2 rounded-xl bg-[#222] border-none w-full focus:bg-[#222]/70 mb-2"
+                      type="Password"
+                      value={Password}
+                      placeholder="Password"
+                      onChange={(e) => setPassword(e.target.value)}
+                      />
                     <button className="bg-white p-2 rounded-xl text-sm text-black font-semibold hover:bg-gray-100/90 cursor-pointer">
                       <p>Sign in</p>
                     </button>
@@ -72,7 +111,7 @@ export default function SignUp() {
                 <div className="flex flex-col gap-2">
                   <button className="bg-[#101010] text-white p-2 rounded-xl text-lg text-black font-semibold hover:bg-[#101010]/80 cursor-pointer">
                     <span className="text-sm">
-                      <i class="fa-brands fa-google mr-3 fa-fade"></i>
+                      <i className="fa-brands fa-google mr-3 fa-fade"></i>
                       <p className="inline">Continue with Google</p>
                     </span>
                   </button>
@@ -86,7 +125,7 @@ export default function SignUp() {
 
                   <button className="bg-[#101010] text-white p-2 rounded-xl text-lg text-black font-semibold hover:bg-[#101010]/80 cursor-pointer">
                     <span className="text-sm">
-                      <i class="fa-brands fa-apple mr-3 fa-fade"></i>
+                      <i className="fa-brands fa-apple mr-3 fa-fade"></i>
                       <p className="inline">Continue with Apple</p>
                     </span>
                   </button>

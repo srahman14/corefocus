@@ -2,17 +2,83 @@
 
 import MetaBalls from "@/app/components/MetaBalls";
 import AnimatedContent from "@/app/components/AnimatedContent";
-import { useState } from "react";
-export default function SignUp() {
-  const [email, setEmail] = useState("");
+import React, { useState, useRef } from "react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/app/firebase";
 
+export default function SignUp() {
+  const [Email, setEmail] = useState("");
+  const [EmailError, setEmailError] = useState("");
+  const [Password, setPassword] = useState("");
+  const [PasswordError, setPasswordError] = useState("");
+  const [ConfirmPassword, setConfirmPassword] = useState("");
+  const [ConfirmPasswordError, setConfirmPasswordError] = useState("");
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const dataRef = useRef();
+  const validateEmail = (value) => {
+    setEmail(value)
+
+    if (!value) {
+      setEmailError("Email is required.");
+    } else if (!emailRegex.test(value)) {
+      setEmailError("Please enter a valid email address.");
+    } else {
+      setEmailError("");
+    }
+  }
+
+  const validatePasswordStrength = (value) => {
+    setPassword(value)
+    
+    if (value.includes(" ")) {
+      setPasswordError("Password must not contain spaces");
+    } else if (value.length < 8) {
+      setPasswordError("Password requires 8 characters minimum");
+    } else if (!/[A-Z]/.test(value)) {
+      setPasswordError("Password requires at least one capital letter");
+    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
+      setPasswordError("Password requires at least 1 special character");
+    } else {
+      setPasswordError("")
+    }
+  }
+
+  const validatePasswordsMatch = (value) => {
+    setConfirmPassword(value)
+    
+    if (value !== Password) {
+      setConfirmPasswordError("Passwords do not match!")
+    } else {
+      setConfirmPasswordError("")
+    }
+  }
+
+  const SignUpWithEmail = async (e) => {
+    e.preventDefault();
+    if (EmailError || PasswordError || ConfirmPasswordError) {
+      console.error("Credentials incomplete or invalid.");
+      return;
+  }
+  try {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      Email,
+      Password
+    );
+
+    const user = userCredential.user;
+    console.log(user)
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+
+    console.log("errorCode:", errorCode, "errorMessage:", errorMessage);
+  };
+}
   return (
     <>
       {/* HERO SECTION */}
       <section className="w-full h-screen flex flex-row gap-20 justify-between items-center">  
-
-
-
         <div className="container h-screen bg-black text-white flex flex-col justify-center items-center">
           <AnimatedContent
             direction="horizontal"
@@ -25,25 +91,45 @@ export default function SignUp() {
                  <h1 className="text-center text-4xl font-bold mb-2">Create an account</h1>
                  <p className="mb-4">Enter your email below to create your account</p>
 
-                 <form className="flex flex-col justify-center gap-4">
-                    <label>
+                 <form onSubmit={SignUpWithEmail} className="flex flex-col justify-center gap-2">
                     <input
-                      className="p-2 rounded-xl bg-[#222] border-none w-full focus:bg-[#222]/70"
+                      className="p-2 rounded-xl bg-[#222] border-0 w-full focus:bg-[#222]/70"
                       type="text"
-                      value={email}
+                      value={Email}
                       placeholder="name@example.com"
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => validateEmail(e.target.value)}
                       />
-                    </label>
-                    <button className="bg-white p-2 rounded-xl text-sm text-black font-semibold hover:bg-gray-100/90 cursor-pointer">
+                      {EmailError && <p className="text-red-500 text-sm mt-1">{EmailError}</p>}
+                      <input
+                        className="p-2 rounded-xl bg-[#222] border-none w-full focus:bg-[#222]/70"
+                        type="password"
+                        value={Password}
+                        placeholder="Password"
+                        onChange={(e) => validatePasswordStrength(e.target.value)}
+                        />
+                        {PasswordError && <p className="text-red-500 text-sm mt-1">{PasswordError}</p>}
+                    
+                      <input
+                        className="p-2 rounded-xl bg-[#222] border-none w-full focus:bg-[#222]/70 mb-2"
+                        type="password"
+                        value={ConfirmPassword}
+                        placeholder="Confirm password"
+                        onChange={(e) => validatePasswordsMatch(e.target.value)}
+                        />
+                        {ConfirmPasswordError && <p className="text-red-500 text-sm mt-1">{ConfirmPasswordError}</p>}
+                    
+                    <button
+                      type="submit"
+                      className="bg-white p-2 rounded-xl text-sm text-black font-semibold hover:bg-gray-100/90 cursor-pointer"
+                      >                      
                       <p>Sign up with email</p>
                     </button>
                  </form>
 
-                 <div class="relative flex py-5 items-center">
-                    <div class="flex-grow border-t border-white-400"></div>
-                    <span class="flex-shrink mx-4 text-white-400 font-light">or continue with</span>
-                    <div class="flex-grow border-t border-white-400"></div>
+                 <div className="relative flex py-5 items-center">
+                    <div className="flex-grow border-t border-white-400"></div>
+                    <span className="flex-shrink mx-4 text-white-400 font-light">or continue with</span>
+                    <div className="flex-grow border-t border-white-400"></div>
                 </div>
 
                 <div className="flex flex-col gap-2">
