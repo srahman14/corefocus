@@ -16,21 +16,10 @@ export const metadata = {
 
 export default function MainLayout({ children }) {
   return (
-  <html lang="en" className={`${montserrat.variable}`}>
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-          integrity="sha512-...." // Optional: add integrity for security
-          crossOrigin="anonymous"
-          referrerPolicy="no-referrer"
-        />
-      </head>
-      <body>
+      <div>
         <Navbar /> 
         {children}
         <Footer />
-      </body>
-    </html>
+      </div>
   );
 }
