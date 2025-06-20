@@ -5,11 +5,10 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 export const firebaseConfig = {
-  apiKey: "AIzaSyA79tot_cv9RQvQqvfg20Lw4NUk7Fxxj0Y",
-  authDomain: "corefocus-7fd97.firebaseapp.com",
-  projectId: "corefocus-7fd97",
-  storageBucket: "corefocus-7fd97.firebasestorage.app",
-  messagingSenderId: "865725210747",
-  appId: "1:865725210747:web:7fe394f46911b6ec5bc2de"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
-
