@@ -2,7 +2,7 @@
 
 import MetaBalls from "@/app/components/MetaBalls";
 import AnimatedContent from "@/app/components/AnimatedContent";
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/app/firebase";
 
@@ -14,7 +14,6 @@ export default function SignUp() {
   const [ConfirmPassword, setConfirmPassword] = useState("");
   const [ConfirmPasswordError, setConfirmPasswordError] = useState("");
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const dataRef = useRef();
   const validateEmail = (value) => {
     setEmail(value)
 
