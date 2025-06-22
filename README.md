@@ -20,7 +20,7 @@ Habit tracking app with additional features such as journaling, time-blocking, h
 ```
 ## Tech Stack
 
-Frontend: Next.js + Tailwind CSS
+Frontend: Next.js + React + Tailwind CSS
 State Mgmt: Context API (or Zustand if needed)
 Database: Firebase Firestore (scalable + easy auth integration)
 Timer: Custom React hooks or open-source library
