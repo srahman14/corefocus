@@ -14,6 +14,14 @@ export default function Steps() {
     const [achieve, setAchieve] = useState([]);
     const [overallGoal, setOverallGoal] = useState("");
     const [uid, setUid] = useState(null)
+    const [usernameError, setUsernameError] = useState("");
+    const [activeStepIndex, setActiveStepIndex] = useState(1);
+    const [stepValidity, setStepValidity] = useState({
+        0: true, // Welcome step always valid
+        1: false,
+        2: false,
+        3: false,
+        });    
     const router = useRouter();
 
     useEffect(() => {
@@ -47,6 +55,40 @@ export default function Steps() {
         } catch (error) {
             console.log("Error saving data", error)
         }
+    };
+
+    useEffect(() => {
+    const isUsernameValid =
+        !usernameError &&
+        username.length >= 5 &&
+        !username.includes(" ") &&
+        !/[@#$%^&*(),.?!":{}|<>]/.test(username);
+
+    setStepValidity((prev) => ({
+        ...prev,
+        1: isUsernameValid,
+    }));
+    }, [username, usernameError]);
+
+    const validateUsername = (value) => {
+    setUsername(value);
+
+    if (value.includes(" ")) {
+        setUsernameError("Username must not contain spaces");
+        setStepValidity((prev) => ({ ...prev, 1: false }));
+    } else if (value.length < 5) {
+        setUsernameError("Password requires 5 characters minimum");
+        setStepValidity((prev) => ({ ...prev, 1: false }));
+    } else if (/[@#$%^&*(),.?!":{}|<>]/.test(value)) {
+        setUsernameError("Username cannot contain special characters except underscore and dash");
+        setStepValidity((prev) => ({ ...prev, 1: false }));
+    } else if (value === "") {
+        setUsernameError("Username cannot be empty");
+        setStepValidity((prev) => ({ ...prev, 1: false }));
+    } else {
+        setUsernameError("");
+        setStepValidity((prev) => ({ ...prev, 1: true }));
+    }
     };
 
 
@@ -107,13 +149,18 @@ export default function Steps() {
             <div className={`container transition-colors duration-500 ${darkMode ? "bg-black text-white" : "bg-white text-black"}`}
 >
                 <Stepper
-                initialStep={1}
-                onStepChange={(step) => {
-                    console.log(step);
+                    initialStep={1}
+                    activeStepIndex={activeStepIndex}
+                    onStepChange={setActiveStepIndex}
+                    onFinalStepCompleted={handleSubmit}
+                    backButtonText="Previous"
+                    nextButtonText="Next"
+                    nextButtonProps={{
+                    disabled: !stepValidity[activeStepIndex],
+                    style: {
+                    cursor: stepValidity[activeStepIndex] === false ? "not-allowed" : "pointer",
+                    },
                 }}
-                onFinalStepCompleted={handleSubmit}
-                backButtonText="Previous"
-                nextButtonText="Next"
                 >
                 <Step>
                     <h2 className="font-bold">Welcome to <i>CoreFocus</i>!</h2>
@@ -121,7 +168,9 @@ export default function Steps() {
                 </Step>
                 <Step>
                     <h2 className="font-bold">Enter your username</h2>
-                    <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Your name?" className="font-bold italic text-gray-300 mt-3 outline-none"/>
+                    <input required v alue={username} onChange={(e) => validateUsername(e.target.value)} placeholder="Your name?" className="font-bold italic text-gray-300 mt-3 outline-none"/>
+                    {usernameError && <p className="text-red-500 text-sm mt-1">{usernameError}</p>}
+                    
                 </Step>
                 <Step>
                     <h2 className="font-bold">What qualifications apply to you?</h2>
