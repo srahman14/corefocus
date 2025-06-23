@@ -5,6 +5,7 @@ import AnimatedContent from "@/app/components/AnimatedContent";
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/app/firebase";
+import { useRouter } from "next/navigation";
 
 export default function SignUp() {
   const [Email, setEmail] = useState("");
@@ -13,6 +14,7 @@ export default function SignUp() {
   const [PasswordError, setPasswordError] = useState("");
   const [ConfirmPassword, setConfirmPassword] = useState("");
   const [ConfirmPasswordError, setConfirmPasswordError] = useState("");
+  const router = useRouter();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const validateEmail = (value) => {
     setEmail(value)
@@ -66,7 +68,7 @@ export default function SignUp() {
     );
 
     const user = userCredential.user;
-    console.log(user)
+    router.push("/steps")
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
