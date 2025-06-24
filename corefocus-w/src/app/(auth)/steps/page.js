@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { db } from "@/app/firebase";
-import { getAuth, onAuthStateChanged, OperationType } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore"
 import Stepper, { Step } from "@/app/components/Stepper";
 import { useRouter } from "next/navigation";
@@ -15,13 +15,7 @@ export default function Steps() {
     const [overallGoal, setOverallGoal] = useState("");
     const [uid, setUid] = useState(null)
     const [usernameError, setUsernameError] = useState("");
-    const [activeStepIndex, setActiveStepIndex] = useState(1);
-    const [stepValidity, setStepValidity] = useState({
-        0: true, // Welcome step always valid
-        1: false,
-        2: false,
-        3: false,
-        });    
+
     const router = useRouter();
 
     useEffect(() => {
@@ -37,58 +31,38 @@ export default function Steps() {
         return () => unsubscribe();
     }, []);
 
-    const handleSubmit = async () => {
-        if (!uid) {
-            console.log("User not auth");
-            return;
-        }
-
-        try {
-            await setDoc(doc(db, "users", uid), {
-                username: username,
-                qualifications, qualifications,
-                achieve: achieve,
-                overallGoal, overallGoal
-            });
-            console.log("User data saved!");
-            router.push("/dashboard")
-        } catch (error) {
-            console.log("Error saving data", error)
-        }
-    };
-
     useEffect(() => {
-    const isUsernameValid =
-        !usernameError &&
-        username.length >= 5 &&
-        !username.includes(" ") &&
-        !/[@#$%^&*(),.?!":{}|<>]/.test(username);
+    if (username.length === 0) {
+        setUsernameError("");
+        return;
+    }
 
-    setStepValidity((prev) => ({
-        ...prev,
-        1: isUsernameValid,
-    }));
-    }, [username, usernameError]);
-
-    const validateUsername = (value) => {
-    setUsername(value);
-
-    if (value.includes(" ")) {
-        setUsernameError("Username must not contain spaces");
-        setStepValidity((prev) => ({ ...prev, 1: false }));
-    } else if (value.length < 5) {
-        setUsernameError("Password requires 5 characters minimum");
-        setStepValidity((prev) => ({ ...prev, 1: false }));
-    } else if (/[@#$%^&*(),.?!":{}|<>]/.test(value)) {
-        setUsernameError("Username cannot contain special characters except underscore and dash");
-        setStepValidity((prev) => ({ ...prev, 1: false }));
-    } else if (value === "") {
-        setUsernameError("Username cannot be empty");
-        setStepValidity((prev) => ({ ...prev, 1: false }));
+    if (username.length < 5) {
+        setUsernameError("Username must be at least 5 characters.");
+    } else if (username.includes(" ")) {
+        setUsernameError("Username cannot contain spaces.");
+    } else if (/[@#$%^&*(),.?!":{}|<>]/.test(username)) {
+        setUsernameError("Username cannot contain special characters.");
     } else {
         setUsernameError("");
-        setStepValidity((prev) => ({ ...prev, 1: true }));
     }
+    }, [username]);
+
+
+    const validateUsername = (value) => {
+        setUsername(value);
+
+        if (value.includes(" ")) {
+            setUsernameError("Username must not contain spaces");
+        } else if (value.length < 5) {
+            setUsernameError("Password requires 5 characters minimum");
+        } else if (/[@#$%^&*(),.?!":{}|<>]/.test(value)) {
+            setUsernameError("Username cannot contain special characters except underscore and dash");
+        } else if (value === "") {
+            setUsernameError("Username cannot be empty");
+        } else {
+            setUsernameError("");
+        }
     };
 
 
@@ -136,6 +110,50 @@ export default function Steps() {
         }
     };
 
+    const handleSubmit = async () => {
+        if (!uid) {
+            console.log("User not auth");
+            return;
+        }
+        // Final Validation
+        const isUsernameValid = 
+            username &&
+            username.length >= 5 &&
+            !username.includes(" ") &&
+            !/[@#$%^&*(),.?!":{}|<>]/.test(username);
+
+        if (!isUsernameValid) {
+            setUsernameError("Please enter a valid username (min 5 characters, no spaces/symbols).");
+            console.log("Username not valid")
+            return;
+        }
+
+        if (qualifications.length === 0) {
+            alert("Please select at least one qualification")
+            console.log("Qualifications not valid")
+            return;
+        }
+
+        if (achieve.length === 0) {
+            alert("Please select at least one achievement")
+            console.log("Achievements not valid")
+            return;
+        }
+
+        try {
+            await setDoc(doc(db, "users", uid), {
+                username: username,
+                qualifications, qualifications,
+                achieve: achieve,
+                overallGoal, overallGoal
+            });
+            console.log("User data saved!");
+            router.push("/dashboard")
+        } catch (error) {
+            console.log("Error saving data", error)
+        }
+    };
+
     return (
     <main className={`min-h-screen flex flex-col items-center justify-center transition-colors duration-500 ${darkMode ? "bg-black text-white" : "bg-white text-black"}`}>        
         {/* DARK MODE TOGGLE */}
@@ -150,17 +168,9 @@ export default function Steps() {
 >
                 <Stepper
                     initialStep={1}
-                    activeStepIndex={activeStepIndex}
-                    onStepChange={setActiveStepIndex}
                     onFinalStepCompleted={handleSubmit}
                     backButtonText="Previous"
                     nextButtonText="Next"
-                    nextButtonProps={{
-                    disabled: !stepValidity[activeStepIndex],
-                    style: {
-                    cursor: stepValidity[activeStepIndex] === false ? "not-allowed" : "pointer",
-                    },
-                }}
                 >
                 <Step>
                     <h2 className="font-bold">Welcome to <i>CoreFocus</i>!</h2>
@@ -168,7 +178,7 @@ export default function Steps() {
                 </Step>
                 <Step>
                     <h2 className="font-bold">Enter your username</h2>
-                    <input required v alue={username} onChange={(e) => validateUsername(e.target.value)} placeholder="Your name?" className="font-bold italic text-gray-300 mt-3 outline-none"/>
+                    <input required value={username} onChange={(e) => validateUsername(e.target.value)} placeholder="Your name?" className="font-bold italic text-gray-300 mt-3 outline-none"/>
                     {usernameError && <p className="text-red-500 text-sm mt-1">{usernameError}</p>}
                     
                 </Step>
