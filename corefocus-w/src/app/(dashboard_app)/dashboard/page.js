@@ -15,9 +15,6 @@ export default function Dashboard() {
     const router = useRouter();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [collapsed, setCollapsed] = useState(true);
-    const toggleSidebar = () => setCollapsed(prev => !prev);
-    const sidebarWidth = collapsed ? 64 : 256; 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             if (currentUser) {
@@ -37,26 +34,51 @@ export default function Dashboard() {
     }
 
    return (
-    <main className="flex h-screen overflow-hidden relative">
-        <section className="p-8">
-            <h1 className="text-4xl font-bold">Welcome to your Dashboard</h1>
-            <div className="flex flex-row mt-6 gap-8">
-              <div className="flex flex-row gap-8 w-full">
-                  <GoalBoard />
-                  <FocusCamp />
-              </div>
-
-              <div className="flex w-full">
-                  <GoalBoard />
-              </div>
-
-              <div className="flex gap-8">
-                  <GoalBoard />
-                  <GoalBoard />  
-              </div>
+        <main className="flex h-full min-h-screen flex-col bg-gray-50">
+        {/* Topbar */}
+        <div className="w-full bg-gray-100/80 p-4 flex justify-between items-center">
+            <input
+            placeholder="Search"
+            className="bg-white p-3 text-lg font-semibold rounded-xl w-1/2 md:w-1/3 lg:w-1/3 outline-none"
+            />
+            <div className="flex gap-4 items-center mr-4">
+            <img
+                src="/avatar-default.svg"
+                alt="avatar"
+                className="bg-white rounded-full w-10 h-10"
+            />
+            <i className="fa-solid fa-moon text-2xl"></i>
             </div>
-        </section>
-    </main>
+        </div>
+
+        {/* Welcome Heading */}
+        <div className="px-8 pt-6">
+            <h1 className="text-4xl font-bold mb-6">Welcome to your Dashboard</h1>
+        </div>
+
+        <div className="p-6 overflow-y-auto">
+            <div className="flex md:flex-row gap-3 p-1">
+                <div className="flex flex-col md:flex-row gap-2 flex-1">
+                    <div className="bg-white p-6 rounded-xl shadow min-h-[300px] w-full lg:col-span-4">Card A</div>
+                    <div className="bg-white p-6 rounded-xl shadow min-h-[300px] w-full lg:col-span-4"><p>Card two</p></div>
+                </div>
+            </div>
+
+            <div className="flex md:flex-row p-1">
+                <div className="flex flex-1">
+                    <div className="bg-white p-6 rounded-xl shadow min-h-[300px] w-full lg:col-span-4">Card A</div>
+                </div>
+            </div>
+            
+            <div className="flex md:flex-row gap-3 p-1">
+                <div className="flex flex-col md:flex-row  gap-2 flex-1">
+                    <div className="bg-white p-6 rounded-xl shadow h-[250px] w-full lg:col-span-4">Card A</div>
+                    <div className="bg-white p-6 rounded-xl shadow min-h-[300px] w-full lg:col-span-4"><p>Card two</p></div>
+                </div>
+            </div>
+        </div>
+
+        </main>
     );
 }
 
