@@ -16,7 +16,7 @@ function SidebarItem({ href, icon, label, collapsed, onClick }) {
         <i className={`fa-solid ${icon} text-lg`} />
         {!collapsed && <span className="ml-3 font-bold">{label}</span>}
         {collapsed && (
-          <span className="absolute left-full ml-2 bg-black text-white text-sm px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-50">
+          <span className="absolute left-full ml-2 bg-[#222] text-white text-sm px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-50">
             {label}
           </span>
         )}
