@@ -59,21 +59,21 @@ export default function Dashboard() {
         <div className="p-6 overflow-y-auto">
             <div className="flex md:flex-row gap-3 p-1">
                 <div className="flex flex-col md:flex-row gap-2 flex-1">
-                    <div className="bg-white p-6 rounded-xl shadow min-h-[300px] w-full lg:col-span-4">Card A</div>
-                    <div className="bg-white p-6 rounded-xl shadow min-h-[300px] w-full lg:col-span-4"><p>Card two</p></div>
+                    <div className="bg-white p-6 rounded-xl shadow min-h-[300px] w-full lg:col-span-4">Habit Tracker</div>
+                    <div className="bg-white p-6 rounded-xl shadow min-h-[300px] w-full lg:col-span-4"><p>Focus Camp</p></div>
                 </div>
             </div>
 
             <div className="flex md:flex-row p-1">
                 <div className="flex flex-1">
-                    <div className="bg-white p-6 rounded-xl shadow min-h-[300px] w-full lg:col-span-4">Card A</div>
+                    <div className="bg-white p-6 rounded-xl shadow min-h-[300px] w-full lg:col-span-4">Goal Board</div>
                 </div>
             </div>
             
             <div className="flex md:flex-row gap-3 p-1">
                 <div className="flex flex-col md:flex-row  gap-2 flex-1">
-                    <div className="bg-white p-6 rounded-xl shadow h-[250px] w-full lg:col-span-4">Card A</div>
-                    <div className="bg-white p-6 rounded-xl shadow min-h-[300px] w-full lg:col-span-4"><p>Card two</p></div>
+                    <div className="bg-white p-6 rounded-xl shadow h-[250px] w-full lg:col-span-4">Task Sync</div>
+                    <div className="bg-white p-6 rounded-xl shadow min-h-[400px] w-full lg:col-span-4"><p>Read Route</p></div>
                 </div>
             </div>
         </div>
