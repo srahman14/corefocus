@@ -26,5 +26,5 @@ Database: Firebase Firestore (scalable + easy auth integration)
 Timer: Custom React hooks or open-source library
 Optional Future APIs:
   - Google Calendar API (for TaskSync)
-  - OpenAI API (for journaling analysis or smart reflections).
+  - OpenAI API (for journaling analysis or smart reflections)
 
