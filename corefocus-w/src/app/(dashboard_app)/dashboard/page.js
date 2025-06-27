@@ -4,17 +4,19 @@ import React, { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "@/app/firebase";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-import HabitTracker from "@/app/components/Dashboard/HabitTracker";
-import GoalBoard from "@/app/components/Dashboard/GoalBoard";
-import ReadRoute from "@/app/components/Dashboard/ReadRoute";
-import FocusCamp from "@/app/components/Dashboard/FocusCamp";
-import TaskSync from "@/app/components/Dashboard/TaskSync";
+import { useThemeStore } from "@/app/store/useThemeStore";
 
 export default function Dashboard() {
     const router = useRouter();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { isDark, toggleTheme } = useThemeStore()
+
+    useEffect(() => {
+        console.log("Current dark mode:", isDark); // SHOULD show on load + toggle
+        document.documentElement.classList.toggle("dark", isDark);
+    }, [isDark]);
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             if (currentUser) {
@@ -33,8 +35,9 @@ export default function Dashboard() {
         return <div className="flex justify-center items-center h-screen">Loading...</div>
     }
 
+
    return (
-        <main className="flex h-full min-h-screen flex-col bg-gray-50">
+<main className="flex h-full min-h-screen flex-col dark:bg-gray-200 bg-gray-100">
         {/* Topbar */}
         <div className="w-full bg-gray-100/80 p-4 flex justify-between items-center">
             <input
@@ -42,12 +45,14 @@ export default function Dashboard() {
             className="bg-white p-3 text-lg font-semibold rounded-xl w-1/2 md:w-1/3 lg:w-1/3 outline-none"
             />
             <div className="flex gap-4 items-center mr-4">
-            <img
-                src="/avatar-default.svg"
-                alt="avatar"
-                className="bg-white rounded-full w-10 h-10"
-            />
-            <i className="fa-solid fa-moon text-2xl"></i>
+                <img
+                    src="/avatar-default.svg"
+                    alt="avatar"
+                    className="bg-white rounded-full w-10 h-10"
+                />
+                <button onClick={toggleTheme}>
+                    <i className="fa-solid fa-moon text-2xl cursor-pointer"></i>
+                </button>
             </div>
         </div>
 
@@ -80,14 +85,4 @@ export default function Dashboard() {
 
         </main>
     );
-}
-
-function DashboardCard({ children, span = 6, height = 400 }) {
-  return (
-    <div
-      className={`col-span-12 md:col-span-${span} bg-white p-8 rounded-2xl shadow min-h-[${height}px]`}
-    >
-      {children}
-    </div>
-  );
 }
