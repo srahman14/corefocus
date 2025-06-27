@@ -34,8 +34,11 @@ export default function Navbar() {
       } py-4 px-8 z-50`}
     >
       <div className="flex justify-between items-center">
-        <div className="text-2xl font-bold">
-          <img src="/asset_2.jpg" className="w-20 rounded-lg"></img>
+        <div className="text-xl font-bold">
+          <span className="flex items-center gap-1">
+            <img src="/logo.svg" className="w-8 rounded-lg"></img>
+            <p className="tracking-tighter font-semibold">CoreFocus</p>
+          </span>
         </div>
 
         <ul className="flex space-x-8">
