@@ -16,7 +16,7 @@ function SidebarItem({ href, icon, label, collapsed, onClick }) {
         <i className={`fa-solid ${icon} text-lg`} />
         {!collapsed && <span className="ml-3 font-bold">{label}</span>}
         {collapsed && (
-          <span className="absolute left-full ml-2 bg-[#222] text-white text-sm px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-50">
+          <span className="absolute left-full ml-0 mr-20 bg-[#222] text-white text-sm px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-50">
             {label}
           </span>
         )}
@@ -36,6 +36,7 @@ export default function Sidebar() {
       transition={{ type: "spring", stiffness: 200, damping: 30 }}
       className="h-full bg-gray-50 text-white z-40 flex flex-col fixed top-0 left-0"
     >
+      
       {/* Menu Items */}
       <div className="flex-1 overflow-y-none mt-4 px-1">
         <SidebarItem
@@ -45,7 +46,7 @@ export default function Sidebar() {
           collapsed={collapsed}
           onClick={toggleSidebar}
         />
-        <SidebarItem href="/" icon="fa-bell" label="Habit Tracker" collapsed={collapsed} />
+        <SidebarItem href="/habittracker" icon="fa-bell" label="Habit Tracker" collapsed={collapsed} />
         <SidebarItem href="/" icon="fa-chart-area" label="Goal Board" collapsed={collapsed} />
         <SidebarItem href="/" icon="fa-list-check" label="Task Sync" collapsed={collapsed} />
         <SidebarItem href="/" icon="fa-pen-to-square" label="Read Route" collapsed={collapsed} />
