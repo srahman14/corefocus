@@ -123,32 +123,13 @@ export default function Dashboard() {
                                     <h3 className="font-semibold text-2xl tracking-tighter m-1 p-1">Notes (optional)</h3>
                                     <input className="outline min-h-20 p-2 m-1 border-gray-200 text-gray-600 focus:border-gray-400/80 focus:m-2 duration-500 ease-in-out transition-all"></input>
                                 </div>
-                                <div>
-                                    <h3 className="font-semibold text-2xl tracking-tighter m-1 p-1">Difficulty</h3>
+                                <div className="m-1 p-1">
+                                    <h3 className="font-semibold text-2xl tracking-tighter">Difficulty</h3>
                                                     
-                                    <ul className="flex flex-row flex-wrap gap-2 mt-2 transition-colors duration-500">
-                                        {difficultyOptions.map((option) => {
-                                            const isSelected = difficulty.includes(option);
-                                            return (
-                                            <li
-                                                key={option}
-                                                onClick={() => handleToggleItem(option, difficulty, setDifficulty)}
-                                                className={`cursor-pointer p-1 px-3 rounded-lg font-semibold transition-colors duration-300 ease-in
-                                                ${darkMode 
-                                                    ? isSelected 
-                                                    ? "bg-blue-600 text-white" 
-                                                    : "bg-gray-600 text-white hover:bg-gray-700"
-                                                    : isSelected 
-                                                    ? "bg-blue-200 text-black" 
-                                                    : "bg-gray-200 text-black hover:bg-gray-300"
-                                                }`}
-                                            >
-                                                {option}
-                                            </li>
-                                            
-
-                                        );
-                                        })}
+                                    <ul className="flex flex-row gap-4 justify-center">
+                                        <li className="bg-green-300 min-w-20 min-h-20 rounded-full flex items-center justify-center">Easy</li>
+                                        <li className="bg-orange-300 min-w-20 min-h-20 rounded-full flex items-center justify-center">Medium</li>
+                                        <li className="bg-red-300 min-w-20 min-h-20 rounded-full flex items-center justify-center">Hard</li>
                                     </ul>
                                 </div>
 
