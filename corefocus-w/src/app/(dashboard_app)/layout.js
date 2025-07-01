@@ -1,6 +1,9 @@
 "use client";
 import Sidebar from "@/app/components/Sidebar";
 import useUIStore from "@/app/store/uiStore";
+import CreateHabitModal from "../components/Modals/CreateHabitModal";
+import CreateGoalModal from "../components/Modals/CreateGoalModal";
+import CreateJournalModal from "../components/Modals/CreateJournalModal";
 
 export default function DashboardLayout({ children }) {
   const collapsed = useUIStore(state => state.sidebarCollapsed);
@@ -14,7 +17,12 @@ export default function DashboardLayout({ children }) {
         style={{ marginLeft: sidebarWidth }}
       >
         {children}
+
       </div>
+      <CreateHabitModal />
+      <CreateGoalModal />
+      <CreateJournalModal />
+
     </div>
   );
 }
