@@ -32,7 +32,6 @@ export default function Sidebar() {
   const sidebarWidth = collapsed ? 64 : 256;
 
   const { openModal } = useModalStore();
-  const [showDropdown, setShowDropdown] = useState(false);
 
   return (
     <motion.div
@@ -53,7 +52,7 @@ export default function Sidebar() {
         {/* Create with Dropdown */}
         <div className="relative">
           <div
-            onClick={() => setShowDropdown((prev) => !prev)}
+            onClick={openModal}
             className="w-full flex text-black items-center px-4 py-3 hover:bg-gray-200 transition rounded cursor-pointer group relative"
           >
             <i className={`fa-solid fa-plus text-lg`} />
@@ -64,42 +63,6 @@ export default function Sidebar() {
               </span>
             )}
           </div>
-
-          {/* Dropdown menu */}
-          {showDropdown && !collapsed && (
-            <div className="absolute top-full left-4 mt-1  shadow-md rounded-md z-50 w-48">
-              <button
-                onClick={() => {
-                  openModal("habit");
-                  setShowDropdown(false);
-                }}
-                className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-black font-semibold tracking-tighter"
-              >
-                ➕ Create Habit
-              </button>
-              <button
-                onClick={() => {
-                  openModal("goal");
-                  setShowDropdown(false);
-                }}
-                className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-black font-semibold tracking-tighter"
-              >
-                <span>
-                  <i className="fa-solid fa-bullseye text-red-500"></i>
-                  <p className="inline-block ml-2">Create Goal</p>
-                </span>
-              </button>
-              <button
-                onClick={() => {
-                  openModal("journal");
-                  setShowDropdown(false);
-                }}
-                className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-black font-semibold tracking-tighter"
-              >
-                📓 Create Journal
-              </button>
-            </div>
-          )}
         </div>
       </div>
 
