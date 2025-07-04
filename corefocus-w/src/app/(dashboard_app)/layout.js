@@ -1,13 +1,13 @@
 "use client";
 import Sidebar from "@/app/components/Sidebar";
 import useUIStore from "@/app/store/uiStore";
-import CreateHabitModal from "../components/Modals/CreateHabitModal";
-import CreateGoalModal from "../components/Modals/CreateGoalModal";
-import CreateJournalModal from "../components/Modals/CreateJournalModal";
+import useModalStore from "../store/modalStore";
+import CreateModal from "../components/Modals/CreateModal";
 
 export default function DashboardLayout({ children }) {
   const collapsed = useUIStore(state => state.sidebarCollapsed);
   const sidebarWidth = collapsed ? 64 : 256;
+  const { isModalOpen, closeModal } = useModalStore();
 
   return (
     <div className="flex h-screen overflow-hidden relative">
@@ -19,9 +19,8 @@ export default function DashboardLayout({ children }) {
         {children}
 
       </div>
-      <CreateHabitModal />
-      <CreateGoalModal />
-      <CreateJournalModal />
+      {isModalOpen && <CreateModal onClose={closeModal} />}
+
 
     </div>
   );
