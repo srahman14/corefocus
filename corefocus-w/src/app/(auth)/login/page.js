@@ -39,7 +39,8 @@ export default function SignUp() {
       );
   
       const user = userCredential.user;
-      router.push("/steps")
+
+      router.push("/dashboard")
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
