@@ -1,16 +1,18 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "@/app/firebase";
+import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useThemeStore } from "@/app/store/useThemeStore";
 
 export default function Dashboard() {
     const router = useRouter();
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
     const { isDark, toggleTheme } = useThemeStore()
+    const { currentUser, userData, loading, logout } = useAuth();
+    const username = (userData.username).toUpperCase();
+
+    // console.log("Current User: ", currentUser.uid)
+    // console.log("Current data: ", userData)
 
     useEffect(() => {
         console.log("Current dark mode:", isDark); // SHOULD show on load + toggle
@@ -18,26 +20,18 @@ export default function Dashboard() {
     }, [isDark]);
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            if (currentUser) {
-                setUser(currentUser)
-            } else {
-                // router.push("/");
-                console.log("User not logged in")
-            } 
-            setLoading(false)
-        });
-
-        return () => unsubscribe();
-    }, [router]);
+        if (!loading && !currentUser) {
+            console.log("User not logged in, redirecting")
+            router.push("/");
+        } 
+    }, [loading, currentUser, router]);
 
     if (loading) {
-        return <div className="flex justify-center items-center h-screen">Loading...</div>
+        return <div className="flex justify-center items-center h-screen">Loading...</div>;
     }
 
-
    return (
-<main className="flex h-full min-h-screen flex-col dark:bg-gray-200 bg-gray-100">
+        <main className="flex h-full min-h-screen flex-col dark:bg-gray-200 bg-gray-100">
         {/* Topbar */}
         <div className="w-full bg-gray-100/80 p-4 flex justify-between items-center">
             <input
@@ -53,12 +47,15 @@ export default function Dashboard() {
                 <button onClick={toggleTheme}>
                     <i className="fa-solid fa-moon text-2xl cursor-pointer"></i>
                 </button>
+                <button onClick={logout}>
+                    <i className="fa-solid fa-right-from-bracket text-2xl cursor-pointer hover:text-gray-800"></i>
+                </button>
             </div>
         </div>
 
         {/* Welcome Heading */}
         <div className="px-8 pt-6">
-            <h1 className="text-4xl font-bold mb-6">Welcome to your Dashboard</h1>
+            <h1 className="text-4xl font-bold mb-6">Welcome to your Dashboard, {userData.username}</h1>
         </div>
 
         <div className="p-6 overflow-y-auto">
