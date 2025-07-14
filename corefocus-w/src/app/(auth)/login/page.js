@@ -2,16 +2,16 @@
 
 import MetaBalls from "@/app/components/MetaBalls";
 import AnimatedContent from "@/app/components/AnimatedContent";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/app/firebase";
+import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-import { useState } from "react";
 export default function SignUp() {
   const [Email, setEmail] = useState("");
   const [EmailError, setEmailError] = useState("");
   const [Password, setPassword] = useState("");
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const { loading, currentUser, signInWithEmail } = useAuth();
   const router = useRouter();
   const validateEmail = (value) => {
     setEmail(value)
@@ -25,29 +25,34 @@ export default function SignUp() {
     }
   }
 
-    const SignInWithEmail = async (e) => {
-      e.preventDefault();
-      if (EmailError) {
-        console.error("Credentials incomplete or invalid.");
-        return;
-    }
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        Email,
-        Password
-      );
-  
-      const user = userCredential.user;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-      router.push("/dashboard")
-    } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-  
-      console.log("errorCode:", errorCode, "errorMessage:", errorMessage);
-    };
-  }
+    if (EmailError || !Email || !Password) {
+      alert("Invalid credentials");
+      return;
+    }
+
+    try {
+      const user = await signInWithEmail(Email, Password);
+      console.log("Signed in:", user.uid);
+      router.push("/dashboard");
+    } catch (err) {
+      console.error("Sign-in failed:", err.message);
+      alert("Sign-in failed: " + err.message);
+    }
+  };
+
+  useEffect(() => {
+    if (!loading && currentUser && userData) {
+      if (userData.completeSteps === false) {
+        router.push("/steps")
+      } else {
+        router.push("/dashboard")
+      }
+    }
+  })
+
   return (
     <>
       {/* HERO SECTION */}
@@ -81,7 +86,7 @@ export default function SignUp() {
                  <h1 className="text-center text-4xl font-bold mb-2">Welcome back!</h1>
                  <p className="mb-4">Enter your email and password to login</p>
 
-                 <form onSubmit={SignInWithEmail} className="flex flex-col justify-center gap-2">
+                 <form onSubmit={handleSubmit} className="flex flex-col justify-center gap-2">
                       <input
                       className="p-2 rounded-xl bg-[#222] border-none w-full focus:bg-[#222]/70"
                       type="text"
