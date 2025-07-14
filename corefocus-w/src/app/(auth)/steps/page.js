@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useAuth } from "@/app/context/AuthContext";
 import { db } from "@/app/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore"
@@ -15,21 +16,10 @@ export default function Steps() {
     const [overallGoal, setOverallGoal] = useState("");
     const [uid, setUid] = useState(null)
     const [usernameError, setUsernameError] = useState("");
+    const { currentUser, loading } = useAuth(); 
 
     const router = useRouter();
 
-    useEffect(() => {
-        const auth = getAuth();
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setUid(user.uid);
-            } else {
-                console.log("User not logged in");
-            }
-        });
-
-        return () => unsubscribe();
-    }, []);
 
     useEffect(() => {
     if (username.length === 0) {
@@ -145,7 +135,8 @@ export default function Steps() {
                 username: username,
                 qualifications, qualifications,
                 achieve: achieve,
-                overallGoal, overallGoal
+                overallGoal, overallGoal,
+                completedSteps: true,
             });
             console.log("User data saved!");
             router.push("/dashboard")
@@ -153,6 +144,10 @@ export default function Steps() {
             console.log("Error saving data", error)
         }
     };
+
+    if (loading) {
+        return <div className="flex items-center justify-center h-screen">Loading...</div>
+    }
 
     return (
     <main className={`min-h-screen flex flex-col items-center justify-center transition-colors duration-500 ${darkMode ? "bg-black text-white" : "bg-white text-black"}`}>        
