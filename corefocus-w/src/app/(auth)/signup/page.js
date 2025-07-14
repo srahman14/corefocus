@@ -3,8 +3,7 @@
 import MetaBalls from "@/app/components/MetaBalls";
 import AnimatedContent from "@/app/components/AnimatedContent";
 import React, { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/app/firebase";
+import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
 
 export default function SignUp() {
@@ -14,6 +13,8 @@ export default function SignUp() {
   const [PasswordError, setPasswordError] = useState("");
   const [ConfirmPassword, setConfirmPassword] = useState("");
   const [ConfirmPasswordError, setConfirmPasswordError] = useState("");
+  const { signUpWithEmail } = useAuth();
+
   const router = useRouter();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const validateEmail = (value) => {
@@ -54,28 +55,23 @@ export default function SignUp() {
     }
   }
 
-  const SignUpWithEmail = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (EmailError || PasswordError || ConfirmPasswordError) {
-      console.error("Credentials incomplete or invalid.");
+
+    if (!Email || !Password || Password !== ConfirmPassword) {
+      alert("❌ Invalid credentials");
       return;
+    }
+
+    try { 
+      await signUpWithEmail(Email, Password);
+      router.push("/steps");
+    } catch (error) {
+      console.error("Signup failed", error.message)
+      alert("Sign up failed: " + error.message)  
+    }
   }
-  try {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      Email,
-      Password
-    );
 
-    const user = userCredential.user;
-    router.push("/steps")
-  } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-
-    console.log("errorCode:", errorCode, "errorMessage:", errorMessage);
-  };
-}
   return (
     <>
       {/* HERO SECTION */}
@@ -92,7 +88,7 @@ export default function SignUp() {
                  <h1 className="text-center text-4xl font-bold mb-2">Create an account</h1>
                  <p className="mb-4">Enter your email below to create your account</p>
 
-                 <form onSubmit={SignUpWithEmail} className="flex flex-col justify-center gap-2">
+                 <form onSubmit={handleSubmit} className="flex flex-col justify-center gap-2">
                     <input
                       className="p-2 rounded-xl bg-[#222] border-0 w-full focus:bg-[#222]/70"
                       type="text"
