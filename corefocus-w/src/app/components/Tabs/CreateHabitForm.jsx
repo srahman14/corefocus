@@ -22,11 +22,9 @@ export default function CreateHabitForm() {
       console.log("auth.currentUser UID:", auth.currentUser?.uid);
       const unsubscribe = onAuthStateChanged(auth, (user) => {
           if (user) {
-              console.log("✅ User detected in onAuthStateChanged", user.uid);
               setUid(user.uid);
           } else {
-              console.log("❌ No user detected in onAuthStateChanged");
-              console.log("User not logged in");
+              console.log("No user detected in onAuthStateChanged");
           }
       });
 
@@ -98,7 +96,8 @@ export default function CreateHabitForm() {
             return;
         }
 
-        console.log("📨 Attempting to save habit...");
+        // Debug
+        // console.log("📨 Attempting to save habit...");
 
 
         try {
@@ -111,7 +110,8 @@ export default function CreateHabitForm() {
                 createdAt: new Date()
             });
 
-            console.log("✅ Habit successfully saved to Firestore.");
+            // Debug
+            // console.log("✅ Habit successfully saved to Firestore.");
             alert("Habit saved successfully!");
         } catch (error) {
             console.log("Error saving data", error)
