@@ -2,7 +2,7 @@
 
 import MetaBalls from "@/app/components/MetaBalls";
 import AnimatedContent from "@/app/components/AnimatedContent";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
 
@@ -13,10 +13,22 @@ export default function SignUp() {
   const [PasswordError, setPasswordError] = useState("");
   const [ConfirmPassword, setConfirmPassword] = useState("");
   const [ConfirmPasswordError, setConfirmPasswordError] = useState("");
-  const { signUpWithEmail } = useAuth();
-
+  const { signUpWithEmail, authError, loading, currentUser, userData } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState(null);
   const router = useRouter();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+  useEffect(() => {
+    if (!loading && currentUser && userData) {
+      if (userData.completedSteps === false) {
+        router.push("/steps")
+      } else {
+        router.push("/dashboard")
+      }
+    }
+  }, [loading, currentUser, userData, router]);
+
   const validateEmail = (value) => {
     setEmail(value)
 
@@ -59,19 +71,21 @@ export default function SignUp() {
     e.preventDefault();
 
     if (!Email || !Password || Password !== ConfirmPassword) {
-      alert("❌ Invalid credentials");
+      setFormError("❌ Invalid credentials");
       return;
     }
 
+    setIsSubmitting(true);
     try { 
       await signUpWithEmail(Email, Password);
       router.push("/steps");
     } catch (error) {
       console.error("Signup failed", error.message)
-      alert("Sign up failed: " + error.message)  
+      setFormError("Sign up failed:" + error.message)  
+    } finally {
+      setIsSubmitting(false);
     }
   }
-
   return (
     <>
       {/* HERO SECTION */}
@@ -117,10 +131,16 @@ export default function SignUp() {
                     
                     <button
                       type="submit"
+                      disabled={loading}
                       className="bg-white p-2 rounded-xl text-sm text-black font-semibold hover:bg-gray-100/90 cursor-pointer"
                       >                      
-                      <p>Sign up with email</p>
+                      {isSubmitting ? "Signing up..." : "Sign up"}
                     </button>
+                    {(authError || formError) && (
+                      <p style={{ color: 'red', marginTop: '10px', transition: "ease-in-out", animationDuration: "500ms" }}>
+                        {authError || formError}
+                      </p>
+                    )}
                  </form>
 
                  <div className="relative flex py-5 items-center">
