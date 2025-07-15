@@ -9,7 +9,7 @@ export default function Dashboard() {
     const router = useRouter();
     const { isDark, toggleTheme } = useThemeStore()
     const { currentUser, userData, loading, logout } = useAuth();
-    const username = (userData.username).toUpperCase();
+    
 
     // console.log("Current User: ", currentUser.uid)
     // console.log("Current data: ", userData)
@@ -55,7 +55,7 @@ export default function Dashboard() {
 
         {/* Welcome Heading */}
         <div className="px-8 pt-6">
-            <h1 className="text-4xl font-bold mb-6">Welcome to your Dashboard, {userData.username}</h1>
+            <h1 className="text-4xl font-bold mb-6">Welcome to your Dashboard</h1>
         </div>
 
         <div className="p-6 overflow-y-auto">
