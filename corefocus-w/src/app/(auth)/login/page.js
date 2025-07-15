@@ -3,7 +3,7 @@
 import MetaBalls from "@/app/components/MetaBalls";
 import AnimatedContent from "@/app/components/AnimatedContent";
 import { useAuth } from "@/app/context/AuthContext";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function SignUp() {
@@ -11,8 +11,11 @@ export default function SignUp() {
   const [EmailError, setEmailError] = useState("");
   const [Password, setPassword] = useState("");
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const { loading, currentUser, signInWithEmail } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState(null);
+  const { loading, currentUser, signInWithEmail, userData, authError} = useAuth();
   const router = useRouter();
+
   const validateEmail = (value) => {
     setEmail(value)
 
@@ -29,29 +32,40 @@ export default function SignUp() {
     e.preventDefault();
 
     if (EmailError || !Email || !Password) {
-      alert("Invalid credentials");
+      setFormError("Please enure all fields are filled correctly")
       return;
     }
 
+    setIsSubmitting(true);
     try {
       const user = await signInWithEmail(Email, Password);
       console.log("Signed in:", user.uid);
-      router.push("/dashboard");
     } catch (err) {
       console.error("Sign-in failed:", err.message);
-      alert("Sign-in failed: " + err.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   useEffect(() => {
     if (!loading && currentUser && userData) {
-      if (userData.completeSteps === false) {
+      if (userData.completedSteps === false) {
         router.push("/steps")
       } else {
         router.push("/dashboard")
       }
     }
-  })
+  }, [loading, currentUser, userData, router])
+
+  if (currentUser && userData) {
+    return null; 
+  }
+
+  if (loading) {
+    return (
+      <p className="flex items-center justify-center text-xl h-screen">Loading...</p>
+    );
+  }
 
   return (
     <>
@@ -102,9 +116,15 @@ export default function SignUp() {
                       placeholder="Password"
                       onChange={(e) => setPassword(e.target.value)}
                       />
-                    <button className="bg-white p-2 rounded-xl text-sm text-black font-semibold hover:bg-gray-100/90 cursor-pointer">
-                      <p>Sign in</p>
+                    <button type="submit" disabled={loading} className="bg-white p-2 rounded-xl text-sm text-black font-semibold hover:bg-gray-100/90 cursor-pointer">
+                        {isSubmitting ? "Logging in..." : "Login"}
                     </button>
+
+                    {(authError || formError) && (
+                      <p style={{ color: 'red', marginTop: '10px', transition: "ease-in-out", animationDuration: "500ms" }}>
+                        {authError || formError}
+                      </p>
+                    )}
                  </form>
 
                  <div className="relative flex py-5 items-center">
