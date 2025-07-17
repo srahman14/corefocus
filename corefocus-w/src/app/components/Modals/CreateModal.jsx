@@ -42,7 +42,10 @@ return (
               activeTab === "habit" ? "bg-blue-600 text-white" : "bg-gray-100"
             }`}
           >
-            Habit
+            <span>
+              <i className="fa-sharp fa-solid fa-bell"></i>
+              <p className="inline-block ml-2">Habit</p>
+            </span>
           </button>
           <button
             onClick={() => setActiveTab("goal")}
@@ -50,7 +53,10 @@ return (
               activeTab === "goal" ? "bg-blue-600 text-white" : "bg-gray-100"
             }`}
           >
-            Goal
+            <span>
+              <i className="fa-solid fa-chart-area"></i>
+              <p className="inline-block ml-2">Goals</p>
+            </span>
           </button>
           <button
             onClick={() => setActiveTab("journal")}
