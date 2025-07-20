@@ -63,6 +63,17 @@ export default function Sidebar() {
               </span>
             )}
           </div>
+          <div
+            className="w-full flex text-black items-center px-4 py-3 hover:bg-gray-200 transition rounded cursor-pointer group relative"
+          >
+            <i className={`fa-solid fa-pen-to-square text-lg`} />
+            {!collapsed && <span className="ml-3 font-bold">Journal</span>}
+            {collapsed && (
+              <span className="absolute left-full ml-0 mr-20 bg-[#222] text-white text-sm px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-50">
+                Journal
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
