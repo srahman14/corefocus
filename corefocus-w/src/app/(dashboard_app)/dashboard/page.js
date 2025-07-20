@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useThemeStore } from "@/app/store/useThemeStore";
+import FocusCamp from "@/app/components/Dashboard/FocusCamp";
 
 export default function Dashboard() {
     const router = useRouter();
@@ -34,11 +35,13 @@ export default function Dashboard() {
         <main className="flex h-full min-h-screen flex-col dark:bg-gray-200 bg-gray-100">
         {/* Topbar */}
         <div className="w-full bg-gray-100/80 p-4 flex justify-between items-center">
-            <input
-            placeholder="Search"
-            className="bg-white p-3 text-lg font-semibold rounded-xl w-1/2 md:w-1/3 lg:w-1/3 outline-none"
-            />
-            <div className="flex gap-4 items-center mr-4">
+            <div className="flex md:flex-1 justify-center items-center">
+                <input
+                placeholder="Search"
+                className="bg-white p-3 text-lg font-semibold rounded-xl w-2/3 md:w-1/3 lg:w-1/3 outline-none"
+                />
+            </div>
+            <div className="flex gap-4 items-center mr-20">
                 <img
                     src="/avatar-default.svg"
                     alt="avatar"
@@ -62,7 +65,9 @@ export default function Dashboard() {
             <div className="flex md:flex-row gap-3 p-1">
                 <div className="flex flex-col md:flex-row gap-2 flex-1">
                     <div className="bg-white p-6 rounded-xl shadow min-h-[300px] w-full lg:col-span-4">Habit Tracker</div>
-                    <div className="bg-white p-6 rounded-xl shadow min-h-[300px] w-full lg:col-span-4"><p>Focus Camp</p></div>
+                    <div className="bg-white p-6 rounded-xl shadow min-h-[300px] w-full lg:col-span-4">
+                        <FocusCamp />
+                    </div>
                 </div>
             </div>
 
