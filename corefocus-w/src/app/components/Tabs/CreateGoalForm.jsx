@@ -5,19 +5,13 @@ import { addDoc, collection } from "firebase/firestore"
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 
-
-const HabitFrequency = ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"];
-const difficulties = ["Easy", "Medium", "Hard"]
-const categories = ["Positive", "Negative"]
 const defaultTags = ["Educational", "Personal", "Physical", "Mental", "Spiritual", "Family-Related", "Developement", "Reading", "Career-Related", "Financial", "Competitive"]
 
 export default function CreateHabitForm() {
   const [darkMode, setDarkMode] = useState(false);
-  const [habitName, setHabitName] = useState("")
-  const [habitFreq, setHabitFreq] = useState([]);
-  const [difficulty, setDifficulty] = useState(null);
-  const [category, setCategory] = useState(null);
-  const [uid, setUid] = useState(null)
+  const [goalName, setGoalName] = useState("");
+  const [goalMotivation, setGoalMotivation] = useState("");
+  const [uid, setUid] = useState(null);
   const [tags, setTags] = useState([]);
   const [startDate, setStartDate] = useState(null);
 
@@ -66,32 +60,20 @@ export default function CreateHabitForm() {
             return;
         } 
         // Final Validation
-        const isHabitNameValid = 
-            habitName &&
-            habitName.length >= 5;
+        const isGoalnameValid = 
+            goalName &&
+            goalName.length >= 5;
 
-        if (!isHabitNameValid) {
-            alert("Please enter a valid habit name(min 5 characters).");
-            console.log("Habit name not set")
+        if (!isGoalnameValid) {
+            alert("Please enter a valid goal name (min 5 characters).");
+            console.log("Goal name not set")
             return;
         }
-
-        if (HabitFrequency.length === 0) {
-            alert("Please select at least one day")
-            console.log("Day chose not selected")
-            return;
-        }
-
-        if (difficulties.length === 0) {
-            alert("Please select at least one difficulty")
-            console.log("Difficulty not selected")
-            return;
-        }
-
-        if (category.length === 0) {
-            alert("Please select at least one category")
-            console.log("Category chose not selected")
-            return;
+        
+        if (startDate === null) {
+          alert("Please select a date (deadline for your goal)");
+          console.log("Date not set")
+          return;
         }
 
         if (tags.length === 0) {
@@ -106,17 +88,16 @@ export default function CreateHabitForm() {
 
         try {
             await addDoc(collection(db, "users", uid, "goals"), {
-                habitName: habitName,
-                habitFreq: habitFreq,
-                difficulty: difficulty,
-                category: category,
+                goalName: goalName,
+                goalMotivation: goalMotivation,
+                startDate: startDate,
                 tags: tags,
                 createdAt: new Date()
             });
 
-            // Debug
+            // Debugs
             // console.log("✅ Habit successfully saved to Firestore.");
-            alert("Habit saved successfully!");
+            alert("Goal saved successfully!");
         } catch (error) {
             console.log("Error saving data", error)
         }
@@ -145,7 +126,7 @@ export default function CreateHabitForm() {
               
 
                 <div className="flex items-center justify-center bg-blue-300 rounded-lg h-full">
-                  <input required value={habitName} onChange={(e) => setHabitName(e.target.value)} placeholder="e.g. Read 6 books this year" className="outline-none text-xl font-semibold"></input>
+                  <input required value={goalName} onChange={(e) => setGoalName(e.target.value)} placeholder="e.g. Read 6 books this year" className="outline-none text-xl font-semibold"></input>
                 </div>
 
                </div>
@@ -153,7 +134,7 @@ export default function CreateHabitForm() {
           </div>
 
           <div>
-            <label className="block text-lg font-semibold tracking-tighter mb-2">Goal Deadline, <span className="font-light italic">I want to achieve _goal_name_ by ...?</span></label>
+            <label className="block text-lg font-semibold tracking-tighter mb-2">Goal Deadline, <span className="font-light italic">I want to achieve {goalName.toLowerCase()} by?</span></label>
 
             <div className="flex flex-wrap rounded-lg overflow-hidden">
               {/* Icon on the left */}
@@ -161,7 +142,7 @@ export default function CreateHabitForm() {
                 <i className="fa-solid fa-calendar-week text-2xl"></i>
               </div>
 
-              <div className="w-2/4 p-8 flex items-center justify-center bg-blue-300 rounded-r-lg h-full font-semibold">
+              <div className="w-8/9 p-8 flex items-center justify-center bg-blue-300 rounded-r-lg h-full font-semibold">
                     <DayPicker
                     classNames={{
                       today: `bg-blue-200 rounded-full`, // Add a border to today's date
@@ -179,79 +160,28 @@ export default function CreateHabitForm() {
               </div>
             </div>
           </div>
-        
+
           <div className="flex flex-row justify-start gap-8">
-            <div>
-                <label className="block text-lg font-semibold tracking-tighter mb-2">Habit Difficulty</label>
+            <div className="w-full">
+              <label className="text-lg mb-2 font-semibold tracking-tighter block">Goal motivation, <span className="font-light italic">why is this important to you?</span></label>
 
-                <div className="flex bg-blue-300 rounded-lg overflow-hidden h-16">
-                {/* Icon on the left */}
-                <div className="flex items-center justify-center px-6 bg-blue-500 text-white">
-                  <i className="fa-solid fa-cubes-stacked text-2xl"></i>
+              <div className="flex bg-blue-300 rounded-lg overflow-hidden h-16">
+                  {/* Icon on the left */}
+                  <div className="flex items-center justify-center px-6 bg-blue-500 text-white mr-2">
+                    <i className="fa-solid fa-t text-2xl"></i>
+                  </div>
+
+                <div className="flex items-center justify-center bg-blue-300 rounded-lg h-full">
+                  <input required value={goalMotivation} onChange={(e) => setGoalMotivation(e.target.value)} placeholder="e.g I want to gain more knowledge" className="outline-none text-xl font-semibold"></input>
                 </div>
 
-                {/* Days on the right */}
-                <ul className="flex items-center gap-0 justify-start h-full">
-                  {difficulties.map((level) => {
-                    const isSelected = difficulty === level;
-
-                    const bgClass = {
-                      Easy: isSelected ? "bg-green-400": "bg-green-200 hover:bg-green-300",
-                      Medium: isSelected ? "bg-orange-400" : "bg-orange-200 hover:bg-orange-300",
-                      Hard: isSelected ? "bg-red-400" : "bg-red-200 hover:bg-red-300"
-                    }[level];
-
-                    return (
-                      <li
-                        key={level}
-                        onClick={() => setDifficulty(level)}
-                        className={`h-full flex items-center px-4 cursor-pointer font-semibold tracking-tighter text-md ${bgClass}`}
-                      >
-                        {level}
-                      </li>
-
-                    )
-                  })}
-                </ul>
-              </div>
-            </div>
-
-            <div>
-                <label className="block text-lg font-semibold tracking-tighter mb-2">Habit Category</label>
-
-                <div className="flex bg-blue-300 rounded-lg overflow-hidden h-16">
-                {/* Icon on the left */}
-                {/* ICON CHANGES BASED ON INPUT */}
-                <div className="flex items-center justify-center px-6 bg-blue-500 text-white">
-                  <i className="fa-solid fa-face-grin text-2xl"></i>
-                </div>
-
-                {/* Days on the right */}
-                <ul className="flex items-center gap-0 justify-start h-full">
-                  {categories.map((type) => {
-                    const isSelected = category === type;
-                    
-                    const bgClass = type === "Positive"
-                      ? isSelected ? "bg-green-400" : "bg-green-200 hover:bg-green-300"
-                      : isSelected ? "bg-red-400" : "bg-red-200 hover:bg-red-300";
-
-                      return (
-                        <li
-                          key={type}
-                          onClick={() => setCategory(type)}
-                          className={`h-full flex items-center px-4 cursor-pointer font-semibold tracking-tighter text-md ${bgClass}`}
-                        >
-                          {type}
-                        </li>
-                      );
-                  })}
-                </ul>
-              </div>
+               </div>
             </div>
           </div>
 
+
           <div>
-            <label className="block text-lg font-semibold tracking-tighter mb-4">Habit Tags</label>
+            <label className="block text-lg font-semibold tracking-tighter mb-4">Tags</label>
               <div className="flex rounded-lg h-16">
 
               <ul className="flex flex-wrap items-center gap-2 justify-start p-1">
@@ -289,7 +219,7 @@ export default function CreateHabitForm() {
                       }
                   `}
                 >
-                {tags.length === defaultTags.length ? "All" : "All"}
+                All
                 </li>
               </ul>
             </div>
