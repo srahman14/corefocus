@@ -7,20 +7,22 @@ import useModalStore from "../store/modalStore";
 import useUIStore from "../store/uiStore";
 
 // Reusable Sidebar Item
-function SidebarItem({ href, icon, label, collapsed, onClick }) {
+function SidebarItem({ href, icon, label, collapsed, onClick, onMouseEnter, onMouseLeave }) {
   return (
     <Link href={href}>
       <div
         onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         className="w-full flex text-black items-center px-4 py-3 hover:bg-gray-200 transition rounded cursor-pointer group relative"
       >
         <i className={`fa-solid ${icon} text-lg`} />
         {!collapsed && <span className="ml-3 font-bold">{label}</span>}
-        {collapsed && (
+        {/* {collapsed && (
           <span className="absolute left-full ml-0 mr-20 bg-[#222] text-white text-sm px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-50">
             {label}
           </span>
-        )}
+        )} */}
       </div>
     </Link>
   );
@@ -29,6 +31,7 @@ function SidebarItem({ href, icon, label, collapsed, onClick }) {
 export default function Sidebar() {
   const collapsed = useUIStore((state) => state.sidebarCollapsed);
   const toggleSidebar = useUIStore((state) => state.toggleSidebar);
+  let hoverTimeout = null;
   const sidebarWidth = collapsed ? 64 : 256;
 
   const { openModal } = useModalStore();
@@ -37,16 +40,18 @@ export default function Sidebar() {
     <motion.div
       animate={{ width: sidebarWidth }}
       transition={{ type: "spring", stiffness: 200, damping: 30 }}
+      onMouseEnter={() => toggleSidebar(false)}
+      onMouseLeave={() => toggleSidebar(true)}
       className="h-full bg-gray-50 text-white z-40 flex flex-col fixed top-0 left-0"
     >
       {/* Menu Items */}
       <div className="flex-1 overflow-y-none mt-4 px-1">
         <SidebarItem
-          href="#"
+          href="/dashboard"
           icon="fa-lines-leaning"
           label="Dashboard"
           collapsed={collapsed}
-          onClick={toggleSidebar}
+
         />
 
         {/* Create with Dropdown */}
@@ -57,22 +62,22 @@ export default function Sidebar() {
           >
             <i className={`fa-solid fa-plus text-lg`} />
             {!collapsed && <span className="ml-3 font-bold">Create</span>}
-            {collapsed && (
+            {/* {collapsed && (
               <span className="absolute left-full ml-0 mr-20 bg-[#222] text-white text-sm px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-50">
                 Create
               </span>
-            )}
+            )} */}
           </div>
           <div
             className="w-full flex text-black items-center px-4 py-3 hover:bg-gray-200 transition rounded cursor-pointer group relative"
           >
             <i className={`fa-solid fa-pen-to-square text-lg`} />
-            {!collapsed && <span className="ml-3 font-bold">Journal</span>}
-            {collapsed && (
+            {!collapsed && <Link href={"/journal"} className="ml-3 font-bold">Journal</Link>}
+            {/* {collapsed && (
               <span className="absolute left-full ml-0 mr-20 bg-[#222] text-white text-sm px-2 py-1 rounded-sm opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-50">
                 Journal
               </span>
-            )}
+            )} */}
           </div>
         </div>
       </div>
