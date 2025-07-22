@@ -48,7 +48,7 @@ export default function Sidebar() {
       <div className="flex-1 overflow-y-none mt-4 px-1">
         <SidebarItem
           href="/dashboard"
-          icon="fa-lines-leaning"
+          icon="fa-table-columns"
           label="Dashboard"
           collapsed={collapsed}
 
