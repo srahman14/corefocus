@@ -20,8 +20,6 @@ export default function DashboardLayout({ children }) {
 
       </div>
       {isModalOpen && <CreateModal onClose={closeModal} />}
-
-
     </div>
   );
 }
