@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@/app/context/AuthContext";
 import { db } from "@/app/firebase";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore"
 import Stepper, { Step } from "@/app/components/Stepper";
 import { useRouter } from "next/navigation";
