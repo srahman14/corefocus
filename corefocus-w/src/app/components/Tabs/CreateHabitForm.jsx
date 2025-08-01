@@ -99,7 +99,6 @@ export default function CreateHabitForm() {
         // Debug
         // console.log("📨 Attempting to save habit...");
 
-
         try {
             await addDoc(collection(db, "users", uid, "habits"), {
                 habitName: habitName,
