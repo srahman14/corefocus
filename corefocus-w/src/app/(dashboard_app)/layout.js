@@ -1,5 +1,5 @@
 "use client";
-import Sidebar from "@/app/components/Sidebar";
+import Sidebar from "../components/SidebarComponents/Sidebar";
 import useUIStore from "@/app/store/uiStore";
 import useModalStore from "../store/modalStore";
 import CreateModal from "../components/Modals/CreateModal";
