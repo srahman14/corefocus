@@ -1,9 +1,8 @@
-// components/Dashboard/FocusCamp.jsx
 export default function FocusCamp() {
   return (
-    <div className="container bg-blue-100 min-h-[26rem] min-w-[26rem] p-2 rounded shadow">
-      <h2 className="text-lg font-semibold mb-2">Focus Camp</h2>
-      <p>Progress bar or stats go hereeeeeeeeee</p>
+    <div className="bg-gray-900/90 p-6 rounded-xl shadow text-white min-h-[200px]">
+      <h2 className="text-xl font-semibold mb-2">🎯 Focus Camp</h2>
+      <p className="text-sm text-gray-300">Pomodoro timer.</p>
     </div>
   );
 }
