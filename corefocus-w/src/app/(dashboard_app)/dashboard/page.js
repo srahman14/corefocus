@@ -5,6 +5,11 @@ import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useThemeStore } from "@/app/store/useThemeStore";
 import FocusCamp from "@/app/components/Dashboard/FocusCamp";
+import HabitTracker from "@/app/components/Dashboard/HabitTracker";
+import GoalBoard from "@/app/components/Dashboard/GoalBoard";
+import TaskSync from "@/app/components/Dashboard/TaskSync";
+import ReadRoute from "@/app/components/Dashboard/ReadRoute";
+import HeatmapComponent from "@/app/components/Dashboard/HeatmapComponent";
 
 export default function Dashboard() {
     const router = useRouter();
@@ -32,16 +37,16 @@ export default function Dashboard() {
     }
 
    return (
-        <main className="flex h-full min-h-screen flex-col dark:bg-gray-200 bg-gray-100">
+        <main className="flex h-full min-h-screen flex-col dark:bg-gray-800 bg-gray-800">
         {/* Topbar */}
-        <div className="w-full bg-gray-100/80 p-4 flex justify-between items-center">
+        <div className="w-full bg-gray-900/80 p-4 flex justify-between items-center">
             <div className="flex md:flex-1 justify-center items-center">
                 <input
                 placeholder="Search"
-                className="bg-white p-3 text-lg font-semibold rounded-xl w-2/3 md:w-1/3 lg:w-1/3 outline-none"
+                className="bg-gray-700 text-violet-400 p-3 text-lg font-semibold rounded-xl w-2/3 md:w-1/3 lg:w-1/3 outline-none"
                 />
             </div>
-            <div className="flex gap-4 items-center mr-20">
+            <div className="flex gap-4 text-violet-400 items-center mr-20">
                 <img
                     src="/avatar-default.svg"
                     alt="avatar"
@@ -58,33 +63,37 @@ export default function Dashboard() {
 
         {/* Welcome Heading */}
         <div className="px-8 pt-6">
-            <h1 className="text-4xl font-bold mb-6">Welcome to your Dashboard</h1>
+            <h1 className="text-4xl text-white font-bold mb-6">Welcome to your Dashboard</h1>
         </div>
 
-        <div className="p-6 overflow-y-auto">
-            <div className="flex md:flex-row gap-3 p-1">
-                <div className="flex flex-col md:flex-row gap-2 flex-1">
-                    <div className="bg-white p-6 rounded-xl shadow min-h-[300px] w-full lg:col-span-4">Habit Tracker</div>
-                    <div className="bg-white p-6 rounded-xl shadow min-h-[300px] w-full lg:col-span-4">
-                        <FocusCamp />
-                    </div>
+        <div className="p-4 md:p-6 lg:p-8 space-y-6 overflow-y-auto">
+            <div className="flex flex-col lg:flex-row gap-6">
+                <div className="w-full lg:w-1/2">
+                    <HabitTracker />
+                </div>
+                <div className="w-full lg:w-1/2">
+                    <FocusCamp />
                 </div>
             </div>
 
-            <div className="flex md:flex-row p-1">
-                <div className="flex flex-1">
-                    <div className="bg-white p-6 rounded-xl shadow min-h-[300px] w-full lg:col-span-4">Goal Board</div>
-                </div>
+            <div>
+                <GoalBoard />
             </div>
-            
-            <div className="flex md:flex-row gap-3 p-1">
-                <div className="flex flex-col md:flex-row  gap-2 flex-1">
-                    <div className="bg-white p-6 rounded-xl shadow h-[250px] w-full lg:col-span-4">Task Sync</div>
-                    <div className="bg-white p-6 rounded-xl shadow min-h-[400px] w-full lg:col-span-4"><p>Read Route</p></div>
+
+            <div>
+                <HeatmapComponent />
+            </div>
+
+            <div className="flex flex-col lg:flex-row gap-6">
+                <div className="w-full lg:w-1/2">
+                    <TaskSync />
+                </div>
+                <div className="w-full lg:w-1/2">
+                    <ReadRoute />
                 </div>
             </div>
         </div>
 
-        </main>
+    </main>
     );
 }
