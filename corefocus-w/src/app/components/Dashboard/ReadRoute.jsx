@@ -1,9 +1,8 @@
-// components/Dashboard/ReadRoute.jsx
 export default function ReadRoute() {
   return (
-    <div className="bg-white p-4 rounded shadow">
-      <h2 className="text-lg font-semibold mb-2">Goal Progress</h2>
-      <p>Progress bar or stats go hereeeeeeeeee</p>
+    <div className="bg-gray-900/90 p-6 rounded-xl shadow text-white min-h-[200px]">
+      <h2 className="text-xl font-semibold mb-2">📚 Read Route</h2>
+      <p className="text-sm text-gray-300">Track your reading journey here.</p>
     </div>
   );
 }
