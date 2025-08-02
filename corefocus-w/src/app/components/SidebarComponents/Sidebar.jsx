@@ -19,8 +19,9 @@ export default function Sidebar() {
     <motion.div
       animate={{ width: sidebarWidth }}
       transition={{ type: "spring", stiffness: 200, damping: 30 }}
-      onMouseEnter={() => toggleSidebar(false)}
-      onMouseLeave={() => toggleSidebar(true)}
+      // Optional
+      // onMouseEnter={() => toggleSidebar(false)}
+      // onMouseLeave={() => toggleSidebar(true)}
       className="h-full dark:bg-gray-900 text-white z-40 flex flex-col fixed top-0 left-0"
     >
       {/* Menu Items */}
@@ -43,6 +44,13 @@ export default function Sidebar() {
           href="/journal"
           icon="fa-pen-to-square"
           label="Journal"
+          collapsed={collapsed}
+        />
+
+          <SidebarItem
+          href="/"
+          icon="fa-chart-simple"
+          label="Analytics"
           collapsed={collapsed}
         />
       </div>
