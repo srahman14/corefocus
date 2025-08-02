@@ -37,7 +37,7 @@ export default function Dashboard() {
     }
 
    return (
-        <main className="flex h-full min-h-screen flex-col dark:bg-gray-800 bg-gray-800">
+        <main className="flex h-full min-h-screen flex-col dark:bg-gray-800 bg-gray-800  overflow-y-auto">
         {/* Topbar */}
         <div className="w-full bg-gray-900/80 p-4 flex justify-between items-center">
             <div className="flex md:flex-1 justify-center items-center">
@@ -66,7 +66,7 @@ export default function Dashboard() {
             <h1 className="text-4xl text-white font-bold mb-6">Welcome to your Dashboard</h1>
         </div>
 
-        <div className="p-4 md:p-6 lg:p-8 space-y-6 overflow-y-auto">
+        <div className="p-4 md:p-6 lg:p-8 space-y-6">
             <div className="flex flex-col lg:flex-row gap-6">
                 <div className="w-full lg:w-1/2">
                     <HabitTracker />
