@@ -1,28 +1,35 @@
-import { useEffect, useRef, useState } from 'react';
-import { collection, getDocs, updateDoc, getDoc, setDoc, doc } from 'firebase/firestore';
-import debounce from 'lodash.debounce';
-import { format } from "date-fns"
-import { db } from '@/app/firebase';
-import { useAuth } from '@/app/context/AuthContext';
+import { useEffect, useRef, useState, useCallback } from "react";
+import {
+  collection,
+  getDocs,
+  updateDoc,
+  getDoc,
+  setDoc,
+  doc,
+} from "firebase/firestore";
+import debounce from "lodash.debounce";
+import { format } from "date-fns";
+import { db } from "@/app/firebase";
+import { useAuth } from "@/app/context/AuthContext";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import { CheckIcon } from '@radix-ui/react-icons';
+import { CheckIcon } from "@radix-ui/react-icons";
 
 export default function TodaysHabits() {
-  const { currentUser, loading } = useAuth(); 
+  const { currentUser, loading } = useAuth();
   const [todaysHabits, setTodaysHabits] = useState([]);
   const [completedHabits, setCompletedHabits] = useState([]);
 
   const fullToShortDayMap = {
-    Sunday: 'Sun',
-    Monday: 'Mon',
-    Tuesday: 'Tues',
-    Wednesday: 'Wed',
-    Thursday: 'Thurs',
-    Friday: 'Fri',
-    Saturday: 'Sat',
+    Sunday: "Sun",
+    Monday: "Mon",
+    Tuesday: "Tues",
+    Wednesday: "Wed",
+    Thursday: "Thurs",
+    Friday: "Fri",
+    Saturday: "Sat",
   };
 
-  const todayFull = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+  const todayFull = new Date().toLocaleDateString("en-US", { weekday: "long" });
   const today = fullToShortDayMap[todayFull];
 
   useEffect(() => {
@@ -30,74 +37,122 @@ export default function TodaysHabits() {
       if (!currentUser) return;
 
       try {
-        const snapshot = await getDocs(collection(db, 'users', currentUser.uid, 'habits'));
-        const habits = [];
+        const snapshot = await getDocs(
+          collection(db, "users", currentUser.uid, "habits")
+        );
 
-        snapshot.forEach(doc => {
+        const habits = [];
+        const weekday = new Date().toLocaleDateString("en-US", {
+          weekday: "long",
+        });
+        const shortDay = fullToShortDayMap[weekday];
+
+        snapshot.forEach((doc) => {
           const data = doc.data();
-          if (data.habitFreq?.includes(today)) {
+          if (data.habitFreq?.includes(shortDay)) {
             habits.push({ id: doc.id, ...data });
           }
         });
 
         setTodaysHabits(habits);
+
+        // ✅ Match the date format used in `setDoc`
+        const todayFormatted = format(new Date(), "yyyy-MM-dd");
+        const logRef = doc(db, "habitLogs", currentUser.uid);
+        const logSnap = await getDoc(logRef);
+        if (logSnap.exists()) {
+          const todayLog = logSnap.data()[todayFormatted];
+          if (todayLog?.completedHabits) {
+            setCompletedHabits(todayLog.completedHabits);
+          }
+        }
       } catch (err) {
-        console.error('Error fetching habits:', err);
+        console.error("Error fetching habits or logs:", err);
       }
     };
 
     fetchHabits();
-  }, [currentUser, today]);
+  }, [currentUser]);
 
-  function toggleHabit(habitName) {
+  function toggleHabit(habitId) {
     setCompletedHabits((prev) => {
-      const updated = prev.includes(habitName)
-        ? prev.filter((h) => h !== habitName)
-        : [...prev, habitName];
+      const updated = prev.includes(habitId)
+        ? prev.filter((h) => h !== habitId)
+        : [...prev, habitId];
 
-      // Fire the debounced update
       debouncedUpdateHabits(updated);
       return updated;
     });
   }
 
-  const debouncedUpdateHabits = useRef(
+  const debouncedUpdateHabits = useCallback(
     debounce(async (updatedList) => {
       if (!currentUser) return;
       const docRef = doc(db, "habitLogs", currentUser.uid);
+      const todayFormatted = format(new Date(), "yyyy-MM-dd");
+
+      console.log("Debounced save for:", todayFormatted, updatedList);
 
       try {
-        const snapshot = await getDoc(docRef);
-        const prevData = snapshot.exists() ? snapshot.data() : {};
-
         await setDoc(
           docRef,
           {
-            [today]: {
+            [todayFormatted]: {
               completedHabits: updatedList,
               count: updatedList.length,
             },
           },
           { merge: true }
         );
+        console.log("Habit log saved ✅");
       } catch (error) {
         console.error("Error updating habit log:", error);
       }
-    }, 300)
-  ).current;
+    }, 500), // 500ms delay
+    [currentUser]
+  );
 
-  const progress = todaysHabits.length 
-    ? Math.round((completedHabits.length / todaysHabits.length) * 100) 
+  // const debouncedUpdateHabits = useRef(
+  //   debounce(async (updatedList) => {
+  //     if (!currentUser) return;
+  //     const docRef = doc(db, "habitLogs", currentUser.uid);
+
+  //     try {
+  //       const snapshot = await getDoc(docRef);
+  //       const prevData = snapshot.exists() ? snapshot.data() : {};
+
+  //       await setDoc(
+  //         docRef,
+  //         {
+  //           [today]: {
+  //             completedHabits: updatedList,
+  //             count: updatedList.length,
+  //           },
+  //         },
+  //         { merge: true }
+  //       );
+  //     } catch (error) {
+  //       console.error("Error updating habit log:", error);
+  //     }
+  //   }, 300)
+  // ).current;
+
+  const progress = todaysHabits.length
+    ? Math.round((completedHabits.length / todaysHabits.length) * 100)
     : 0;
 
-    if (loading) {
-      return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Loading...
+      </div>
+    );
   }
 
   return (
     <div className="p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">
-        Habits for Today 
+        Habits for Today
       </h2>
 
       {todaysHabits.length === 0 ? (
@@ -105,7 +160,7 @@ export default function TodaysHabits() {
       ) : (
         <>
           <ul className="space-y-3">
-            {todaysHabits.map(habit => (
+            {todaysHabits.map((habit) => (
               <li
                 key={habit.id}
                 className="flex items-center gap-3 p-3 border border-gray-200 dark:border-gray-700 rounded-lg"
@@ -124,8 +179,8 @@ export default function TodaysHabits() {
                   htmlFor={`habit-${habit.id}`}
                   className={`text-lg select-none cursor-pointer ${
                     completedHabits.includes(habit.id)
-                      ? 'line-through text-gray-400'
-                      : 'text-gray-800 dark:text-white'
+                      ? "line-through text-gray-400"
+                      : "text-gray-800 dark:text-white"
                   }`}
                 >
                   {habit.habitName}
@@ -136,7 +191,9 @@ export default function TodaysHabits() {
 
           <div className="mt-6">
             <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300 mb-1">
-              <span>{completedHabits.length} of {todaysHabits.length} complete</span>
+              <span>
+                {completedHabits.length} of {todaysHabits.length} complete
+              </span>
               <span>{progress}%</span>
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
