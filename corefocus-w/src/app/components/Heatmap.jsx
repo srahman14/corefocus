@@ -6,7 +6,7 @@ import { addDays, format } from "date-fns";
 
 export default function Heatmap({ habitLogs }) {
   const today = new Date();
-  const startDate = addDays(today, -120);
+  const startDate = new Date(today.getFullYear(), 0, 1);
 
   const values = Object.entries(habitLogs || {}).map(([date, log]) => ({
     date,
@@ -14,14 +14,18 @@ export default function Heatmap({ habitLogs }) {
   }));
 
   return (
-    <div className="bg-gray-900 p-4 rounded-xl shadow text-white w-[25rem] h-[25rem]">
+    <div className="bg-gray-900 p-4 rounded-xl shadow">
       <h2 className="text-lg font-bold mb-4">Habit Heatmap</h2>
       <CalendarHeatmap
         startDate={startDate}
         endDate={today}
         values={values}
         classForValue={(value) => {
-          if (!value || value.count === 0) return "color-empty";
+          const todayStr = format(new Date(), "yyyy-MM-dd");
+
+          if (!value) return "color-empty";
+          if (value.date === todayStr) return "color-today";
+          if (value.count === 0) return "color-empty";
           if (value.count < 2) return "color-scale-1";
           if (value.count < 4) return "color-scale-2";
           if (value.count < 6) return "color-scale-3";
@@ -33,6 +37,7 @@ export default function Heatmap({ habitLogs }) {
             "data-tip": `${value.date}: ${value.count} completed`,
           };
         }}
+        showWeekdayLabels
       />
     </div>
   );
