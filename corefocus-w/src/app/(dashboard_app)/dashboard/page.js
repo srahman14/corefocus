@@ -9,7 +9,7 @@ import HabitTracker from "@/app/components/Dashboard/HabitTracker";
 import GoalBoard from "@/app/components/Dashboard/GoalBoard";
 import TaskSync from "@/app/components/Dashboard/TaskSync";
 import ReadRoute from "@/app/components/Dashboard/ReadRoute";
-import HeatmapComponent from "@/app/components/Dashboard/HeatmapComponent";
+import DailyLoginComponent from "@/app/components/Dashboard/DailyLogin";
 
 export default function Dashboard() {
     const router = useRouter();
@@ -81,7 +81,7 @@ export default function Dashboard() {
             </div>
 
             <div>
-                <HeatmapComponent />
+                <DailyLoginComponent />
             </div>
 
             <div className="flex flex-col lg:flex-row gap-6">
