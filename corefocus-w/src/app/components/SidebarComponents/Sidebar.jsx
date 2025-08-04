@@ -48,24 +48,11 @@ export default function Sidebar() {
         />
 
           <SidebarItem
-          href="/"
+          href="/dashboard/analytics"
           icon="fa-chart-simple"
           label="Analytics"
           collapsed={collapsed}
         />
-      </div>
-
-      {/* Bottom Buttons */}
-      <div className="border-t border-gray-700 border-t-8 mt-auto p-4 space-y-2 font-bold">
-        <div className="cursor-pointer text-black hover:bg-gray-200 transition rounded flex items-center px-4 py-3">
-          <i className="fa-solid fa-right-from-bracket" />
-          {!collapsed && <span className="ml-3">Logout</span>}
-        </div>
-
-        <div className="cursor-pointer text-black hover:bg-gray-200 transition rounded flex items-center px-4 py-3">
-          <i className="fa-solid fa-moon" />
-          {!collapsed && <span className="ml-3">Dark Mode</span>}
-        </div>
       </div>
     </motion.div>
   );
