@@ -14,8 +14,7 @@ export default function Heatmap({ habitLogs }) {
   }));
 
   return (
-    <div className="bg-gray-900 p-4 rounded-xl shadow">
-      <h2 className="text-lg font-bold mb-4">Habit Heatmap</h2>
+    <div className="bg-gray-900 p-4 rounded-xl shadow-xl container p-12">
       <CalendarHeatmap
         startDate={startDate}
         endDate={today}
@@ -24,7 +23,6 @@ export default function Heatmap({ habitLogs }) {
           const todayStr = format(new Date(), "yyyy-MM-dd");
 
           if (!value) return "color-empty";
-          if (value.date === todayStr) return "color-today";
           if (value.count === 0) return "color-empty";
           if (value.count < 2) return "color-scale-1";
           if (value.count < 4) return "color-scale-2";
