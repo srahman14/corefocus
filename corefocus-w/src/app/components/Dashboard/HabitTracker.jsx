@@ -6,6 +6,7 @@ import {
   getDoc,
   setDoc,
   doc,
+  onSnapshot,
 } from "firebase/firestore";
 import debounce from "lodash.debounce";
 import { format } from "date-fns";
@@ -13,6 +14,7 @@ import { db } from "@/app/firebase";
 import { useAuth } from "@/app/context/AuthContext";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { CheckIcon } from "@radix-ui/react-icons";
+import toast from "react-hot-toast";
 
 export default function TodaysHabits() {
   const { currentUser, loading } = useAuth();
@@ -32,47 +34,61 @@ export default function TodaysHabits() {
   const todayFull = new Date().toLocaleDateString("en-US", { weekday: "long" });
   const today = fullToShortDayMap[todayFull];
 
-  useEffect(() => {
-    const fetchHabits = async () => {
-      if (!currentUser) return;
+useEffect(() => {
+  if (!currentUser) return;
 
-      try {
-        const snapshot = await getDocs(
-          collection(db, "users", currentUser.uid, "habits")
-        );
+  const fetchHabitsAndListen = async () => {
+    try {
+      const snapshot = await getDocs(
+        collection(db, "users", currentUser.uid, "habits")
+      );
 
-        const habits = [];
-        const weekday = new Date().toLocaleDateString("en-US", {
-          weekday: "long",
-        });
-        const shortDay = fullToShortDayMap[weekday];
+      const habits = [];
+      const weekday = new Date().toLocaleDateString("en-US", {
+        weekday: "long",
+      });
+      const shortDay = fullToShortDayMap[weekday];
 
-        snapshot.forEach((doc) => {
-          const data = doc.data();
-          if (data.habitFreq?.includes(shortDay)) {
-            habits.push({ id: doc.id, ...data });
-          }
-        });
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        if (data.habitFreq?.includes(shortDay)) {
+          habits.push({ id: doc.id, ...data });
+        }
+      });
 
-        setTodaysHabits(habits);
+      setTodaysHabits(habits);
 
-        // ✅ Match the date format used in `setDoc`
-        const todayFormatted = format(new Date(), "yyyy-MM-dd");
-        const logRef = doc(db, "habitLogs", currentUser.uid);
-        const logSnap = await getDoc(logRef);
-        if (logSnap.exists()) {
-          const todayLog = logSnap.data()[todayFormatted];
+      const todayFormatted = format(new Date(), "yyyy-MM-dd");
+      const logRef = doc(db, "habitLogs", currentUser.uid);
+
+      const unsubscribe = onSnapshot(logRef, (docSnap) => {
+        if (docSnap.exists()) {
+          const todayLog = docSnap.data()[todayFormatted];
           if (todayLog?.completedHabits) {
             setCompletedHabits(todayLog.completedHabits);
+          } else {
+            setCompletedHabits([]);
           }
+        } else {
+          setCompletedHabits([]);
         }
-      } catch (err) {
-        console.error("Error fetching habits or logs:", err);
-      }
-    };
+      });
 
-    fetchHabits();
-  }, [currentUser]);
+      return unsubscribe;
+    } catch (err) {
+      console.error("Error fetching habits or logs:", err);
+    }
+  };
+
+  const unsubscribePromise = fetchHabitsAndListen();
+
+  return () => {
+    // Make sure to clean up snapshot listener
+    unsubscribePromise.then((unsubscribe) => {
+      if (typeof unsubscribe === "function") unsubscribe();
+    });
+  };
+}, [currentUser]);
 
   function toggleHabit(habitId) {
     setCompletedHabits((prev) => {
@@ -90,8 +106,10 @@ export default function TodaysHabits() {
       if (!currentUser) return;
       const docRef = doc(db, "habitLogs", currentUser.uid);
       const todayFormatted = format(new Date(), "yyyy-MM-dd");
-
-      console.log("Debounced save for:", todayFormatted, updatedList);
+      
+      const toastId = toast.loading("Updating habits...");
+      // Debugging
+      // console.log("Debounced save for:", todayFormatted, updatedList);
 
       try {
         await setDoc(
@@ -104,9 +122,9 @@ export default function TodaysHabits() {
           },
           { merge: true }
         );
-        console.log("Habit log saved ✅");
+        toast.success("Habits saved!", { id: toastId });
       } catch (error) {
-        console.error("Error updating habit log:", error);
+        toast.error("Failed to save habits", { id: toastId });
       }
     }, 500), // 500ms delay
     [currentUser]
