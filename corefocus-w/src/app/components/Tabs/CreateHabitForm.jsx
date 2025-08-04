@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { db } from "@/app/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore"
+import toast from "react-hot-toast";
 
 const HabitFrequency = ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"];
 const difficulties = ["Easy", "Medium", "Hard"]
@@ -98,6 +99,8 @@ export default function CreateHabitForm() {
 
         // Debug
         // console.log("📨 Attempting to save habit...");
+        const toastId = toast.loading("Creating habit...");
+
 
         try {
             await addDoc(collection(db, "users", uid, "habits"), {
@@ -111,9 +114,9 @@ export default function CreateHabitForm() {
 
             // Debug
             // console.log("✅ Habit successfully saved to Firestore.");
-            alert("Habit saved successfully!");
+            toast.success("Habit successfully created!", { id: toastId });
         } catch (error) {
-            console.log("Error saving data", error)
+            toast.error("Habits failed to save!", { id: toastId });
         }
     };
 
