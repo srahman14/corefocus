@@ -15,6 +15,7 @@ export default function Heatmap({ habitLogs }) {
 
   return (
     <div className="bg-gray-900 p-4 rounded-xl shadow-xl container p-12">
+      <h2 className="text-xl font-bold mb-4">Habit Heatmap</h2>
       <CalendarHeatmap
         startDate={startDate}
         endDate={today}
