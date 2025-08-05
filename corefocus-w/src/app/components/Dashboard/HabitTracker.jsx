@@ -21,6 +21,8 @@ export default function TodaysHabits() {
   const [todaysHabits, setTodaysHabits] = useState([]);
   const [completedHabits, setCompletedHabits] = useState([]);
 
+  const notificationSound = useRef(null);
+
   const fullToShortDayMap = {
     Sunday: "Sun",
     Monday: "Mon",
@@ -122,11 +124,13 @@ useEffect(() => {
           },
           { merge: true }
         );
+        
+        notificationSound.current?.play();
         toast.success("Habits saved!", { id: toastId });
       } catch (error) {
         toast.error("Failed to save habits", { id: toastId });
       }
-    }, 500), // 500ms delay
+    }, 500),
     [currentUser]
   );
 
@@ -169,6 +173,8 @@ useEffect(() => {
 
   return (
     <div className="p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
+      <audio ref={notificationSound} src="/sounds/notification.mp3" preload="auto" />
+
       <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">
         Habits for Today
       </h2>
