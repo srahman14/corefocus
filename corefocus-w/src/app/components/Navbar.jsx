@@ -46,21 +46,21 @@ export default function Navbar() {
         </div>
 
         <ul className={`flex space-x-8 ${isDark ? "text-white" : "text-black"}`}>
-          <li className="hover:text-violet-600 cursor-pointer font-semibold tracking-tighter text-xl p-1">
+          <li className="hover:text-violet-400 transition-all duration-300 ease-in-out cursor-pointer font-semibold tracking-tighter text-xl p-1">
             <Link href="/">Home</Link>
           </li>
-          <li className="hover:text-violet-600 cursor-pointer font-semibold tracking-tighter text-xl p-1">
+          <li className="hover:text-violet-400 transition-all duration-300 ease-in-out cursor-pointer font-semibold tracking-tighter text-xl p-1">
             <Link href="/">Plans</Link>
           </li>
-          <li className="hover:text-violet-600 cursor-pointer font-semibold tracking-tighter text-xl p-1">
+          <li className="hover:text-violet-400 transition-all duration-300 ease-in-out cursor-pointer font-semibold tracking-tighter text-xl p-1">
             <Link href="/login">Login</Link>
           </li>
-          <button
+          {/* <button
           onClick={toggleTheme}
           className="px-3 cursor-pointer rounded-lg bg-violet-500 text-white hover:bg-violet-600"
           >            
             {isDark ? <i className="fa-jelly fa-regular fa-sun"></i> : <i className="fa-jelly fa-regular fa-moon"></i>}
-          </button>
+          </button> */}
         </ul>
       </div>
     </nav>
