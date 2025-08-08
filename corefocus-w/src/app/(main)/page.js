@@ -139,7 +139,113 @@ export default function Home() {
           </p>
         </header>
 
-        <div className="flex flex-wrap justify-center gap-10">
+    <div className="w-full  px-6 py-16">
+      <div className="max-w-7xl mx-auto flex flex-col gap-24">
+
+        {/* Feature Row */}
+        <div className="flex flex-col md:flex-row items-center gap-12">
+          {/* Left Content */}
+          <div className="flex-1 text-center md:text-left">
+            <h3 className="font-light tracking-widest">TRACKING HABITS</h3>
+            <h2 className="text-3xl font-bold text-white mb-4">
+              Track Your Habits Easily
+            </h2>
+            <p className="text-lg text-gray-300 mb-6">
+              Stay consistent with daily tracking of your habits. <br></br>
+              Your habits are automatically synced across all devices in real-time. <br></br>
+              View and learn from your progress with analytics and heatmaps for all-time activity. <br></br>
+              
+
+            </p>
+            <button className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-xl shadow-lg hover:bg-purple-700 transition">
+              Learn More
+            </button>
+          </div>
+
+          {/* Right Content with Gradient Border */}
+          <div className="flex-1 flex justify-center">
+            <div className="pl-[0] pb-[0] bg-gradient-to-br from-purple-500 via-pink-500 to-indigo-500 rounded-2xl">
+              <div className="bg-[#0f172a] rounded-2xl overflow-hidden">
+                <img
+                  src="/habit_tracker.png"
+                  alt="Dashboard preview"
+                  className="w-full h-auto"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Feature Row */}
+        <div className="flex flex-col md:flex-row-reverse items-center gap-12">
+          {/* Left Content */}
+          <div className="flex-1 text-center md:text-left">
+            <h3 className="font-light tracking-widest">TRACKING HABITS</h3>
+            <h2 className="text-3xl font-bold text-white mb-4">
+              Track Your Habits Easily
+            </h2>
+            <p className="text-lg text-gray-300 mb-6">
+              Stay consistent with daily tracking of your habits. <br></br>
+              Your habits are automatically synced across all devices in real-time. <br></br>
+              View and learn from your progress with analytics and heatmaps for all-time activity. <br></br>
+              
+
+            </p>
+            <button className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-xl shadow-lg hover:bg-purple-700 transition">
+              Learn More
+            </button>
+          </div>
+
+          {/* Right Content with Gradient Border */}
+          <div className="flex-1 flex justify-center">
+            <div className="pl-[0] pb-[0] bg-gradient-to-br from-purple-500 via-pink-500 to-indigo-500 rounded-2xl">
+              <div className="bg-[#0f172a] rounded-2xl overflow-hidden">
+                <img
+                  src="/habit_tracker.png"
+                  alt="Dashboard preview"
+                  className="w-full h-auto"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Feature Row */}
+        <div className="flex flex-col md:flex-row items-center gap-12">
+          {/* Left Content */}
+          <div className="flex-1 text-center md:text-left">
+            <h3 className="font-light tracking-widest">TRACKING HABITS</h3>
+            <h2 className="text-3xl font-bold text-white mb-4">
+              Track Your Habits Easily
+            </h2>
+            <p className="text-lg text-gray-300 mb-6">
+              Stay consistent with daily tracking of your habits. <br></br>
+              Your habits are automatically synced across all devices in real-time. <br></br>
+              View and learn from your progress with analytics and heatmaps for all-time activity. <br></br>
+              
+
+            </p>
+            <button className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-xl shadow-lg hover:bg-purple-700 transition">
+              Learn More
+            </button>
+          </div>
+
+          {/* Right Content with Gradient Border */}
+          <div className="flex-1 flex justify-center">
+            <div className="pl-[0] pb-[0] bg-gradient-to-br from-purple-500 via-pink-500 to-indigo-500 rounded-2xl">
+              <div className="bg-[#0f172a] rounded-2xl overflow-hidden">
+                <img
+                  src="/habit_tracker.png"
+                  alt="Dashboard preview"
+                  className="w-full h-auto"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+        {/* <div className="flex flex-wrap justify-center gap-10">
           {features.map(({ icon, title, tagline, details }) => (
             <FeatureCard
               key={title}
@@ -149,7 +255,7 @@ export default function Home() {
               details={details}
             />
           ))}
-        </div>
+        </div> */}
       </section>
 
       {/* HOW IT WORKS SECTION */}
@@ -243,7 +349,7 @@ export default function Home() {
         >
           <div className="flex flex-col items-center gap-6">
             <h1 className="text-5xl font-bold text-center">Ready to <span className="text-[#fff]">begin?</span></h1>
-            <p className="text-white/70 max-w-sm text-center text-lg px-4">Start your journey towards mastering your habits. Take the first step today!</p>
+            <p className="text-white/70 max-w-sm text-center text-lg px-4">Start your journey towards mastering your habits, take the first step today!</p>
             <button className="rounded-4xl font-semibold tracking-tighter text-xl md:text-2xl transition ease-in-out duration-300 inline-block bg-[#222] hover:bg-[#222]/80 transition-colors duration-300 text-white font-semibold text-xl px-12 py-4 shadow-lg shadow-[#fff]/10 cursor-pointer">
               Get started now
             </button>
