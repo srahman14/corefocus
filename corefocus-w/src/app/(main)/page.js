@@ -8,10 +8,63 @@ import FAQItem from "../components/FAQComponent";
 import DarkVeil from "../components/ui/DarkVeil";
 import Link from "next/link";
 import { useThemeStore } from "../store/useThemeStore";
+import { useState, useEffect, useRef} from "react";
 
 export default function Home() {
   const { isDark, toggleTheme } = useThemeStore();
-
+   const features = [
+    {
+      icon: "fa-solid fa-bell",
+      title: "Habit Tracker",
+      tagline: "Track your streaks and progress with ease.",
+      details: [
+        "Keep up with streaks for each day you complete",
+        "Heatmaps for day, week, month, and year",
+        "View custom analytics to track your progress",
+      ],
+    },
+    {
+      icon: "fa-solid fa-chart-area",
+      title: "Goal Board",
+      tagline: "Visualize and manage your goals clearly.",
+      details: [
+        "Set monthly and yearly goals",
+        "Track progress visually",
+        "Reflect and adjust your strategies",
+      ],
+    },
+    {
+      icon: "fa-solid fa-list-check",
+      title: "Task Sync",
+      tagline: "Sync your tasks seamlessly.",
+      details: [
+        "Sync with external calendars",
+        "Real-time updating",
+        "Integrate your workflow easily",
+      ],
+    },
+    {
+      icon: "fa-solid fa-pen-to-square",
+      title: "Read Route",
+      tagline: "Journal your reflections and insights.",
+      details: [
+        "Create rich text journals",
+        "Track reading habits",
+        "Review past entries anytime",
+      ],
+    },
+    {
+      icon: "fa-solid fa-stopwatch",
+      title: "Focus Camp",
+      tagline: "Boost productivity with focused sessions.",
+      details: [
+        "Set timers for work intervals",
+        "Track session counts",
+        "Analyze focus trends over time",
+      ],
+    },
+  ];
+  
   return (
       <main className={`min-h-screen flex flex-col flex-wrap items-center justify-center transition-all duration-300 ease-in-out bg-black text-white`}>
       {/* HERO SECTION */}
@@ -56,13 +109,13 @@ export default function Home() {
               <div className="flex mt-15 x-space-4 justify-center">
                 <Link
                   href="/signup"
-                  className="bg-white text-black mr-4 hover:bg-gray-100/80 py-4 px-11 rounded-4xl font-semibold tracking-tighter text-xl md:text-2xl transition ease-in-out duration-300"
+                  className="mr-4 rounded-4xl font-semibold tracking-tighter text-xl md:text-2xl transition ease-in-out duration-300 inline-block bg-[#520dd0] hover:bg-[#7c53ff] transition-colors duration-300 text-white font-semibold text-xl px-12 py-4 shadow-xl shadow-[#520dd0]/40"
                 >
                   Get Started
                 </Link>
                 <Link
                   href="/"
-                  className="bg-[#222] text-white hover:bg-[#222]/80 py-4 px-11 rounded-4xl font-semibold tracking-tighter text-xl md:text-2xl transition ease-in-out duration-300"
+                  className="rounded-4xl font-semibold tracking-tighter text-xl md:text-2xl transition ease-in-out duration-300 inline-block bg-[#222] hover:bg-[#222]/80 transition-colors duration-300 text-white font-semibold text-xl px-12 py-4 shadow-lg shadow-[#fff]/20"
                 >
                   Explore Plans
                 </Link>
@@ -76,131 +129,31 @@ export default function Home() {
         <ImageMarquee></ImageMarquee>
       </div>
       {/* KEY FEATURES SECTION */}
-      <section className="container flex flex-col justify-center">
-        <header className="flex flex-row items-center justify-between w-full">
-          <h1 className="font-bold text-6xl ml-20">
+      <section className="container flex flex-col justify-center px-8 py-16">
+        <header className="flex flex-row items-center justify-between w-full mb-12 px-4">
+          <h1 className="font-bold text-6xl">
             our key <i className="tracking-tighter text-[#520dd0]">features</i>
           </h1>
-          <p className="font-light text-xl mr-20 text-gray-300">
-            designed to help you stay on track, effortlessly
+          <p className="font-light text-xl text-gray-300 max-w-md">
+            Designed to help you stay on track, effortlessly
           </p>
         </header>
-        {/* To hold all the cards */}
-        <div className="flex flex-wrap justify-center gap-8 items-center p-3 m-20 mt-10 rounded-2xl">
-          <div className="p-2 flex flex-col items-center rounded-2xl ">
-            {/* NEED TO ADD LINKS LATER ON */}
-            <div className="flex flex-row flex-wrap gap-12 items-center justify-center">
-              <SpotlightCard className="bg-violet-600/30 border-none" spotlightColor="rgba(255, 255, 255, 0.2)">
-                <div className="container bg-[#520dd0] text-white p-2 rounded-xl min-h-100 max-w-90 cursor-default">
-                  <span className="flex justify-between items-center text-3xl m-3">
-                    <i className="fa-solid fa-bell"></i>
-                    <p className="font-bold tracking-tighter text-center">
-                      Habit Tracker
-                    </p>
-                  </span>
 
-                  {/* CONTENT */}
-                  <p className="m-3 text-white font-semibold text-xl tracking-tight">
-                    Keep up to your habits and goals with our custom dashboard
-                  </p>
-                  <ul className="ml-9 text-white font-semibold text-xl tracking-tight list-disc">
-                    <li>Keep up with streaks for each day you complete</li>
-                    <li>Heatmaps for day, week, month and year</li>
-                    <li>View custom analytics to track your progress</li>
-                  </ul>
-                </div>
-              </SpotlightCard>
-
-              <SpotlightCard className="bg-violet-600/30 border-none" spotlightColor="rgba(255, 255, 255, 0.2)">
-                <div className="container bg-[#520dd0] text-white p-2 rounded-xl min-h-100 max-w-90 cursor-default">
-                  <span className="flex justify-between m-3 items-center text-3xl">
-                    <i className="fa-solid fa-chart-area"></i>
-                    <p className="font-bold p-3 cursor-pointer tracking-tighter text-center">
-                      Goal Board
-                    </p>
-                  </span>
-
-                  {/* CONTENT */}
-                  <p className="m-3 text-white font-semibold text-xl tracking-tight">
-                    Keep up to your habits and goals with our custom dashboard
-                  </p>
-                  <ul className="ml-9 text-white font-semibold text-xl tracking-tight list-disc">
-                    <li>Keep up with streaks for each day you complete</li>
-                    <li>Heatmaps for day, week, month and year</li>
-                    <li>View custom analytics to track your progress</li>
-                  </ul>
-                </div>
-              </SpotlightCard>
-
-              <SpotlightCard className="bg-violet-600/30 border-none" spotlightColor="rgba(255, 255, 255, 0.2)">
-                <div className="container bg-[#520dd0] text-white p-2 rounded-xl min-h-100 max-w-90 cursor-default">
-                  <span className="flex justify-between m-3 items-center text-3xl">
-                    <i className="fa-solid fa-list-check"></i>
-                    <p className="font-bold p-3 cursor-pointer tracking-tighter text-center">
-                      Task Sync
-                    </p>
-                  </span>
-
-                  {/* CONTENT */}
-                  <p className="m-3 text-white font-semibold text-xl tracking-tight">
-                    Keep up to your habits and goals with our custom dashboard
-                  </p>
-                  <ul className="ml-9 text-white font-semibold text-xl tracking-tight list-disc">
-                    <li>Keep up with streaks for each day you complete</li>
-                    <li>Heatmaps for day, week, month and year</li>
-                    <li>View custom analytics to track your progress</li>
-                  </ul>
-                </div>
-              </SpotlightCard>
-
-              <SpotlightCard className="bg-violet-600/30 border-none" spotlightColor="rgba(255, 255, 255, 0.2)">
-                <div className="container bg-[#520dd0] text-white p-2 rounded-xl min-h-100 max-w-90 cursor-default">
-                  <span className="flex justify-between m-3 items-center text-3xl">
-                    <i className="fa-solid fa-pen-to-square"></i>
-                    <p className="font-bold p-3 cursor-pointer tracking-tighter text-center">
-                      Read Route
-                    </p>
-                  </span>
-
-                  {/* CONTENT */}
-                  <p className="m-3 text-white font-semibold text-xl tracking-tight">
-                    Keep up to your habits and goals with our custom dashboard
-                  </p>
-                  <ul className="ml-9 text-white font-semibold text-xl tracking-tight list-disc">
-                    <li>Keep up with streaks for each day you complete</li>
-                    <li>Heatmaps for day, week, month and year</li>
-                    <li>View custom analytics to track your progress</li>
-                  </ul>
-                </div>
-              </SpotlightCard>
-
-              <SpotlightCard className="bg-violet-600/30 border-none" spotlightColor="rgba(255, 255, 255, 0.2)">
-                <div className="container bg-[#520dd0] text-white p-2 rounded-xl min-h-100 max-w-90 cursor-default">
-                  <span className="flex justify-between m-3 items-center text-3xl">
-                    <i className="fa-solid fa-stopwatch"></i>
-                    <p className="font-bold p-3 cursor-pointer tracking-tighter text-center">
-                      Focus Camp
-                    </p>
-                  </span>
-
-                  {/* CONTENT */}
-                  <p className="m-3 text-white font-semibold text-xl tracking-tight">
-                    Keep up to your habits and goals with our custom dashboard
-                  </p>
-                  <ul className="ml-9 text-white font-semibold text-xl tracking-tight list-disc">
-                    <li>Keep up with streaks for each day you complete</li>
-                    <li>Heatmaps for day, week, month and year</li>
-                    <li>View custom analytics to track your progress</li>
-                  </ul>
-                </div>
-              </SpotlightCard>
-            </div>
-          </div>
+        <div className="flex flex-wrap justify-center gap-10">
+          {features.map(({ icon, title, tagline, details }) => (
+            <FeatureCard
+              key={title}
+              icon={icon}
+              title={title}
+              tagline={tagline}
+              details={details}
+            />
+          ))}
         </div>
       </section>
 
       {/* HOW IT WORKS SECTION */}
-      <section className="container flex flex-col justify-center">
+      {/* <section className="container flex flex-col justify-center">
         <AnimatedContent
           direction="horizontal"
           reverse={true}
@@ -251,7 +204,7 @@ export default function Home() {
             </SpotlightCard>
           </div>
         </AnimatedContent>
-      </section>
+      </section> */}
 
       {/* FAQ SECTION  */}
       <section className="container flex flex-col justify-center">
@@ -279,6 +232,79 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <footer className="w-full mt-40 mb-40 flex justify-center">
+        <div
+          className="rounded-3xl px-12 py-16 max-w-6xl w-full text-white"
+          style={{
+            background: "linear-gradient(to bottom, #1a0e3f, #520dd0)",
+            boxShadow: "0 8px 24px rgba(82, 13, 208, 0.5)",
+          }}
+        >
+          <div className="flex flex-col items-center gap-6">
+            <h1 className="text-5xl font-bold text-center">Ready to <span className="text-[#fff]">begin?</span></h1>
+            <p className="text-white/70 max-w-sm text-center text-lg px-4">Start your journey towards mastering your habits. Take the first step today!</p>
+            <button className="rounded-4xl font-semibold tracking-tighter text-xl md:text-2xl transition ease-in-out duration-300 inline-block bg-[#222] hover:bg-[#222]/80 transition-colors duration-300 text-white font-semibold text-xl px-12 py-4 shadow-lg shadow-[#fff]/10 cursor-pointer">
+              Get started now
+            </button>
+          </div>
+        </div>
+      </footer>
     </main>
+  );
+}
+
+function FeatureCard({ icon, title, tagline, details }) {
+  const [expanded, setExpanded] = useState(false);
+  const detailsRef = useRef(null);
+
+  useEffect(() => {
+    if (!detailsRef.current) return;
+
+    if (expanded) {
+      detailsRef.current.style.maxHeight = `${detailsRef.current.scrollHeight}px`;
+    } else {
+      detailsRef.current.style.maxHeight = "0px";
+    }
+  }, [expanded]);
+
+  return (
+    <SpotlightCard
+      className="bg-violet-600/60 border-none p-8 rounded-xl w-72 flex flex-col cursor-pointer"
+      spotlightColor="rgba(255, 255, 255, 0.2)"
+
+    >
+      <div className="flex flex-col items-center text-white flex-grow  p-2 rounded-xl"
+
+      onClick={() => setExpanded((prev) => !prev)}
+      aria-expanded={expanded}
+      aria-controls={`${title}-details`}
+      >
+        <i className={`${icon} text-5xl mb-4`} aria-hidden="true"></i>
+        <h3 className="font-bold text-2xl mb-2">{title}</h3>
+        <p className="text-lg font-light text-center">{tagline}</p>
+
+        {/* Animated details container */}
+        <div
+          ref={detailsRef}
+          id={`${title}-details`}
+          style={{
+            maxHeight: "0px",
+            overflow: "hidden",
+            transition: "max-height 0.4s ease",
+            width: "100%",
+          }}
+          className="mt-4 ml-6 text-white font-semibold text-base list-disc text-left"
+        >
+          <ul>
+            {details.map((item, idx) => (
+              <li key={idx} className="mb-1">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </SpotlightCard>
   );
 }
