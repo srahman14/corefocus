@@ -41,18 +41,18 @@ export default function Navbar() {
         <div className="text-xl font-bold">
           <span className={`flex items-center gap-1 ${isDark ? "text-white" : "text-black"}`}>
             {/* <img src="/logo.svg" className="w-14 rounded-lg"></img> */}
-            <p className="tracking-tighter font-semibold text-2xl"><i>c</i>orefocus</p>
+            <p className="tracking-tighter font-semibold text-2xl text-[#b087fa]"><i>c</i>orefocus</p>
           </span>
         </div>
 
         <ul className={`flex space-x-8 ${isDark ? "text-white" : "text-black"}`}>
-          <li className="hover:text-violet-400 transition-all duration-300 ease-in-out cursor-pointer font-semibold tracking-tighter text-xl p-1">
+          <li className="hover:text-[#b087fa]/60 text-[#b087fa] transition-all duration-300 ease-in-out cursor-pointer font-semibold tracking-tighter text-xl p-1">
             <Link href="/">Home</Link>
           </li>
-          <li className="hover:text-violet-400 transition-all duration-300 ease-in-out cursor-pointer font-semibold tracking-tighter text-xl p-1">
+          <li className="hover:text-[#b087fa]/60 text-[#b087fa] transition-all duration-300 ease-in-out cursor-pointer font-semibold tracking-tighter text-xl p-1">
             <Link href="/">Plans</Link>
           </li>
-          <li className="hover:text-violet-400 transition-all duration-300 ease-in-out cursor-pointer font-semibold tracking-tighter text-xl p-1">
+          <li className="hover:text-[#b087fa]/60 text-[#b087fa] transition-all duration-300 ease-in-out cursor-pointer font-semibold tracking-tighter text-xl p-1">
             <Link href="/login">Login</Link>
           </li>
           {/* <button
