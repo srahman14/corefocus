@@ -7,12 +7,20 @@ import ImageMarquee from "../components/ReactMarquee";
 import FAQItem from "../components/FAQComponent";
 import DarkVeil from "../components/ui/DarkVeil";
 import Link from "next/link";
+import { useThemeStore } from "../store/useThemeStore";
 
 export default function Home() {
+  const { isDark, toggleTheme } = useThemeStore();
+
   return (
-    <main className="min-h-screen bg-white text-black flex flex-col flex-wrap items-center justify-center">
+      <main className={`min-h-screen flex flex-col flex-wrap items-center justify-center transition-all duration-300 ease-in-out bg-black text-white`}>
       {/* HERO SECTION */}
-      <section className="w-full h-220 flex flex-col justify-center items-center mb-32 mt-70 p-16">
+      <section className="relative w-full h-[65vh] overflow-hidden flex items-center justify-center bg-white text-white">        
+        {/* Background */}
+        <div className="absolute inset-0 z-0">
+          <DarkVeil />
+        </div>
+        
         <AnimatedContent
           direction="horizontal"
           reverse={true}
@@ -21,53 +29,49 @@ export default function Home() {
           animateOpacity
           threshold={0.2}
         >
-          <div className="flex items-center justify-center text-center flex-row gap-30">
+          <div className="relative z-10 flex items-center justify-center text-center">
             <div
               className="p-17 rounded-lg"
-              style={{
-                backgroundImage: `
-                  linear-gradient(to right, rgba(0,0,0,0.07) 1px, transparent 1px),
-                  linear-gradient(to bottom, rgba(0,0,0,0.07) 1px, transparent 1px)
-                `,
-                backgroundSize: "45px 45px",
-              }}
+              // style={{
+              //   backgroundImage: `
+              //     linear-gradient(to right, rgba(255, 255, 255, 0.33) 1px, transparent 1px),
+              //     linear-gradient(to bottom, rgba(255, 255, 255, 0.45) 1px, transparent 1px)
+              //   `,
+              //   backgroundSize: "90px 90px",
+              // }}
             >
               <div>
-                <h1 className="font-bold text-left text-5xl md:text-6xl lg:text-7xl mb-6 tracking-tighter max-w-200">
-                  Master your{" "}
-                  <i className="underline decoration-sky-500">habits</i> <br />{" "}
-                  Achieve what{" "}
-                  <i className="underline decoration-sky-500">matters</i>
+                <h1 className="font-bold text-center text-5xl md:text-6xl lg:text-7xl mb-6 tracking-tighter">
+                  master your {" "}
+                  <i className="underline decoration-[#520dd0] rounded">habits</i> <br />
+                  achieve what  {" "}
+                  <i className="underline decoration-[#520dd0] rounded">matters</i>
                 </h1>
-                <p className="font-light text-3xl md:text-4xl lg:text-5xl mb-12 tracking-tight text-gray-500 w-120 text-left">
-                  Build consistent routines, align your actions with your goals,
+                {/* <p className="font-light text-3xl md:text-4xl lg:text-4xl mb-12 tracking-tight text-white text-center">
+                  build consistent routines, align your actions with your goals,
                   and stay accountable.
-                </p>
+                </p> */}
               </div>
 
-              <div className="flex mt-30 x-space-4 justify-start">
+              <div className="flex mt-15 x-space-4 justify-center">
                 <Link
                   href="/signup"
-                  className="bg-[#222] text-white mr-4 hover:bg-[#222]/90 p-5 rounded-4xl font-semibold tracking-tighter text-xl md:text-2xl"
+                  className="bg-white text-black mr-4 hover:bg-gray-100/80 py-4 px-11 rounded-4xl font-semibold tracking-tighter text-xl md:text-2xl transition ease-in-out duration-300"
                 >
                   Get Started
                 </Link>
                 <Link
                   href="/"
-                  className="bg-[#222] text-white hover:bg-[#222]/90 p-5 rounded-4xl font-semibold tracking-tighter text-xl md:text-2xl"
+                  className="bg-[#222] text-white hover:bg-[#222]/80 py-4 px-11 rounded-4xl font-semibold tracking-tighter text-xl md:text-2xl transition ease-in-out duration-300"
                 >
                   Explore Plans
                 </Link>
               </div>
             </div>
-            <img
-              src="/asset_6.png"
-              className="hidden lg:block w-[30rem] h-[30rem] rounded-3xl"
-            ></img>
           </div>
         </AnimatedContent>
       </section>
-
+        
       <div className="container mb-42">
         <ImageMarquee></ImageMarquee>
       </div>
@@ -75,10 +79,10 @@ export default function Home() {
       <section className="container flex flex-col justify-center">
         <header className="flex flex-row items-center justify-between w-full">
           <h1 className="font-bold text-6xl ml-20">
-            Explore our key <i className="tracking-tighter">features</i>
+            our key <i className="tracking-tighter text-[#520dd0]">features</i>
           </h1>
-          <p className="font-light text-xl mr-20">
-            Designed to help you stay on track, effortlessly
+          <p className="font-light text-xl mr-20 text-gray-300">
+            designed to help you stay on track, effortlessly
           </p>
         </header>
         {/* To hold all the cards */}
@@ -86,13 +90,13 @@ export default function Home() {
           <div className="p-2 flex flex-col items-center rounded-2xl ">
             {/* NEED TO ADD LINKS LATER ON */}
             <div className="flex flex-row flex-wrap gap-12 items-center justify-center">
-              <Magnet padding={50} disabled={false} magnetStrength={13}>
-                <div className="container bg-[#222] text-white p-2 rounded-lg min-h-100 max-w-90 cursor-default">
+              <SpotlightCard className="bg-violet-600/30 border-none" spotlightColor="rgba(255, 255, 255, 0.2)">
+                <div className="container bg-[#520dd0] text-white p-2 rounded-xl min-h-100 max-w-90 cursor-default">
                   <span className="flex justify-between items-center text-3xl m-3">
+                    <i className="fa-solid fa-bell"></i>
                     <p className="font-bold tracking-tighter text-center">
                       Habit Tracker
                     </p>
-                    <i className="fa-solid fa-bell"></i>
                   </span>
 
                   {/* CONTENT */}
@@ -105,10 +109,10 @@ export default function Home() {
                     <li>View custom analytics to track your progress</li>
                   </ul>
                 </div>
-              </Magnet>
+              </SpotlightCard>
 
-              <Magnet padding={50} disabled={false} magnetStrength={13}>
-                <div className="container bg-[#222] text-white p-2 rounded-lg min-h-100 max-w-90 cursor-default">
+              <SpotlightCard className="bg-violet-600/30 border-none" spotlightColor="rgba(255, 255, 255, 0.2)">
+                <div className="container bg-[#520dd0] text-white p-2 rounded-xl min-h-100 max-w-90 cursor-default">
                   <span className="flex justify-between m-3 items-center text-3xl">
                     <i className="fa-solid fa-chart-area"></i>
                     <p className="font-bold p-3 cursor-pointer tracking-tighter text-center">
@@ -116,6 +120,7 @@ export default function Home() {
                     </p>
                   </span>
 
+                  {/* CONTENT */}
                   <p className="m-3 text-white font-semibold text-xl tracking-tight">
                     Keep up to your habits and goals with our custom dashboard
                   </p>
@@ -125,10 +130,10 @@ export default function Home() {
                     <li>View custom analytics to track your progress</li>
                   </ul>
                 </div>
-              </Magnet>
+              </SpotlightCard>
 
-              <Magnet padding={50} disabled={false} magnetStrength={13}>
-                <div className="container bg-[#222] text-white p-2 rounded-lg min-h-100 max-w-90 cursor-default">
+              <SpotlightCard className="bg-violet-600/30 border-none" spotlightColor="rgba(255, 255, 255, 0.2)">
+                <div className="container bg-[#520dd0] text-white p-2 rounded-xl min-h-100 max-w-90 cursor-default">
                   <span className="flex justify-between m-3 items-center text-3xl">
                     <i className="fa-solid fa-list-check"></i>
                     <p className="font-bold p-3 cursor-pointer tracking-tighter text-center">
@@ -136,6 +141,7 @@ export default function Home() {
                     </p>
                   </span>
 
+                  {/* CONTENT */}
                   <p className="m-3 text-white font-semibold text-xl tracking-tight">
                     Keep up to your habits and goals with our custom dashboard
                   </p>
@@ -145,10 +151,10 @@ export default function Home() {
                     <li>View custom analytics to track your progress</li>
                   </ul>
                 </div>
-              </Magnet>
+              </SpotlightCard>
 
-              <Magnet padding={50} disabled={false} magnetStrength={13}>
-                <div className="container bg-[#222] text-white p-2 rounded-lg min-h-100 max-w-90 cursor-default">
+              <SpotlightCard className="bg-violet-600/30 border-none" spotlightColor="rgba(255, 255, 255, 0.2)">
+                <div className="container bg-[#520dd0] text-white p-2 rounded-xl min-h-100 max-w-90 cursor-default">
                   <span className="flex justify-between m-3 items-center text-3xl">
                     <i className="fa-solid fa-pen-to-square"></i>
                     <p className="font-bold p-3 cursor-pointer tracking-tighter text-center">
@@ -156,6 +162,7 @@ export default function Home() {
                     </p>
                   </span>
 
+                  {/* CONTENT */}
                   <p className="m-3 text-white font-semibold text-xl tracking-tight">
                     Keep up to your habits and goals with our custom dashboard
                   </p>
@@ -165,10 +172,10 @@ export default function Home() {
                     <li>View custom analytics to track your progress</li>
                   </ul>
                 </div>
-              </Magnet>
+              </SpotlightCard>
 
-              <Magnet padding={50} disabled={false} magnetStrength={13}>
-                <div className="container bg-[#222] text-white p-2 rounded-lg min-h-100 max-w-90 cursor-default">
+              <SpotlightCard className="bg-violet-600/30 border-none" spotlightColor="rgba(255, 255, 255, 0.2)">
+                <div className="container bg-[#520dd0] text-white p-2 rounded-xl min-h-100 max-w-90 cursor-default">
                   <span className="flex justify-between m-3 items-center text-3xl">
                     <i className="fa-solid fa-stopwatch"></i>
                     <p className="font-bold p-3 cursor-pointer tracking-tighter text-center">
@@ -176,6 +183,7 @@ export default function Home() {
                     </p>
                   </span>
 
+                  {/* CONTENT */}
                   <p className="m-3 text-white font-semibold text-xl tracking-tight">
                     Keep up to your habits and goals with our custom dashboard
                   </p>
@@ -185,7 +193,7 @@ export default function Home() {
                     <li>View custom analytics to track your progress</li>
                   </ul>
                 </div>
-              </Magnet>
+              </SpotlightCard>
             </div>
           </div>
         </div>
