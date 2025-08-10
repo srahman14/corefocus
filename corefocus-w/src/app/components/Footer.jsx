@@ -3,7 +3,7 @@ import Link from "next/link"
 export default function Footer() {
     return (
       // border-2 border-t-gray-200 border-b-0 border-l-0 border-r-0
-      <footer className="bg-black text-white py-20 border-2 border-t-gray-200">
+      <footer className="bg-black text-white py-20 border-2 border-b-0 border-l-0 border-r-0 border-t-gray-200">
         <div className="container mx-auto flex justify-between">
           <div className="flex flex-col space-y-1">
             <h2 className="font-semibold mb-4">Pages</h2>
