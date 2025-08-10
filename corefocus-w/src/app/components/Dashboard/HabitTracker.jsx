@@ -15,12 +15,13 @@ import { useAuth } from "@/app/context/AuthContext";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { CheckIcon } from "@radix-ui/react-icons";
 import toast from "react-hot-toast";
+import useModalStore from "@/app/store/modalStore";
 
 export default function TodaysHabits() {
   const { currentUser, loading } = useAuth();
   const [todaysHabits, setTodaysHabits] = useState([]);
   const [completedHabits, setCompletedHabits] = useState([]);
-
+  const [todayShort, setTodayShort] = useState(null);
   const notificationSound = useRef(null);
 
   const fullToShortDayMap = {
@@ -33,8 +34,18 @@ export default function TodaysHabits() {
     Saturday: "Sat",
   };
 
-  const todayFull = new Date().toLocaleDateString("en-US", { weekday: "long" });
-  const today = fullToShortDayMap[todayFull];
+  useEffect(() => {
+    const todayFull = new Date().toLocaleDateString("en-US", { weekday: "long" });
+    setTodayShort(fullToShortDayMap[todayFull]);
+  }, []);
+
+  if (!todayShort) {
+    // Optionally render null or a loader while client date initializes
+    return null;
+  }
+  // const todayFull = new Date().toLocaleDateString("en-US", { weekday: "long" });
+  // const today = fullToShortDayMap[todayFull];
+  const { openModal } = useModalStore();
 
 useEffect(() => {
   if (!currentUser) return;
@@ -172,12 +183,18 @@ useEffect(() => {
   }
 
   return (
-    <div className="p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
+    <div className="h-full p-4 bg-gradient-to-br from-[#070C2F] via-[#110E2D] to-[#13153F] rounded-xl shadow-md">
       <audio ref={notificationSound} src="/sounds/notification.mp3" preload="auto" />
 
-      <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">
-        Habits for Today
-      </h2>
+      <div className="py-4 flex flex-row justify-between items-center">
+        <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">
+          Habits for Today
+        </h2>
+
+        <button onClick={openModal} className="cursor-pointer">
+            <i className="fa-solid fa-plus text-white text-xl bg-[#520dd0] p-2 rounded-lg hover:bg-[#520dd0]/80"></i>
+        </button>
+      </div>
 
       {todaysHabits.length === 0 ? (
         <p className="text-gray-500 italic">No habits scheduled for today.</p>
@@ -195,7 +212,7 @@ useEffect(() => {
                   onCheckedChange={() => toggleHabit(habit.id)}
                   id={`habit-${habit.id}`}
                 >
-                  <Checkbox.Indicator className="text-violet-600">
+                  <Checkbox.Indicator className="text-[#520dd0]">
                     <CheckIcon />
                   </Checkbox.Indicator>
                 </Checkbox.Root>
@@ -222,7 +239,7 @@ useEffect(() => {
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
               <div
-                className="bg-violet-500 h-3 rounded-full transition-all"
+                className="bg-[#520dd0] h-3 rounded-full transition-all"
                 style={{ width: `${progress}%` }}
               />
             </div>

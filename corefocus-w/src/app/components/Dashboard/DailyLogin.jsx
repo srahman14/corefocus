@@ -72,7 +72,7 @@ export default function DailyLoginComponent() {
 
 
   return (
-    <div className="container bg-gray-900/90 rounded-xl shadow text-white ">
+    <div className="container bg-gradient-to-br from-[#070C2F] via-[#110E2D] to-[#13153F] rounded-xl rounded-xl shadow-md text-white p-4">
         <div className="flex justify-end">
             <span className={`flex items-center gap-3 p-8 ${
                 streak === 0 ? "display-none" : "text-yellow-400"
@@ -89,10 +89,10 @@ export default function DailyLoginComponent() {
             return (
                 <li key={weekday} className="text-center text-xl font-semibold">
                 <div className="flex flex-col items-center gap-2 text-xl">
-                    <span className="text-gray-400 text-2xl">{weekday.slice(0, 3)}</span>
+                    <span className="text-white-400 text-2xl">{weekday.slice(0, 3)}</span>
                     <i
                     className={`fa-solid fa-circle-check text-6xl transition ${
-                        isLoggedIn ? "text-violet-500" : "text-gray-600"
+                        isLoggedIn ? "text-violet-500" : "text-white"
                     }`}
                     ></i>
                 </div>
