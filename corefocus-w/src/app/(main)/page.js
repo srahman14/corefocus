@@ -115,7 +115,7 @@ export default function Home() {
                 </Link>
                 <Link
                   href="/"
-                  className="rounded-4xl font-semibold tracking-tighter text-xl md:text-2xl transition ease-in-out duration-300 inline-block bg-[#222] hover:bg-[#222]/80 transition-colors duration-300 text-white font-semibold text-xl px-12 py-4 shadow-lg shadow-[#fff]/20"
+                  className="rounded-4xl font-semibold tracking-tighter text-xl md:text-2xl transition ease-in-out duration-300 inline-block bg-[#222] hover:bg-[#222]/80 transition-colors duration-300 text-white font-semibold text-xl px-12 py-4 shadow-lg shadow-[#fff]/10"
                 >
                   Explore Plans
                 </Link>
@@ -139,8 +139,8 @@ export default function Home() {
           </p>
         </header>
 
-    <div className="w-full  px-6 py-16">
-      <div className="max-w-7xl mx-auto flex flex-col gap-24">
+    <div className="w-full px-6 py-16">
+      <div className="max-w-7xl mx-auto flex flex-col gap-28">
 
         {/* Feature Row */}
         <div className="flex flex-col md:flex-row items-center gap-12">
@@ -232,7 +232,7 @@ export default function Home() {
 
           {/* Right Content with Gradient Border */}
           <div className="flex-1 flex justify-center">
-            <div className="pl-[0] pb-[0] bg-gradient-to-br from-purple-500 via-pink-500 to-indigo-500 rounded-2xl">
+            <div className="shadow-5xl shadow-[#0f172a] rounded-2xl">
               <div className="bg-[#0f172a] rounded-2xl overflow-hidden">
                 <img
                   src="/habit_tracker.png"
