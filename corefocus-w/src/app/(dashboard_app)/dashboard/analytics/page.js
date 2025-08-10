@@ -61,7 +61,32 @@ export default function AnalyticsPage() {
         <div className="px-8 pt-6">
             <h1 className="text-4xl text-white font-bold mb-6">Analytics</h1>
         </div>
-
+        
+        <h3 className="text-xl text-white font-bold">August</h3>    
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
+          <div className="bg-gradient-to-br from-[#520dd0] to-[#500DCA] p-6 rounded-2xl shadow-lg">
+            <h3 className="text-sm text-violet-200 font-medium">
+              Total Habits
+            </h3>
+            <p className="text-3xl font-bold text-white mt-2">12</p>
+          </div>
+          <div className="bg-[#1f1a4a]/70 backdrop-blur-md border border-purple-900/40 p-6 rounded-2xl shadow-lg">
+            <h3 className="text-sm text-violet-200 font-medium">Focus Hours</h3>
+            <p className="text-3xl font-bold text-white mt-2">48h</p>
+          </div>
+          <div className="bg-[#1f1a4a]/70 backdrop-blur-md border border-purple-900/40 p-6 rounded-2xl shadow-lg">
+            <h3 className="text-sm text-violet-200 font-medium">
+              Goals Completed
+            </h3>
+            <p className="text-3xl font-bold text-white mt-2">7</p>
+          </div>
+          <div className="bg-[#1f1a4a]/70 backdrop-blur-md border border-purple-900/40 p-6 rounded-2xl shadow-lg">
+            <h3 className="text-sm text-violet-200 font-medium">
+              Current Streak
+            </h3>
+            <p className="text-3xl font-bold text-white mt-2">15 days</p>
+          </div>
+        </div>
         <div className="p-4 md:p-6 lg:p-8 space-y-6">
             <div className="flex flex-col lg:flex-row gap-6">
                 <div className="w-full lg:w-1/2">
