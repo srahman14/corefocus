@@ -15,7 +15,7 @@ export default function Dashboard() {
   const router = useRouter();
   const { isDark, toggleTheme } = useThemeStore();
   const { currentUser, userData, loading, logout } = useAuth();
-  const today = new Date().toUTCString();
+  // const today = new Date().toUTCString();
   // console.log("Current User: ", currentUser.uid)
   // console.log("Current data: ", userData)
 
@@ -49,7 +49,7 @@ export default function Dashboard() {
             <span className="font-bold hover:underline">Dashboard</span>
           </h1>
           <h1>
-            {today}
+            Date goes here
           </h1>
         </div>
         <div className="flex flex-row items-center gap-4 text-violet-400">
