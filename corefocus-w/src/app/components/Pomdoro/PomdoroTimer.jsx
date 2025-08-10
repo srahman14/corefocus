@@ -1,22 +1,26 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { CircularProgressbarWithChildren, buildStyles } from "react-circular-progressbar";
+import {
+  CircularProgressbarWithChildren,
+  buildStyles,
+} from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 export default function PomodoroTimer() {
-  const [focusDuration, setFocusDuration] = useState(25); // in minutes
-  const [breakDuration, setBreakDuration] = useState(5); // in minutes
-
+  // in minutes
+  const [focusDuration, setFocusDuration] = useState(25);
+  const [breakDuration, setBreakDuration] = useState(5);
+  // in seconds
   const [timeLeft, setTimeLeft] = useState(focusDuration * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [isFocusMode, setIsFocusMode] = useState(true);
   const intervalRef = useRef(null);
-
+  // sounds
   const startSound = useRef(null);
   const switchSound = useRef(null);
   const stopSound = useRef(null);
-
+  // converting into seconds
   const totalDuration = isFocusMode ? focusDuration * 60 : breakDuration * 60;
   const percentage = ((totalDuration - timeLeft) / totalDuration) * 100;
 
@@ -101,7 +105,9 @@ export default function PomodoroTimer() {
           })}
         >
           <div className="text-3xl font-mono">{formatTime(timeLeft)}</div>
-          <div className="text-sm mt-1 italic">{isFocusMode ? "Focus" : "Break"}</div>
+          <div className="text-sm mt-1 italic">
+            {isFocusMode ? "Focus" : "Break"}
+          </div>
         </CircularProgressbarWithChildren>
       </div>
 
