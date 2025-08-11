@@ -164,10 +164,10 @@ export default function Home() {
 
           {/* Right Content with Gradient Border */}
           <div className="flex-1 flex justify-center">
-            <div className="pl-[0] pb-[0] bg-gradient-to-br from-purple-500 via-pink-500 to-indigo-500 rounded-2xl">
-              <div className="bg-[#0f172a] rounded-2xl overflow-hidden">
+            <div className="rounded">
+              <div className="bg-[#000] rounded-2xl overflow-hidden">
                 <img
-                  src="/habit_tracker.png"
+                  src="/mon.png"
                   alt="Dashboard preview"
                   className="w-full h-auto"
                 />
