@@ -5,6 +5,7 @@ import AnimatedContent from "@/app/components/AnimatedContent";
 import { useAuth } from "@/app/context/AuthContext";
 import { redirect, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function SignUp() {
   const [Email, setEmail] = useState("");
@@ -158,7 +159,8 @@ export default function SignUp() {
 
                 <div className="flex justify-center items-center mt-12">
                   <p className="w-50 text-center text-gray-200 font-light">
-                    By clicking continue, you agree to our <i className="hover:underline cursor-pointer">Terms of Service</i> and <i className="hover:underline cursor-pointer">Privacy Policy</i>.
+                    Don't have an account? 
+                  <Link href={"/signup"} className="hover:underline">Register here</Link>
                   </p>
                 </div>
             </div>
