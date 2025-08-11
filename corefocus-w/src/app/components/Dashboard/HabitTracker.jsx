@@ -21,9 +21,9 @@ export default function TodaysHabits() {
   const { currentUser, loading } = useAuth();
   const [todaysHabits, setTodaysHabits] = useState([]);
   const [completedHabits, setCompletedHabits] = useState([]);
-  const [todayShort, setTodayShort] = useState(null);
   const notificationSound = useRef(null);
-
+  const { openModal } = useModalStore();
+  
   const fullToShortDayMap = {
     Sunday: "Sun",
     Monday: "Mon",
@@ -34,18 +34,8 @@ export default function TodaysHabits() {
     Saturday: "Sat",
   };
 
-  useEffect(() => {
-    const todayFull = new Date().toLocaleDateString("en-US", { weekday: "long" });
-    setTodayShort(fullToShortDayMap[todayFull]);
-  }, []);
-
-  if (!todayShort) {
-    // Optionally render null or a loader while client date initializes
-    return null;
-  }
-  // const todayFull = new Date().toLocaleDateString("en-US", { weekday: "long" });
-  // const today = fullToShortDayMap[todayFull];
-  const { openModal } = useModalStore();
+  const todayFull = new Date().toLocaleDateString("en-US", { weekday: "long" });
+  const today = fullToShortDayMap[todayFull];
 
 useEffect(() => {
   if (!currentUser) return;
