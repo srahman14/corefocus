@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { db } from "@/app/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore"
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
+import toast from "react-hot-toast";
 
 const defaultTags = ["Educational", "Personal", "Physical", "Mental", "Spiritual", "Family-Related", "Developement", "Reading", "Career-Related", "Financial", "Competitive"]
 
@@ -14,6 +15,7 @@ export default function CreateHabitForm() {
   const [uid, setUid] = useState(null);
   const [tags, setTags] = useState([]);
   const [startDate, setStartDate] = useState(null);
+  const notificationSound = useRef(null);
 
   useEffect(() => {
       const auth = getAuth();
@@ -84,27 +86,31 @@ export default function CreateHabitForm() {
 
         // Debug
         // console.log("📨 Attempting to save habit...");
+        const toastId = toast.loading("Updating goals...");
 
 
         try {
             await addDoc(collection(db, "users", uid, "goals"), {
                 goalName: goalName,
                 goalMotivation: goalMotivation,
-                startDate: startDate,
+                deadline: startDate,
                 tags: tags,
                 createdAt: new Date()
             });
 
             // Debugs
             // console.log("✅ Habit successfully saved to Firestore.");
-            alert("Goal saved successfully!");
+            notificationSound.current?.play();
+            toast.success("Added goal successfully", { id: toastId})
         } catch (error) {
-            console.log("Error saving data", error)
+            toast.error("Failed to add goal", { id: toastId})
+
         }
     };
 
   return (
     <div className="min-w-[10rem] max-w-[40rem]">
+      <audio ref={notificationSound} src="/sounds/notification.mp3" preload="auto" />
       <h2 className="text-4xl tracking-tighter font-semibold">Create Goal</h2>
       <p className="w-140 font-light text-gray-400 text-lg">Establish your long-term goals here which you will therby achieve with habits set in place.</p>
       <hr className="mb-4 bg-gray-300/90 min-h-1 border-none" />
