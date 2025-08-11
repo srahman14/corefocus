@@ -15,9 +15,10 @@ export default function Dashboard() {
   const router = useRouter();
   const { isDark, toggleTheme } = useThemeStore();
   const { currentUser, userData, loading, logout } = useAuth();
+  const [username, setUsername] = useState(null);
   // const today = new Date().toUTCString();
   // console.log("Current User: ", currentUser.uid)
-  // console.log("Current data: ", userData)
+  // console.log("  Current data: ", userData)
 
   useEffect(() => {
     console.log("Current dark mode:", isDark); // SHOULD show on load + toggle
@@ -85,7 +86,7 @@ export default function Dashboard() {
           {/* Welcome Back card */}
           <div className="lg:col-span-1 bg-gradient-to-br from-[#520dd0] to-[#500DCA] rounded-2xl p-6 shadow-lg flex flex-col h-[240px]">
             <h2 className="text-white text-2xl font-bold mb-2">
-              Welcome back, {userData.username}!
+              Welcome back!
             </h2>
             <p className="text-violet-200 text-sm">
               Let’s continue making progress on your goals today.
