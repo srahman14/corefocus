@@ -9,6 +9,7 @@ import DarkVeil from "../components/ui/DarkVeil";
 import Link from "next/link";
 import { useThemeStore } from "../store/useThemeStore";
 import { useState, useEffect, useRef} from "react";
+import { Highlighter } from "../components/magicui/highlighter";
 
 export default function Home() {
   const { isDark, toggleTheme } = useThemeStore();
@@ -87,8 +88,8 @@ export default function Home() {
               className="p-17 rounded-lg"
               // style={{
               //   backgroundImage: `
-              //     linear-gradient(to right, rgba(255, 255, 255, 0.33) 1px, transparent 1px),
-              //     linear-gradient(to bottom, rgba(255, 255, 255, 0.45) 1px, transparent 1px)
+              //     linear-gradient(to right, rgba(255, 255, 255, 0.67) 2px, transparent 1px),
+              //     linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 2px, transparent 1px)
               //   `,
               //   backgroundSize: "90px 90px",
               // }}
@@ -96,9 +97,10 @@ export default function Home() {
               <div>
                 <h1 className="font-bold text-center text-5xl md:text-6xl lg:text-7xl mb-6 tracking-tighter">
                   master your {" "}
-                  <i className="underline decoration-[#520dd0] rounded">habits</i> <br />
-                  achieve what  {" "}
-                  <i className="underline decoration-[#520dd0] rounded">matters</i>
+                  <Highlighter action="highlight" color="#520dd0" animationDuration={800} >habits</Highlighter>
+                  <br />
+                  achieve what {" "}
+                  <Highlighter action="highlight" color="#520dd0" animationDuration={700} iterations={3}>matters</Highlighter>
                 </h1>
                 {/* <p className="font-light text-3xl md:text-4xl lg:text-4xl mb-12 tracking-tight text-white text-center">
                   build consistent routines, align your actions with your goals,
@@ -109,6 +111,7 @@ export default function Home() {
               <div className="flex mt-15 x-space-4 justify-center">
                 <Link
                   href="/signup"
+                  prefetch={true}
                   className="mr-4 rounded-4xl font-semibold tracking-tighter text-xl md:text-2xl transition ease-in-out duration-300 inline-block bg-[#520dd0] hover:bg-[#7c53ff] transition-colors duration-300 text-white font-semibold text-xl px-12 py-4 shadow-xl shadow-[#520dd0]/40"
                 >
                   Get Started
@@ -132,7 +135,8 @@ export default function Home() {
       <section className="container flex flex-col justify-center px-8 py-16">
         <header className="flex flex-row items-center justify-between w-full mb-12 px-4">
           <h1 className="font-bold text-6xl">
-            our key <i className="tracking-tighter text-[#520dd0]">features</i>
+            our key {" "}
+            <Highlighter action="highlight" strokeWidth={"6px"} color="#520dd0" iterations={1}><p className="tracking-tighter">features</p></Highlighter>  
           </h1>
           <p className="font-light text-xl text-gray-300 max-w-md">
             Designed to help you stay on track, effortlessly
@@ -350,9 +354,12 @@ export default function Home() {
           <div className="flex flex-col items-center gap-6">
             <h1 className="text-5xl font-bold text-center">Ready to <span className="text-[#fff]">begin?</span></h1>
             <p className="text-white/70 max-w-sm text-center text-lg px-4">Start your journey towards mastering your habits, take the first step today!</p>
-            <button className="rounded-4xl font-semibold tracking-tighter text-xl md:text-2xl transition ease-in-out duration-300 inline-block bg-[#222] hover:bg-[#222]/80 transition-colors duration-300 text-white font-semibold text-xl px-12 py-4 shadow-lg shadow-[#fff]/10 cursor-pointer">
-              Get started now
-            </button>
+            <Link href={"/signup"} className="rounded-4xl font-semibold tracking-tighter text-xl md:text-2xl transition ease-in-out duration-300 inline-block bg-[#222] hover:bg-[#222]/80 transition-colors duration-300 text-white font-semibold text-xl px-12 py-4 shadow-lg shadow-[#fff]/10 cursor-pointer">
+              <span className="">
+                <p className="inline-block mr-4">Get started now</p>
+                <i className="fa-solid fa-beat-fade fa-angles-right text-xl"></i>
+              </span>
+            </Link>
           </div>
         </div>
       </footer>
