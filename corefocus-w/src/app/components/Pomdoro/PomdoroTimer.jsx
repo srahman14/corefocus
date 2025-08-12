@@ -100,7 +100,7 @@ export default function PomodoroTimer() {
         <CircularProgressbarWithChildren
           value={percentage}
           styles={buildStyles({
-            pathColor: isFocusMode ? "#8e51ff" : "#bda0f3ff",
+            pathColor: isFocusMode ? "#7E4E9E" : "#bda0f3ff",
             trailColor: "#333",
           })}
         >
@@ -115,14 +115,14 @@ export default function PomodoroTimer() {
       <div className="flex gap-4">
         <button
           onClick={handleStartPause}
-          className="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 transition"
+          className="px-4 py-2 cursor-pointer bg-[#B19CD7] hover:bg-[#B19CD7]/50 dark:bg-blue-600 rounded dark:hover:bg-blue-700 transition duration-300 ease-in-out"
         >
           {isRunning ? "Pause" : "Start"}
         </button>
 
         <button
           onClick={handleReset}
-          className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-800 transition"
+          className="px-4 py-2 cursor-pointer bg-gray-700 rounded hover:bg-gray-800 transition duration-300 ease-in-out"
         >
           Reset
         </button>
@@ -130,7 +130,7 @@ export default function PomodoroTimer() {
         {!isFocusMode && (
           <button
             onClick={handleJumpToFocus}
-            className="px-4 py-2 bg-green-600 rounded hover:bg-green-700 transition"
+            className="px-4 py-2 cursor-pointer bg-[#7E4E9E] rounded hover:bg-[#7E4E9E]/70 transition duration-300 ease-in-out"
           >
             Start Focus Now
           </button>
