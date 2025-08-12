@@ -49,6 +49,7 @@
   stroke-width: 2px;
   fill: #7c3aed; 
 }
+
 /* 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -158,6 +159,38 @@
 }
 
 @layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+} */
+
+::view-transition-old(root), ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+/* 
+---break--- */
+
+/* @theme inline {
+  --animate-orbit: orbit calc(var(--duration)*1s) linear infinite;
+  @keyframes orbit {
+  0% {
+    transform: rotate(calc(var(--angle) * 1deg)) translateY(calc(var(--radius) * 1px)) rotate(calc(var(--angle) * -1deg));
+    }
+  100% {
+    transform: rotate(calc(var(--angle) * 1deg + 360deg)) translateY(calc(var(--radius) * 1px)) rotate(calc((var(--angle) * -1deg) - 360deg));
+    }
+  }
+} */
+
+/* 
+---break--- */
+
+/* @layer base {
   * {
     @apply border-border outline-ring/50;
   }
