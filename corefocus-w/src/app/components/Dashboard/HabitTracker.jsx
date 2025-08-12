@@ -172,17 +172,17 @@ useEffect(() => {
     );
   }
 
-  return (
-    <div className="h-full p-4 bg-gradient-to-br from-[#070C2F] via-[#110E2D] to-[#13153F] rounded-xl shadow-md">
+  return ( 
+    <div className="h-full rounded-xl shadow-md p-4 bg-gradient-to-br from-[#C0AFE2] via-[#CEC2EB] to-[#C0AFE2] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F]">
       <audio ref={notificationSound} src="/sounds/notification.mp3" preload="auto" />
 
       <div className="py-4 flex flex-row justify-between items-center">
-        <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">
+        <h2 className="text-xl font-bold mb-4 dark:text-white">
           Habits for Today
         </h2>
 
         <button onClick={openModal} className="cursor-pointer">
-            <i className="fa-solid fa-plus text-white text-xl bg-[#520dd0] p-2 rounded-lg hover:bg-[#520dd0]/80"></i>
+            <i className="fa-solid fa-plus text-white text-xl bg-[#7E4E9E] dark:bg-[#520dd0] p-2 rounded-lg hover:bg-[#520dd0]/80"></i>
         </button>
       </div>
 
@@ -202,7 +202,7 @@ useEffect(() => {
                   onCheckedChange={() => toggleHabit(habit.id)}
                   id={`habit-${habit.id}`}
                 >
-                  <Checkbox.Indicator className="text-[#520dd0]">
+                  <Checkbox.Indicator className="text-[#7E4E9E] dark:text-[#520dd0]">
                     <CheckIcon />
                   </Checkbox.Indicator>
                 </Checkbox.Root>
@@ -211,7 +211,7 @@ useEffect(() => {
                   className={`text-lg select-none cursor-pointer ${
                     completedHabits.includes(habit.id)
                       ? "line-through text-gray-400"
-                      : "text-gray-800 dark:text-white"
+                      : "text-white"
                   }`}
                 >
                   {habit.habitName}
@@ -229,7 +229,7 @@ useEffect(() => {
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
               <div
-                className="bg-[#520dd0] h-3 rounded-full transition-all"
+                className="bg-[#7E4E9E] dark:bg-[#520dd0] h-3 rounded-full transition-all"
                 style={{ width: `${progress}%` }}
               />
             </div>
