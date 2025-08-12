@@ -53,7 +53,7 @@ export default function Navbar() {
             <Link href="/">Plans</Link>
           </li>
           <li className="hover:text-[#b087fa]/60 text-[#b087fa] transition-all duration-300 ease-in-out cursor-pointer font-semibold tracking-tighter text-xl p-1">
-            <Link href="/login">Login</Link>
+            <Link href="/login" prefetch={true}>Login</Link>
           </li>
           {/* <button
           onClick={toggleTheme}
