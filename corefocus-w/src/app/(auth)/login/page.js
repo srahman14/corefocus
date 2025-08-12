@@ -160,7 +160,7 @@ export default function SignUp() {
                 <div className="flex justify-center items-center mt-12">
                   <p className="w-50 text-center text-gray-200 font-light">
                     Don't have an account? 
-                  <Link href={"/signup"} className="hover:underline">Register here</Link>
+                    <Link href={"/signup"} className="hover:underline">Register here</Link>
                   </p>
                 </div>
             </div>
