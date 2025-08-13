@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import React from "react";
+import "./orbiting-circles.css";
 
 export function OrbitingCircles({
   className,
