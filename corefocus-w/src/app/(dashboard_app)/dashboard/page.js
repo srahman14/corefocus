@@ -43,11 +43,7 @@ export default function Dashboard() {
 
   return (
     // bg-gradient-to-br from-[#f5f3ff] via-[#ede9fe] to-[#e0e7ff]
-    <main className="flex h-full min-h-screen flex-col overflow-y-auto
-    bg-gradient-to-br 
-    from-[#B19CD7] via-[#EBE8FC] to-[#C0AFE2] 
-    dark:from-[#1a1443] dark:via-[#110E2D] dark:to-[#0B091A]
-  ">
+    <main className="flex h-full min-h-screen flex-col overflow-y-auto bg-gradient-to-br from-[#B19CD7] via-[#EBE8FC] to-[#C0AFE2] dark:from-[#0B091A] dark:via-[#110E2D] dark:to-[#0B091A]">
       {/* Topbar */}
       <div className="w-full flex justify-between items-center p-6">
         <div className="text-white ">
@@ -96,7 +92,7 @@ export default function Dashboard() {
         {/* Second row */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Welcome Back card */}
-          <div className="lg:col-span-1 bg-gradient-to-br from-[#CE9AD9] to-[#B19CD7] dark:from-[#520dd0] to-[#500DCA] rounded-2xl p-6 shadow-lg flex flex-col h-[240px]">
+          <div className="lg:col-span-1 bg-gradient-to-br from-[#CE9AD9] to-[#B19CD7] dark:from-[#520dd0] dark:to-[#500DCA] rounded-2xl p-6 shadow-lg flex flex-col h-[240px]">
             <h2 className="text-violet-100 dark:text-white text-2xl font-bold mb-2">
               Welcome back!
             </h2>
