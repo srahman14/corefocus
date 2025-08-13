@@ -12,10 +12,32 @@ import { db } from "@/app/firebase";
 import { Timestamp } from "firebase/firestore";
 import { OrbitingCircles } from "../magicui/orbiting-circles";
 import { File, Settings, Search } from "lucide-react";
+import * as Tooltip from "@radix-ui/react-tooltip"
 
 export default function GoalBoard() {
   const { currentUser, loading } = useAuth();
   const [showGoals, setShowGoals] = useState([]);
+  const renderIcon = (Icon, label) => (
+    <Tooltip.Provider delayDuration={150}>
+      <Tooltip.Root>
+        <Tooltip.Trigger asChild>
+          <div className="group cursor-pointer">
+            <Icon />
+          </div>
+        </Tooltip.Trigger>
+        <Tooltip.Portal>
+          <Tooltip.Content
+            side="top"
+            sideOffset={8}
+            className="rounded bg-black text-white px-2 py-1 text-xs shadow-lg"
+          >
+            {label}
+            <Tooltip.Arrow className="fill-black" />
+          </Tooltip.Content>
+        </Tooltip.Portal>
+      </Tooltip.Root>
+    </Tooltip.Provider>
+  );
 
   useEffect(() => {
     if (!currentUser) return;
@@ -67,17 +89,20 @@ export default function GoalBoard() {
         );
       })}
       </ul> */}
-        <div className="relative overflow-hidden h-[500px] w-full">
+      <div className="relative h-[500px] w-[500px] mx-auto flex items-center justify-center">
+        {/* Outer shell */}
         <OrbitingCircles>
-          <File />
-          <Settings />
-          <File />
+          {renderIcon(File, "File")}
+          {renderIcon(Settings, "Settings")}
+          {renderIcon(File, "File")}
         </OrbitingCircles>
+
+        {/* Inner shell */}
         <OrbitingCircles radius={100} reverse>
-          <File />
-          <Settings />
-          <File />
-          <Search />
+          {renderIcon(File, "File")}
+          {renderIcon(Settings, "Settings")}
+          {renderIcon(File, "File")}
+          {renderIcon(Search, "Search")}
         </OrbitingCircles>
       </div>
     </div>
