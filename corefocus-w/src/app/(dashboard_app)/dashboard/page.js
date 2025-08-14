@@ -128,7 +128,6 @@ export default function Dashboard() {
         </div>
 
         <div>
-          <h2 className="text-xl font-semibold mb-2">🎯 Goal Board</h2>
           <GoalBoard />
         </div>
 
