@@ -135,24 +135,23 @@ export default function CreateHabitForm() {
             <div>
               <label className="block text-lg mb-2 font-semibold tracking-tighter">Habit name</label>
 
-              <div className="flex bg-blue-300 rounded-lg overflow-hidden h-16">
+              <div className="flex dark:bg-[#520dd0] rounded-lg overflow-hidden h-16">
                   {/* Icon on the left */}
-                  <div className="flex items-center justify-center px-6 bg-blue-500 text-white mr-2">
+                  <div className="flex items-center justify-center px-6 dark:bg-[#520dd0] text-white mr-2">
                     <i className="fa-solid fa-t text-2xl"></i>
                   </div>
 
 
-                <div className="flex items-center justify-center bg-blue-300 rounded-lg h-full">
+                <div className="flex items-center justify-center dark:bg-[#520dd0]/50 h-full border-l dark:border-l-white/20 p-2">
                   <input required value={habitName} onChange={(e) => setHabitName(e.target.value)} placeholder="e.g. Morning run" className="outline-none text-xl font-semibold"></input>
                 </div>
 
                </div>
             </div>
 
-            <div>
+            {/* <div>
               <label className="block text-lg mb-2 font-semibold tracking-tighter">Habit Related Goal</label>
                 <div className="flex bg-blue-300 rounded-lg overflow-hidden h-16">
-                    {/* Icon on the left */}
                     <div className="flex items-center justify-center px-6 bg-blue-500 text-white mr-2">
                       <i className="fa-solid fa-t text-2xl"></i>
                     </div>
@@ -167,15 +166,15 @@ export default function CreateHabitForm() {
                     </div>
 
                 </div>
-            </div>
+            </div> */}
           </div>
 
           <div>
             <label className="block text-lg font-semibold tracking-tighter mb-2">Habit Frequency</label>
 
-            <div className="flex flex-wrap  rounded-lg overflow-hidden h-16">
+            <div className="flex flex-wrap rounded-lg overflow-hidden h-16">
               {/* Icon on the left */}
-              <div className="flex items-center justify-center px-6 bg-blue-500 text-white">
+              <div className="flex items-center justify-center px-6 dark:bg-[#520dd0] text-white">
                 <i className="fa-solid fa-calendar-week text-2xl"></i>
               </div>
 
@@ -187,7 +186,7 @@ export default function CreateHabitForm() {
                     <li
                         key={option}
                         onClick={() => handleToggleItem(option, habitFreq, setHabitFreq)}
-                            className={`h-full flex items-center px-4 hover:bg-blue-300 cursor-pointer font-semibold tracking-tighter text-md duration-300 ease-in transition-all
+                            className={`h-full flex items-center px-4 dark:hover:bg-violet-200/90 hover:text-black cursor-pointer font-semibold tracking-tighter text-md duration-300 ease-in transition-all
                             ${darkMode 
                                 ? isSelected 
                                 ? "bg-blue-300 text-white" 
