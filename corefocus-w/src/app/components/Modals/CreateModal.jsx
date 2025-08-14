@@ -25,7 +25,7 @@ export default function CreateModal({ onClose }) {
 
 return (
     <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/20">
-      <div className="bg-white min-h-[60rem] min-w-[40rem] p-6 rounded-xl shadow-xl relative">
+      <div className="bg-gradient-to-br from-[#C0AFE2] via-[#CEC2EB] to-[#C0AFE2] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F] dark:text-white min-h-[60rem] min-w-[40rem] p-6 rounded-xl shadow-xl relative">
         {/* Close button */}
         <button
           onClick={closeModal}
@@ -39,7 +39,7 @@ return (
           <button
             onClick={() => setActiveTab("habit")}
             className={`px-4 py-2 rounded-lg font-semibold cursor-pointer transition-all ease-in-out duration-300 ${
-              activeTab === "habit" ? "bg-blue-600 text-white" : "bg-gray-100"
+              activeTab === "habit" ? "bg-[#520dd0] text-white" : "bg-gray-100 dark:text-black"
             }`}
           >
             <span>
@@ -50,7 +50,7 @@ return (
           <button
             onClick={() => setActiveTab("goal")}
             className={`px-4 py-2 rounded-lg font-semibold cursor-pointer transition-all ease-in-out duration-300 ${
-              activeTab === "goal" ? "bg-blue-600 text-white" : "bg-gray-100"
+              activeTab === "goal" ? "bg-[#520dd0] text-white" : "bg-gray-100 dark:text-black"
             }`}
           >
             <span>
@@ -58,20 +58,20 @@ return (
               <p className="inline-block ml-2">Goals</p>
             </span>
           </button>
-          <button
+          {/* <button
             onClick={() => setActiveTab("journal")}
             className={`px-4 py-2 rounded-lg font-semibold cursor-pointer transition-all ease-in-out duration-300 ${
               activeTab === "journal" ? "bg-blue-600 text-white" : "bg-gray-100"
             }`}
           >
             Journal
-          </button>
+          </button> */}
         </div>
 
         {/* Render active form */}
         {activeTab === "habit" && <CreateHabitForm />}
         {activeTab === "goal" && <CreateGoalForm />}
-        {activeTab === "journal" && <CreateJournalForm />}
+        {/* {activeTab === "journal" && <CreateJournalForm />} */}
       </div>
     </div>
   );
