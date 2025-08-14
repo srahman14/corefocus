@@ -12,11 +12,12 @@ export default function CreateHabitForm() {
   const [darkMode, setDarkMode] = useState(false);
   const [goalName, setGoalName] = useState("");
   const [goalMotivation, setGoalMotivation] = useState("");
+  const [goalPriority, setGoalPriority] = useState(null);
   const [uid, setUid] = useState(null);
   const [tags, setTags] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const notificationSound = useRef(null);
-
+  const priority = ["Low", "Medium", "High"]
   useEffect(() => {
       const auth = getAuth();
       console.log("auth.currentUser UID:", auth.currentUser?.uid);
@@ -56,6 +57,7 @@ export default function CreateHabitForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const toastId = toast.loading("Updating goals...");
 
         if (!uid) {
             console.log("User not auth");
@@ -68,25 +70,23 @@ export default function CreateHabitForm() {
 
         if (!isGoalnameValid) {
             alert("Please enter a valid goal name (min 5 characters).");
-            console.log("Goal name not set")
+            toast.error("Goal name not set")
             return;
         }
         
         if (startDate === null) {
           alert("Please select a date (deadline for your goal)");
-          console.log("Date not set")
+          toast.error("Deadline date not chosen")
           return;
         }
 
         if (tags.length === 0) {
-            alert("Please select at least one tag")
-            console.log("Tags chose not selected")
+            toast.error("At least choose one tag")
             return;
         }
 
         // Debug
         // console.log("📨 Attempting to save habit...");
-        const toastId = toast.loading("Updating goals...");
 
 
         try {
@@ -94,6 +94,7 @@ export default function CreateHabitForm() {
                 goalName: goalName,
                 goalMotivation: goalMotivation,
                 deadline: startDate,
+                goalPriority: goalPriority,
                 tags: tags,
                 createdAt: new Date()
             });
@@ -182,6 +183,42 @@ export default function CreateHabitForm() {
                 </div>
 
                </div>
+            </div>
+
+              <div>
+                <label className="block text-lg font-semibold tracking-tighter mb-2">Goal Priority</label>
+
+
+                <div className="flex bg-blue-300 rounded-lg overflow-hidden h-16">
+                {/* Icon on the left */}
+                <div className="flex items-center justify-center px-6 bg-blue-500 text-white">
+                  <i className="fa-solid fa-cubes-stacked text-2xl"></i>
+                </div>
+
+                {/* Days on the right */}
+                <ul className="flex items-center gap-0 justify-start h-full">
+                  {priority.map((level) => {
+                    const isSelected = goalPriority === level;
+
+                    const bgClass = {
+                      Low: isSelected ? "bg-green-400": "bg-green-200 hover:bg-green-300",
+                      Medium: isSelected ? "bg-orange-400" : "bg-orange-200 hover:bg-orange-300",
+                      High: isSelected ? "bg-red-400" : "bg-red-200 hover:bg-red-300"
+                    }[level];
+
+                    return (
+                      <li
+                        key={level}
+                        onClick={() => setGoalPriority(level)}
+                        className={`h-full flex items-center px-4 cursor-pointer font-semibold tracking-tighter text-md ${bgClass}`}
+                      >
+                        {level}
+                      </li>
+
+                    )
+                  })}
+                </ul>
+              </div>
             </div>
           </div>
 
