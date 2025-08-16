@@ -2,71 +2,102 @@ import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/app/context/AuthContext";
 import { db } from "@/app/firebase";
-import { Timestamp } from "firebase/firestore";
+import { Timestamp, onSnapshot } from "firebase/firestore";
 import { OrbitingCircles } from "../magicui/orbiting-circles";
-import { File, Settings, Search, PersonStanding, Smile,  } from "lucide-react";
+import { CircleDot, Clock, Trophy  } from "lucide-react";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import * as Dialog from "@radix-ui/react-dialog";
+
+const calculateDaysRemaining = (deadlineTimestamp) => {
+  if (!deadlineTimestamp || !(deadlineTimestamp instanceof Timestamp)) return Infinity;
+  const deadlineDate = deadlineTimestamp.toDate();
+  const now = new Date();
+  const diffInTime = deadlineDate.getTime() - now.getTime();
+  const diffInDays = Math.ceil(diffInTime / (1000 * 3600 * 24));
+  return diffInDays;
+};
+
+const priorityConfig = {
+  High: { color: "text-[#7B0099] dark:text-red-500", icon: CircleDot },
+  Medium: { color: "text-[#6C46A2] #dark:text-orange-500", icon: Clock },
+  Low: { color: "text-[#A18CD1] dark:text-green-500", icon: Trophy },
+};
 
 export default function GoalBoard() {
   const { currentUser } = useAuth();
   const [showGoals, setShowGoals] = useState([]);
   const [selectedGoal, setSelectedGoal] = useState(null);
+  const [goalsByDeadline, setGoalsByDeadline] = useState({
+    outer: [],
+    middle: [],
+    inner: [],
+  });
 
   // Fetch goals from Firestore
-  useEffect(() => {
+   useEffect(() => {
     if (!currentUser) return;
-    const fetchGoals = async () => {
-      try {
-        const docSnap = await getDocs(
-          collection(db, "users", currentUser.uid, "goals")
-        );
-        const goals = [];
-        docSnap.forEach((doc) => {
-          const data = doc.data();
 
-          // Auto-calculate progress if start & deadline exist
+    const goalsRef = collection(db, "users", currentUser.uid, "goals");
+    const unsubscribe = onSnapshot(
+      goalsRef,
+      (snapshot) => {
+        const fetchedGoals = [];
+        snapshot.forEach((doc) => {
+          const data = doc.data();
           let progress = 0;
-          // console.log("Created At: ", data.createdAt)
-          // console.log("Deadline: ", data.deadline)
           if (data.createdAt && data.deadline) {
-            const start = data.createdAt instanceof Timestamp
-              ? data.createdAt.toDate()
-              : new Date(data.createdAt);
-            const end = data.deadline instanceof Timestamp
-              ? data.deadline.toDate()
-              : new Date(data.deadline);
+            const start = data.createdAt instanceof Timestamp ? data.createdAt.toDate() : new Date(data.createdAt);
+            const end = data.deadline instanceof Timestamp ? data.deadline.toDate() : new Date(data.deadline);
             const now = new Date();
             if (now >= end) {
               progress = 100;
             } else if (now <= start) {
               progress = 0;
             } else {
-              progress = Math.min(
-                100,
-                Math.round(((now - start) / (end - start)) * 100)
-              );
+              progress = Math.min(100, Math.round(((now - start) / (end - start)) * 100));
             }
           }
-
-          goals.push({ id: doc.id, progress, ...data });
+          fetchedGoals.push({ id: doc.id, progress, ...data });
         });
-        setShowGoals(goals);
-      } catch (err) {
-        console.error("Error fetching goals", err);
-      }
-    };
 
-    fetchGoals();
+        // Group goals by deadline
+        const outerRingGoals = [];
+        const middleRingGoals = [];
+        const innerRingGoals = [];
+
+        fetchedGoals.forEach((goal) => {
+          const daysLeft = calculateDaysRemaining(goal.deadline);
+          if (daysLeft <= 30) {
+            outerRingGoals.push(goal);
+          } else if (daysLeft > 30 && daysLeft <= 90) {
+            middleRingGoals.push(goal);
+          } else {
+            innerRingGoals.push(goal);
+          }
+        });
+
+        setGoalsByDeadline({
+          outer: outerRingGoals,
+          middle: middleRingGoals,
+          inner: innerRingGoals,
+        });
+      },
+      (error) => {
+        console.error("Error fetching goals in real-time", error);
+      }
+    );
+
+    // Clean up the listener on component unmount
+    return () => unsubscribe();
   }, [currentUser]);
 
   // Icon with tooltip & click handler
-  const renderIcon = (Icon, label, goalData) => (
+  const renderIcon = (Icon, label, goalData, colorClass) => (
     <Tooltip.Provider delayDuration={150}>
       <Tooltip.Root>
         <Tooltip.Trigger asChild>
           <div
-            className="group cursor-pointer"
+            className={`group cursor-pointer ${colorClass}`}
             onClick={() => setSelectedGoal(goalData || { title: label })}
           >
             <Icon />
@@ -94,19 +125,42 @@ export default function GoalBoard() {
 
         <div className="flex flex-row flex-wrap gap-4 p-6">
           <div className="relative h-[500px] w-[500px] mx-auto flex items-center justify-center">
-            {/* Outer shell */}
-            <OrbitingCircles>
-              {renderIcon(PersonStanding, showGoals[0].goalName, showGoals[0])}
-              {renderIcon(Smile, showGoals[1].goalName, showGoals[1])}
+            {/* Outer shell (Urgent: < 30 days) */}
+            <OrbitingCircles speed={0.7} radius={180}>
+              {goalsByDeadline.outer.map((goal) => {
+                const config = priorityConfig[goal.goalPriority] || priorityConfig.High;
+                return (
+                  <div key={goal.id}>
+                    {renderIcon(config.icon, goal.goalName, goal, config.color)}
+                  </div>
+                );
+              })}
             </OrbitingCircles>
 
-            {/* Inner shell */}
-            <OrbitingCircles radius={100} reverse>
-              {renderIcon(File, "File", showGoals[3])}
-              {renderIcon(Settings, "Settings", showGoals[4])}
-              {renderIcon(File, "File", showGoals[5])}
-              {renderIcon(Search, "Search", showGoals[6])}
+            {/* Middle shell (Medium: 31–90 days) */}
+            <OrbitingCircles radius={120} speed={0.5} reverse={true}>
+              {goalsByDeadline.middle.map((goal) => {
+                const config = priorityConfig[goal.goalPriority] || priorityConfig.Medium;
+                return (
+                  <div key={goal.id}>
+                    {renderIcon(config.icon, goal.goalName, goal, config.color)}
+                  </div>
+                );
+              })}
             </OrbitingCircles>
+
+            {/* Inner shell (Long-term: > 90 days) */}
+            <OrbitingCircles radius={60} speed={0.3}>
+              {goalsByDeadline.inner.map((goal) => {
+                const config = priorityConfig[goal.goalPriority] || priorityConfig.Low;
+                return (
+                  <div key={goal.id}>
+                    {renderIcon(config.icon, goal.goalName, goal, config.color)}
+                  </div>
+                );
+              })}
+            </OrbitingCircles>
+
           </div>
         </div>
       </div>
