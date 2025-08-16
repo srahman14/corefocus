@@ -6,8 +6,19 @@ import {
   buildStyles,
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import * as Dialog from "@radix-ui/react-dialog";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "@/app/firebase";
+import { useAuth } from "@/app/context/AuthContext";
 
 export default function PomodoroTimer() {
+  const { currentUser } = useAuth();
+  const [userId, setUserId] = useState(null);
+  // for naming sessions
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [sessionName, setSessionName] = useState("");
+  // track start time of current session
+  const [sessionStartTime, setSessionStartTime] = useState(null);
   // in minutes
   const [focusDuration, setFocusDuration] = useState(25);
   const [breakDuration, setBreakDuration] = useState(5);
@@ -32,6 +43,10 @@ export default function PomodoroTimer() {
 
   // ⏱ Timer countdown
   useEffect(() => {
+    if (isRunning && !sessionStartTime) {
+      setSessionStartTime(new Date());
+    }
+
     if (isRunning && timeLeft > 0) {
       intervalRef.current = setInterval(() => {
         setTimeLeft((prev) => prev - 1);
@@ -39,14 +54,41 @@ export default function PomodoroTimer() {
     }
 
     if (timeLeft === 0 && isRunning) {
-      switchSound.current?.play();
-      setIsRunning(false); // stop timer on switch
+
+      const saveSession = async () => {
+        if (!currentUser.uid) {
+          console.log("User not auth, cannot save session");
+          return;
+        }
+        try {
+            const sessionData = {
+              sessionName: sessionName || (isFocusMode ? "Focus Session" : "Break Session"),
+              duration: isFocusMode ? focusDuration : breakDuration,
+              startTime: sessionStartTime,
+              endTime: serverTimestamp(),
+              type: isFocusMode ? "Focus" : "Break",
+            };
+
+            // Use a Firestore reference to the subcollection
+            const sessionsCollectionRef = collection(db, "users", currentUser.uid, "pomodoroSessions");
+            await addDoc(sessionsCollectionRef, sessionData);
+
+            console.log("Session saved successfully!");
+          } catch (error) {
+            console.error("Error saving session:", error);
+          }
+      };
+      saveSession();
+
+      // Switch modes
+      setIsRunning(false);
       setIsFocusMode((prev) => !prev);
       setTimeLeft(!isFocusMode ? focusDuration * 60 : breakDuration * 60);
+      setSessionStartTime(null); // Reset start time for the next session
     }
 
     return () => clearInterval(intervalRef.current);
-  }, [isRunning, timeLeft, isFocusMode, focusDuration, breakDuration]);
+  }, [isRunning, timeLeft, isFocusMode, focusDuration, breakDuration, sessionStartTime, sessionName]);
 
   const handleStartPause = () => {
     if (timeLeft === 0) return;
@@ -94,6 +136,48 @@ export default function PomodoroTimer() {
       <audio ref={startSound} src="/sounds/start.mp3" preload="auto" />
       <audio ref={switchSound} src="/sounds/switch.mp3" preload="auto" />
       <audio ref={stopSound} src="/sounds/stop.mp3" preload="auto" />
+      {/* Input for session names */}
+      <Dialog.Root open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <Dialog.Trigger asChild>
+          <button className="text-xl font-bold cursor-pointer hover:text-white/50">
+            {sessionName || "Click to name your session"}
+          </button>
+        </Dialog.Trigger>
+        <Dialog.Portal>
+          <Dialog.Overlay className="bg-black/50 fixed inset-0 z-10" />
+          <Dialog.Content className="fixed top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 p-6 rounded-lg shadow-lg z-20 w-1/2">
+            <Dialog.Title className="text-white text-lg font-bold">
+              Name Your Session
+            </Dialog.Title>
+            <div className="mt-4">
+              <input
+                type="text"
+                value={sessionName}
+                onChange={(e) => setSessionName(e.target.value)}
+                placeholder="e.g., 'Writing Blog Post'"
+                className="w-full p-2 rounded bg-gray-700 text-white outline-none"
+              />
+            </div>
+            <div className="mt-4 flex justify-center gap-2">
+              <Dialog.Close asChild>
+                <button className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600 transition">
+                  Cancel
+                </button>
+              </Dialog.Close>
+              <Dialog.Close asChild>
+                <button
+                  onClick={() => {
+                    // Logic to save the name if needed, though it's already updated by onChange
+                  }}
+                  className="px-4 py-2 bg-[#7E4E9E] rounded hover:bg-[#7E4E9E]/70 transition"
+                >
+                  Save
+                </button>
+              </Dialog.Close>
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
 
       {/* Progress */}
       <div className="w-64 h-64">
