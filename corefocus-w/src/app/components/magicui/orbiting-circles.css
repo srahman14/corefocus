@@ -1,3 +1,5 @@
+/* orbiting-circles.css */
+
 @layer utilities {
   @keyframes orbit {
     0% {
@@ -17,16 +19,12 @@
     transform-origin: center center;
   }
 
-  .orbit-paused:hover .orbit-item {
-  animation-play-state: paused !important;
-}
+  /* ✅ ADD THIS CLASS */
+  .animate-orbit-reverse {
+    animation-direction: reverse;
+  }
 
   .animate-orbit:hover {
     animation-play-state: paused;
-  }
-
-
-  .animation-direction\:reverse {
-    animation-direction: reverse;
   }
 }

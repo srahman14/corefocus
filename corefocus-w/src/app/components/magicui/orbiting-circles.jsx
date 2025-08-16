@@ -1,3 +1,5 @@
+// orbiting-circles.jsx
+
 import { cn } from "@/lib/utils";
 import React from "react";
 import "./orbiting-circles.css";
@@ -5,7 +7,7 @@ import "./orbiting-circles.css";
 export function OrbitingCircles({
   className,
   children,
-  reverse,
+  reverse, // The prop is still used here
   duration = 20,
   radius = 160,
   path = true,
@@ -43,7 +45,8 @@ export function OrbitingCircles({
             }
             className={cn(
               `absolute flex size-[var(--icon-size)] transform-gpu animate-orbit items-center justify-center rounded-full`,
-              { "[animation-direction:reverse]": reverse },
+              // ✅ CHANGE THIS PART
+              { "animate-orbit-reverse": reverse },
               className
             )}
             {...props}>
