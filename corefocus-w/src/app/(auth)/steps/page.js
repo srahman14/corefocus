@@ -15,9 +15,23 @@ export default function Steps() {
     const [overallGoal, setOverallGoal] = useState("");
     const [uid, setUid] = useState(null)
     const [usernameError, setUsernameError] = useState("");
-    const { currentUser, loading } = useAuth(); 
+    const { currentUser, loading, userData } = useAuth(); 
 
     const router = useRouter();
+
+    useEffect(() => {
+    if (!loading && !currentUser) {
+        console.log("User not logged in, redirecting");
+        router.push("/");
+    } 
+
+    if (currentUser && userData) {
+        if (userData.completedSteps === true) {
+            router.push("/dashboard")
+        }
+    }
+    
+    }, [loading, currentUser, userData, router]);
 
 
     useEffect(() => {
@@ -100,11 +114,6 @@ export default function Steps() {
     };
 
     const handleSubmit = async () => {
-        if (!uid) {
-            console.log("User not auth");
-            return;
-        }
-        // Final Validation
         const isUsernameValid = 
             username &&
             username.length >= 5 &&
@@ -130,7 +139,7 @@ export default function Steps() {
         }
 
         try {
-            await setDoc(doc(db, "users", uid), {
+            await setDoc(doc(db, "users", currentUser.uid), {
                 username: username,
                 qualifications, qualifications,
                 achieve: achieve,
