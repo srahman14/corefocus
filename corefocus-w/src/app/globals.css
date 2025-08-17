@@ -172,3 +172,24 @@
     mix-blend-mode: normal;
 }
 
+/* Add this to your globals.css or main stylesheet */
+#editorjs .ce-header {
+  font-family: inherit; /* Ensures it uses the same font as the rest of your app */
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+#editorjs h1.ce-header {
+  font-size: 2.25rem; /* 36px - like text-4xl */
+  line-height: 2.5rem;
+}
+
+#editorjs h2.ce-header {
+  font-size: 1.5rem; /* 24px - like text-2xl */
+  line-height: 2rem;
+}
+
+#editorjs h3.ce-header {
+  font-size: 1.25rem; /* 20px - like text-xl */
+  line-height: 1.75rem;
+}
