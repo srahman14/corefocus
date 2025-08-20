@@ -19,7 +19,6 @@
     transform-origin: center center;
   }
 
-  /* ✅ ADD THIS CLASS */
   .animate-orbit-reverse {
     animation-direction: reverse;
   }
