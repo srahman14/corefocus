@@ -172,7 +172,6 @@
     mix-blend-mode: normal;
 }
 
-/* Add this to your globals.css or main stylesheet */
 #editorjs .ce-header {
   font-family: inherit; /* Ensures it uses the same font as the rest of your app */
   font-weight: 700;
@@ -192,4 +191,19 @@
 #editorjs h3.ce-header {
   font-size: 1.25rem; /* 20px - like text-xl */
   line-height: 1.75rem;
+}
+
+@keyframes fadeSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-fadeSlideDown {
+  animation: fadeSlideDown 0.18s ease-out;
 }
