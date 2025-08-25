@@ -22,7 +22,7 @@ export default function Sidebar() {
       // Optional
       // onMouseEnter={() => toggleSidebar(false)}
       // onMouseLeave={() => toggleSidebar(true)}
-      className="h-full bg-[#] dark:bg-[#070A29] text-white z-40 flex flex-col fixed top-0 left-0 shadow-3xl shadow-[#fff]"
+      className="h-full dark:bg-[#070A29] text-white z-40 flex flex-col fixed top-0 left-0 shadow-3xl shadow-[#fff]"
     >
       {/* Menu Items */}
       <div className="flex-1 overflow-y-none mt-4 px-1">
