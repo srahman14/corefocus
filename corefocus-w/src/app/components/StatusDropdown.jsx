@@ -1,58 +1,55 @@
 "use client";
-import * as Select from "@radix-ui/react-select";
-import { ChevronDownIcon, CheckIcon } from "@radix-ui/react-icons";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
+
+const STATUSES = ["Draft", "In Progress", "Completed", "Archived"];
 
 export default function StatusDropdown({ status, setStatus }) {
-  const statuses = [
-    { value: "draft", label: "Draft" },
-    { value: "in-progress", label: "In Progress" },
-    { value: "completed", label: "Completed" },
-  ];
+  const [open, setOpen] = useState(false);
 
   return (
-    <Select.Root value={status} onValueChange={setStatus}>
-      <Select.Trigger
-        className="inline-flex items-center justify-between gap-2 px-4 py-2 rounded-lg bg-none outline-none text-gray-700 hover:bg-gray-200/50 transition-colors duration-200 w-full"
+    <div className="relative w-48">
+      {/* Button */}
+      <button
+        onClick={() => setOpen((prev) => !prev)}
+        className="flex items-center justify-between w-full bg-gray-100 px-4 py-2 rounded-lg text-gray-700 font-medium hover:bg-gray-200 transition"
       >
-        <Select.Value placeholder="Select a status" />
-        <Select.Icon>
-          <ChevronDownIcon className="h-4 w-4 text-gray-500" />
-        </Select.Icon>
-      </Select.Trigger>
+        {status || "Select Status"}
+        <ChevronDownIcon
+          className={`w-5 h-5 ml-2 transition-transform ${
+            open ? "rotate-180" : ""
+          }`}
+        />
+      </button>
 
-      <Select.Portal forceMount>
-        <AnimatePresence>
-          <Select.Content
-            className="w-full overflow-hidden rounded-xl shadow-lg border border-gray-200 bg-white z-50"
-            position="popper"
-            sideOffset={5}
+      {/* Dropdown */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -5, scale: 0.98 }}
+            animate={{ opacity: 1, y: 4, scale: 1 }}
+            exit={{ opacity: 0, y: -5, scale: 0.98 }}
+            transition={{ duration: 0.15 }}
+            className="absolute left-0 top-full mt-2 w-full bg-white rounded-lg shadow-lg border border-gray-200 z-50"
           >
-            <motion.div
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -5 }}
-              transition={{ duration: 0.15, ease: "easeOut" }}
-            >
-              <Select.Viewport className="p-2">
-                {statuses.map((s) => (
-                  <Select.Item
-                    key={s.value}
-                    value={s.value}
-                    className={`flex items-center justify-between px-4 py-2 rounded-md cursor-pointer text-gray-700 transition-colors duration-200 hover:bg-gray-100
-                      ${status === s.value ? "bg-gray-100 font-medium" : ""}`}
-                  >
-                    <Select.ItemText>{s.label}</Select.ItemText>
-                    <Select.ItemIndicator>
-                      <CheckIcon className="h-4 w-4 text-green-600" />
-                    </Select.ItemIndicator>
-                  </Select.Item>
-                ))}
-              </Select.Viewport>
-            </motion.div>
-          </Select.Content>
-        </AnimatePresence>
-      </Select.Portal>
-    </Select.Root>
+            {STATUSES.map((item) => (
+              <button
+                key={item}
+                onClick={() => {
+                  setStatus(item);
+                  setOpen(false);
+                }}
+                className={`w-full text-left px-4 py-2 rounded-md text-gray-700 hover:bg-indigo-100 transition ${
+                  status === item ? "bg-indigo-50 font-semibold" : ""
+                }`}
+              >
+                {item}
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
