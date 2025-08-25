@@ -32,7 +32,7 @@ export default function TagInput({ tags, setTags }) {
   };
 
   return (
-    <div className="flex items-center flex-wrap gap-2 bg-transparent rounded-lg  py-2 min-h-[44px] w-[320px] focus-within:border-blue-400 transition-colors">
+    <div className="flex items-center flex-wrap gap-2 bg-transparent rounded-lg py-2 min-h-[44px] focus-within:border-blue-400 transition-colors">
       <AnimatePresence>
         {tags.map((tag) => (
           <motion.span
@@ -41,7 +41,7 @@ export default function TagInput({ tags, setTags }) {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.7, opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="flex items-center gap-1 bg-blue-200 text-gray-700 px-2 py-1 rounded-md text-sm cursor-default"
+            className="flex items-center gap-1 hover:bg-blue-300/80 cursor-pointer bg-blue-200 text-gray-700 px-2 py-1 rounded-md text-sm duration-200 transition-all"
           >
             {tag}
             <Cross2Icon
