@@ -18,13 +18,14 @@ import StatusDropdown from "@/app/components/StatusDropdown";
 import TagInput from "@/app/components/TagInput";
 import { X } from "lucide-react";
 
-export default function JournalEditor() {
+
+export default function JournalEditor({ journalId }) {
   const editorInstance = useRef(null);
   const journalRef = useRef(null);
   const [title, setTitle] = useState("Untitled Journal");
   const [status, setStatus] = useState("Draft");
   const [tags, setTags] = useState([]);
-  const [createdAt] = useState(new Date());
+  const [createdAt, setCreatedAt] = useState(new Date());
   const [updatedAt, setUpdatedAt] = useState(new Date());
   const [isSaving, setIsSaving] = useState(false);
   const [saveState, setSaveState] = useState("All changes saved");
@@ -34,14 +35,23 @@ export default function JournalEditor() {
   const { currentUser } = useAuth();
 
   /** -------------------------------
-   *  Initialize Journal Reference
+   *  Initialize Journal Ref
    * ------------------------------- */
   useEffect(() => {
-    if (currentUser) {
-      // Cache key for this user's "latest journal"
-      const cachedJournalId = localStorage.getItem("latestJournalId");
+    if (!currentUser) return;
 
-      // If we already have a cached ID, reuse it
+    if (journalId) {
+      // Editing an existing journal
+      journalRef.current = doc(
+        db,
+        "users",
+        currentUser.uid,
+        "journals",
+        journalId
+      );
+    } else {
+      // Creating a new journal
+      const cachedJournalId = localStorage.getItem("latestJournalId");
       if (cachedJournalId) {
         journalRef.current = doc(
           db,
@@ -51,45 +61,29 @@ export default function JournalEditor() {
           cachedJournalId
         );
       } else {
-        // Create a new journal ref with a random Firestore ID
         journalRef.current = doc(
           collection(db, "users", currentUser.uid, "journals")
         );
         localStorage.setItem("latestJournalId", journalRef.current.id);
       }
     }
-  }, [currentUser]);
+  }, [currentUser, journalId]);
 
   /** -------------------------------
-   *  Fetch Journal Data (with Cache)
+   *  Fetch Journal Data
    * ------------------------------- */
   const fetchJournal = useCallback(async () => {
     if (!currentUser || !journalRef.current) return;
 
-    // First try localStorage for faster recovery
-    const cachedData = localStorage.getItem("latestJournalContent");
-    if (cachedData) {
-      try {
-        const parsed = JSON.parse(cachedData);
-        setTitle(parsed.title || "Untitled Journal");
-        setStatus(parsed.status || "Draft");
-        setTags(parsed.tags || []);
-        if (parsed.content && editorInstance.current) {
-          await editorInstance.current.render(parsed.content);
-        }
-      } catch (err) {
-        console.warn("Error parsing cached journal:", err);
-      }
-    }
-
-    // Then fetch from Firestore in case we missed updates
     const snap = await getDoc(journalRef.current);
     if (snap.exists()) {
       const data = snap.data();
       setTitle(data.title || "Untitled Journal");
       setStatus(data.status || "Draft");
       setTags(data.tags || []);
+      setCreatedAt(data.createdAt?.toDate() || new Date());
       setUpdatedAt(data.updatedAt?.toDate() || new Date());
+
       if (data.content && editorInstance.current) {
         await editorInstance.current.render(data.content);
       }
@@ -97,7 +91,7 @@ export default function JournalEditor() {
   }, [currentUser]);
 
   /** -------------------------------
-   *  Initialize EditorJS
+   *  Initialize Editor.js
    * ------------------------------- */
   useEffect(() => {
     if (!editorInstance.current) {
@@ -106,20 +100,14 @@ export default function JournalEditor() {
         autofocus: true,
         placeholder: "Start writing your journal here...",
         tools: {
-          header: {
-            class: Header,
-            inlineToolbar: true,
-            config: {
-              placeholder: "Enter a heading",
-              levels: [1, 2, 3],
-              defaultLevel: 2,
-            },
-          },
+          header: { class: Header, inlineToolbar: true },
           list: { class: List, inlineToolbar: true },
           checklist: { class: Checklist, inlineToolbar: true },
         },
         data: { blocks: [] },
+        onChange: triggerAutoSave, // Link autosave directly
       });
+
       editorInstance.current = editor;
     }
 
@@ -132,7 +120,7 @@ export default function JournalEditor() {
   }, []);
 
   /** -------------------------------
-   *  Save Journal (with Debounce)
+   *  Save Journal (Create/Update)
    * ------------------------------- */
   const saveNow = useCallback(async () => {
     if (!currentUser || !editorInstance.current || !journalRef.current) return;
@@ -140,8 +128,6 @@ export default function JournalEditor() {
     try {
       const editorData = await editorInstance.current.save();
       const newHash = JSON.stringify({ editorData, title, tags, status });
-
-      // Skip save if nothing changed
       if (newHash === lastSavedHash.current) return;
 
       setIsSaving(true);
@@ -152,13 +138,12 @@ export default function JournalEditor() {
         content: editorData,
         tags,
         status,
-        createdAt: serverTimestamp(),
+        createdAt: journalId ? createdAt : serverTimestamp(),
         updatedAt: serverTimestamp(),
       };
 
       await setDoc(journalRef.current, journalData, { merge: true });
 
-      // Update caches
       lastSavedHash.current = newHash;
       localStorage.setItem("latestJournalContent", JSON.stringify(journalData));
 
@@ -169,10 +154,10 @@ export default function JournalEditor() {
       setIsSaving(false);
       setSaveState("Error saving changes");
     }
-  }, [currentUser, title, tags, status]);
+  }, [currentUser, title, tags, status, journalId]);
 
   /** -------------------------------
-   *  Debounced Auto-Save on Change
+   *  Debounced Auto-Save
    * ------------------------------- */
   const triggerAutoSave = useCallback(() => {
     if (saveTimeout.current) clearTimeout(saveTimeout.current);
@@ -186,30 +171,27 @@ export default function JournalEditor() {
     fetchJournal();
   }, [fetchJournal]);
 
-  /** -------------------------------
-   *  UI Rendering
-   * ------------------------------- */
   return (
     <div className="min-h-screen p-10 bg-gray-100">
       <div className="max-w-4xl mx-auto bg-gray-200 p-10 rounded-xl h-[90vh] overflow-y-auto relative">
-        {/* Top bar */}
         <div className="flex justify-between items-center mb-6">
           <p className="text-gray-500 text-sm">{saveState}</p>
           <button
             onClick={async () => {
               await saveNow();
-              localStorage.removeItem("latestJournalId");
-              localStorage.removeItem("latestJournalContent");
+              if (!journalId) {
+                localStorage.removeItem("latestJournalId");
+                localStorage.removeItem("latestJournalContent");
+              }
               window.location.href = "/journal";
             }}
             className="p-2 rounded-lg hover:bg-gray-300 transition"
-            aria-label="Close and Save"
           >
             <X className="w-6 h-6 text-gray-700" />
           </button>
         </div>
 
-        {/* Title input */}
+        {/* Title */}
         <input
           type="text"
           value={title}
@@ -221,21 +203,16 @@ export default function JournalEditor() {
           className="w-full text-4xl font-bold bg-transparent border-none focus:outline-none placeholder-gray-500 mb-8"
         />
 
-        {/* Journal Metadata */}
+        {/* Metadata */}
         <div className="flex flex-wrap gap-6 mb-8">
-          {/* Status */}
-          <div className="flex flex-col gap-2">
+          <div>
             <p className="text-sm font-bold text-gray-600">Status</p>
-            <div
-              className="hover:bg-gray-300 rounded-md"
-              onChange={triggerAutoSave}
-            >
+            <div onChange={triggerAutoSave}>
               <StatusDropdown status={status} setStatus={setStatus} />
             </div>
           </div>
 
-          {/* Tags */}
-          <div className="flex flex-col gap-2 flex-1 w-full">
+          <div className="flex flex-col gap-2 flex-1">
             <p className="text-sm font-bold text-gray-600">Tags</p>
             <TagInput
               tags={tags}
@@ -246,28 +223,21 @@ export default function JournalEditor() {
             />
           </div>
 
-          {/* Created At */}
-          <div className="flex flex-col gap-2">
+          <div>
             <p className="text-sm font-bold text-gray-600">Created</p>
-            <p className="text-gray-800 text-sm">
-              {createdAt.toLocaleDateString()}
-            </p>
+            <p>{createdAt.toLocaleDateString()}</p>
           </div>
 
-          {/* Last Edited */}
-          <div className="flex flex-col gap-2">
+          <div>
             <p className="text-sm font-bold text-gray-600">Last Edited</p>
-            <p className="text-gray-800 text-sm">
-              {updatedAt.toLocaleDateString()}
-            </p>
+            <p>{updatedAt.toLocaleDateString()}</p>
           </div>
         </div>
 
-        {/* EditorJS */}
         <div
           id="editorjs"
           onKeyUp={triggerAutoSave}
-          className="prose prose-invert prose-headings:font-semibold prose-h1:text-4xl prose-h2:text-2xl prose-h3:text-xl max-w-none focus:outline-none"
+          className="prose prose-invert max-w-none focus:outline-none"
         ></div>
       </div>
     </div>
