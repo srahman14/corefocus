@@ -2,7 +2,14 @@
 import { use, useEffect, useState } from "react";
 import { useThemeStore } from "@/app/store/useThemeStore";
 import { useRouter } from "next/navigation";
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import { db } from "@/app/firebase";
 import { useAuth } from "@/app/context/AuthContext";
 import { Plus, FileText } from "lucide-react";
@@ -14,6 +21,28 @@ export default function Journal() {
   const { currentUser, loading, logout } = useAuth();
   const [journals, setJournals] = useState([]);
   const [loadingJournals, setLoadingJournals] = useState(true);
+  const [showOptions, setShowOptions] = useState(false);
+
+  const handleDelete = async () => {
+    if (!currentUser) return;
+    const confirm = window.confirm(
+      `Are you sure you want to delete "${
+        journal.title || "Untitled Journal"
+      }"?`
+    );
+    if (!confirm) return;
+
+    try {
+      await deleteDoc(
+        doc(db, "users", currentUser.uid, "journals", journal.id)
+      );
+      onDeleted(journal.id); // Remove from local state
+    } catch (error) {
+      console.error("Error deleting journal:", error);
+      alert("Failed to delete journal.");
+    }
+  };
+
   // Fetch user's journals
   useEffect(() => {
     const fetchJournals = async () => {
@@ -179,13 +208,41 @@ export default function Journal() {
             journals.map((journal) => (
               <Link
                 key={journal.id}
-                href={`/journals/${journal.id}`}
+                href={`/journal/${journal.id}`}
                 className="block bg-gradient-to-br from-[#DFFF00] via-[#FCF55F] to-[#FCF55F] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F] rounded-xl shadow hover:shadow-lg transition p-5"
               >
                 {/* Title */}
-                <h2 className="text-xl font-semibold text-gray-800 mb-2 line-clamp-2">
-                  {journal.title || "Untitled Journal"}
-                </h2>
+                <div className="flex justify-between items-center">
+                  <h2 className="text-xl font-semibold text-gray-800 mb-2 line-clamp-2">
+                    {journal.title || "Untitled Journal"}
+                  </h2>
+
+                  <div className="relative">
+                    <button
+                      className="bg-gray-200 px-2 rounded-sm cursor-pointer hover:bg-gray-300 duration-200 transition-all"
+                      onClick={() => setShowOptions((prev) => !prev)}
+                    >
+                      <i className="fa-solid fa-ellipsis"></i>
+                    </button>
+
+                    {showOptions && (
+                      <div className="absolute right-0 top-full mt-2 w-32 bg-white rounded-md shadow-lg z-10">
+                        <button
+                          onClick={handleDelete}
+                          className="w-full text-left px-4 py-2 hover:bg-red-100 text-red-600"
+                        >
+                          Delete
+                        </button>
+                        <button
+                          onClick={() => alert("Pin feature coming soon!")}
+                          className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                        >
+                          Pin / Favorite
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
 
                 {/* Tags */}
                 <div className="flex flex-wrap gap-2 mb-3">
