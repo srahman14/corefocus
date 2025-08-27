@@ -12,35 +12,39 @@ import {
 } from "firebase/firestore";
 import { db } from "@/app/firebase";
 import { useAuth } from "@/app/context/AuthContext";
-import { Plus, FileText } from "lucide-react";
+import { Plus, FileText, ToggleLeft } from "lucide-react";
 import { AnimatedThemeToggler } from "@/app/components/magicui/animated-theme-toggler";
 import Link from "next/link";
-
+import JournalCard from "@/app/components/JournalCard";
 export default function Journal() {
   const router = useRouter();
   const { currentUser, loading, logout } = useAuth();
   const [journals, setJournals] = useState([]);
   const [loadingJournals, setLoadingJournals] = useState(true);
   const [showOptions, setShowOptions] = useState(false);
+  const [activeCardId, setActiveCardId] = useState(null);
 
-  const handleDelete = async () => {
+  const handleDelete = async (journal) => {
     if (!currentUser) return;
-    const confirm = window.confirm(
-      `Are you sure you want to delete "${
-        journal.title || "Untitled Journal"
-      }"?`
+
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete "${journal.title || "Untitled Journal"}"?`
     );
-    if (!confirm) return;
+    if (!confirmDelete) return;
 
     try {
-      await deleteDoc(
-        doc(db, "users", currentUser.uid, "journals", journal.id)
-      );
-      onDeleted(journal.id); // Remove from local state
+      await deleteDoc(doc(db, "users", currentUser.uid, "journals", journal.id));
+      // remove from local state
+      setJournals((prev) => prev.filter((j) => j.id !== journal.id));
     } catch (error) {
       console.error("Error deleting journal:", error);
       alert("Failed to delete journal.");
     }
+  };
+
+
+  const toggleOptions = (journalId) => {
+    setShowOptions((prev) => (prev === journalId ? null : journalId));
   };
 
   // Fetch user's journals
@@ -191,13 +195,12 @@ export default function Journal() {
         {/* Journal Cards */}
         <h2 className="text-2xl font-bold mb-4">Latest entries</h2>
         <div className="max-w-5xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {loading ? (
-            // Skeleton loaders
+          {loadingJournals ? (
             [...Array(6)].map((_, idx) => (
               <div
                 key={idx}
                 className="h-48 bg-gray-200 animate-pulse rounded-xl"
-              ></div>
+              />
             ))
           ) : journals.length === 0 ? (
             <div className="col-span-full text-center py-12">
@@ -206,78 +209,11 @@ export default function Journal() {
             </div>
           ) : (
             journals.map((journal) => (
-              <Link
+              <JournalCard
                 key={journal.id}
-                href={`/journal/${journal.id}`}
-                className="block bg-gradient-to-br from-[#DFFF00] via-[#FCF55F] to-[#FCF55F] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F] rounded-xl shadow hover:shadow-lg transition p-5"
-              >
-                {/* Title */}
-                <div className="flex justify-between items-center">
-                  <h2 className="text-xl font-semibold text-gray-800 mb-2 line-clamp-2">
-                    {journal.title || "Untitled Journal"}
-                  </h2>
-
-                  <div className="relative">
-                    <button
-                      className="bg-gray-200 px-2 rounded-sm cursor-pointer hover:bg-gray-300 duration-200 transition-all"
-                      onClick={() => setShowOptions((prev) => !prev)}
-                    >
-                      <i className="fa-solid fa-ellipsis"></i>
-                    </button>
-
-                    {showOptions && (
-                      <div className="absolute right-0 top-full mt-2 w-32 bg-white rounded-md shadow-lg z-10">
-                        <button
-                          onClick={handleDelete}
-                          className="w-full text-left px-4 py-2 hover:bg-red-100 text-red-600"
-                        >
-                          Delete
-                        </button>
-                        <button
-                          onClick={() => alert("Pin feature coming soon!")}
-                          className="w-full text-left px-4 py-2 hover:bg-gray-100"
-                        >
-                          Pin / Favorite
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {journal.tags?.length > 0 ? (
-                    journal.tags.map((tag, i) => (
-                      <span
-                        key={i}
-                        className="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded-md"
-                      >
-                        {tag}
-                      </span>
-                    ))
-                  ) : (
-                    <span className="text-xs text-gray-400">No tags</span>
-                  )}
-                </div>
-
-                {/* Footer */}
-                <div className="flex justify-between items-center text-sm text-gray-500">
-                  <span
-                    className={`px-2 py-1 rounded-md ${
-                      journal.status === "Completed"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-yellow-100 text-yellow-700"
-                    }`}
-                  >
-                    {journal.status || "Draft"}
-                  </span>
-                  <span>
-                    {journal.updatedAt?.toDate
-                      ? journal.updatedAt.toDate().toLocaleDateString()
-                      : "Just now"}
-                  </span>
-                </div>
-              </Link>
+                journal={journal}
+                onDelete={handleDelete}
+              />
             ))
           )}
         </div>
