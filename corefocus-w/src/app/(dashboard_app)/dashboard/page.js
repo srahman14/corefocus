@@ -127,13 +127,13 @@ export default function Dashboard() {
           </div>
         </div>
 
+        <div className="w-full flex items-center justify-center">
+          <DailyLoginComponent />
+        </div>
         <div>
           <GoalBoard />
         </div>
 
-        <div className="w-full flex items-center justify-center">
-          <DailyLoginComponent />
-        </div>
 
         <div className="flex flex-col lg:flex-row gap-6">
           <div className="w-full lg:w-1/2">
