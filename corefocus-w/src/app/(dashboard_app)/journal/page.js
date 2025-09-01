@@ -1,5 +1,5 @@
 "use client";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useThemeStore } from "@/app/store/useThemeStore";
 import { useRouter } from "next/navigation";
 import {
@@ -12,29 +12,26 @@ import {
 } from "firebase/firestore";
 import { db } from "@/app/firebase";
 import { useAuth } from "@/app/context/AuthContext";
-import { Plus, FileText, ToggleLeft } from "lucide-react";
+import { Plus, FileText } from "lucide-react";
 import { AnimatedThemeToggler } from "@/app/components/magicui/animated-theme-toggler";
 import Link from "next/link";
 import JournalCard from "@/app/components/JournalCard";
+
 export default function Journal() {
   const router = useRouter();
   const { currentUser, loading, logout } = useAuth();
-  const [journals, setJournals] = useState([]);
-  const [loadingJournals, setLoadingJournals] = useState(true);
-  const [showOptions, setShowOptions] = useState(false);
-  const [activeCardId, setActiveCardId] = useState(null);
 
+  const [journals, setJournals] = useState([]);
+  const [filteredJournals, setFilteredJournals] = useState([]);
+  const [loadingJournals, setLoadingJournals] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // ✅ Delete a journal
   const handleDelete = async (journal) => {
     if (!currentUser) return;
 
-    const confirmDelete = window.confirm(
-      `Are you sure you want to delete "${journal.title || "Untitled Journal"}"?`
-    );
-    if (!confirmDelete) return;
-
     try {
       await deleteDoc(doc(db, "users", currentUser.uid, "journals", journal.id));
-      // remove from local state
       setJournals((prev) => prev.filter((j) => j.id !== journal.id));
     } catch (error) {
       console.error("Error deleting journal:", error);
@@ -42,23 +39,13 @@ export default function Journal() {
     }
   };
 
-
-  const toggleOptions = (journalId) => {
-    setShowOptions((prev) => (prev === journalId ? null : journalId));
-  };
-
-  // Fetch user's journals
+  // ✅ Fetch journals from Firestore
   useEffect(() => {
     const fetchJournals = async () => {
       if (!currentUser) return;
 
       try {
-        const journalsRef = collection(
-          db,
-          "users",
-          currentUser.uid,
-          "journals"
-        );
+        const journalsRef = collection(db, "users", currentUser.uid, "journals");
         const q = query(journalsRef, orderBy("updatedAt", "desc"));
         const snapshot = await getDocs(q);
 
@@ -68,6 +55,7 @@ export default function Journal() {
         }));
 
         setJournals(data);
+        setFilteredJournals(data);
         setLoadingJournals(false);
       } catch (error) {
         console.error("Error fetching journals:", error);
@@ -77,6 +65,27 @@ export default function Journal() {
 
     fetchJournals();
   }, [currentUser]);
+
+  // ✅ Filter journals when search term changes
+  useEffect(() => {
+    if (!searchTerm.trim()) {
+      setFilteredJournals(journals);
+    } else {
+      const lowerSearch = searchTerm.toLowerCase();
+      const filtered = journals.filter((journal) => {
+        const matchesTitle = journal.title?.toLowerCase().includes(lowerSearch);
+        const matchesTags = journal.tags?.some((tag) =>
+          tag.toLowerCase().includes(lowerSearch)
+        );
+        return matchesTitle || matchesTags;
+      });
+      setFilteredJournals(filtered);
+    }
+  }, [searchTerm, journals]);
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
   if (!currentUser) {
     return (
@@ -95,6 +104,7 @@ export default function Journal() {
     "Habit Building",
     "Family Time",
   ];
+
   const topics = [
     "Work & Career",
     "Gratitude & Happiness",
@@ -120,8 +130,9 @@ export default function Journal() {
 
   return (
     <main className="flex flex-col min-h-screen px-4 py-10 bg-gradient-to-br from-[#FFFF8F] via-[#FFFDD0] to-[#DFFF00] dark:from-[#0B091A] dark:via-[#110E2D] dark:to-[#0B091A]">
+      {/* Header */}
       <div className="w-full flex justify-between items-center px-4 mb-12">
-        <div className="text-white ">
+        <div className="text-white">
           <h1 className="text-gray-400">
             <span className="text-black dark:text-gray-400 hover:underline">
               Pages
@@ -146,10 +157,7 @@ export default function Journal() {
           <button>
             <i className="fa-solid fa-gear text-2xl cursor-pointer bg-white p-2 rounded-xl"></i>
           </button>
-          <div>
-            {/* {isDark ? <i className="fa-jelly text-2xl cursor-pointer fa-regular fa-sun bg-white p-2 rounded-xl"></i> : <i className="fa-solid fa-regular fa-moon text-2xl cursor-pointer bg-white p-2 rounded-xl"></i>} */}
-            <AnimatedThemeToggler />
-          </div>
+          <AnimatedThemeToggler />
           <button onClick={logout}>
             <i className="fa-solid fa-right-from-bracket text-2xl cursor-pointer bg-white p-2 rounded-xl"></i>
           </button>
@@ -157,70 +165,68 @@ export default function Journal() {
       </div>
 
       <section className="max-w-6xl mx-auto">
+        {/* Title & Create Button */}
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold">Your Journal</h1>
-
+          <h1 className="text-3xl font-bold dark:text-white">Your Journal</h1>
           <Link
             href={"/journal/new"}
-            className="flex items-center px-4 py-2 gap-2 cursor-pointer bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+            className="flex items-center px-4 py-2 gap-2 cursor-pointer dark:bg-blue-600 bg-[#DFFF00] hover:bg-[#DFFF00]/80 text-black dark:text-white rounded-lg font-semibold dark:hover:bg-blue-700 transition"
           >
-            <i className="fa-solid fa-plus"></i>
+            <Plus />
             New Entry
           </Link>
         </div>
 
         {/* Search Bar */}
-        <div className="mb-6 w-1/2">
+        <div className="mb-8 w-full md:w-1/2">
           <input
             type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
             placeholder="What are you looking for?"
             className="w-full p-4 rounded-3xl shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
           />
         </div>
 
-        {/* Filter Tags */}
-        <div className="flex flex-wrap gap-3 mb-8">
-          {tags.map((option) => {
-            return (
-              <li
-                key={option}
-                className="px-4 py-2 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition list-none cursor-pointer"
-              >
-                {option}
-              </li>
-            );
-          })}
-        </div>
-
-        {/* Journal Cards */}
-        <h2 className="text-2xl font-bold mb-4">Latest entries</h2>
-        <div className="max-w-5xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {loadingJournals ? (
-            [...Array(6)].map((_, idx) => (
+        {/* Filtered Journals */}
+        {loadingJournals ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, idx) => (
               <div
                 key={idx}
                 className="h-48 bg-gray-200 animate-pulse rounded-xl"
               />
-            ))
-          ) : journals.length === 0 ? (
-            <div className="col-span-full text-center py-12">
-              <FileText className="w-12 h-12 mx-auto text-gray-400 mb-3" />
-              <p className="text-gray-500">No journals yet. Start writing!</p>
-            </div>
-          ) : (
-            journals.map((journal) => (
+            ))}
+          </div>
+        ) : filteredJournals.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {filteredJournals.map((journal) => (
               <JournalCard
                 key={journal.id}
                 journal={journal}
                 onDelete={handleDelete}
               />
-            ))
-          )}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center text-gray-500">No journals found.</div>
+        )}
+
+        {/* Filter Tags */}
+        {/* <div className="flex flex-wrap gap-3 mb-8">
+          {tags.map((option) => (
+            <li
+              key={option}
+              className="px-4 py-2 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition list-none cursor-pointer"
+            >
+              {option}
+            </li>
+          ))}
+        </div> */}
 
         {/* Topics Section */}
         <div>
-          <h2 className="text-2xl font-bold mb-4">Topics</h2>
+          <h2 className="text-2xl font-bold mb-4 dark:text-white">Topics</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {topics.map((topic) => (
               <button
