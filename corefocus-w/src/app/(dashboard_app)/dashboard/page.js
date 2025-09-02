@@ -11,6 +11,7 @@ import TaskSync from "@/app/components/Dashboard/TaskSync";
 import ReadRoute from "@/app/components/Dashboard/ReadRoute";
 import DailyLoginComponent from "@/app/components/Dashboard/DailyLogin";
 import { AnimatedThemeToggler } from "@/app/components/magicui/animated-theme-toggler";
+import { format } from "date-fns"
 
 export default function Dashboard() {
   const router = useRouter();
@@ -51,9 +52,7 @@ export default function Dashboard() {
             <span className="text-black dark:text-gray-400 hover:underline">Pages</span> /{" "}
             <span className="font-bold hover:underline dark:text-white text-black">Dashboard</span>
           </h1>
-          <h1 className="text-gray-400 dark:text-white">
-            Date goes here
-          </h1>
+          <h1 className="text-gray-400 dark:text-white">{format(new Date(), "dd MMM yyyy")}</h1>
         </div>
         <div className="flex flex-row items-center gap-4 text-violet-400">
           <input
