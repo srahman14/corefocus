@@ -1,6 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useThemeStore } from "@/app/store/useThemeStore";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import {
   collection,
@@ -13,20 +12,20 @@ import {
 import { db } from "@/app/firebase";
 import { useAuth } from "@/app/context/AuthContext";
 import { Plus, FileText } from "lucide-react";
-import { AnimatedThemeToggler } from "@/app/components/magicui/animated-theme-toggler";
 import Link from "next/link";
 import JournalCard from "@/app/components/JournalCard";
+import { AnimatedThemeToggler } from "@/app/components/magicui/animated-theme-toggler";
 
 export default function Journal() {
   const router = useRouter();
   const { currentUser, loading, logout } = useAuth();
-
   const [journals, setJournals] = useState([]);
-  const [filteredJournals, setFilteredJournals] = useState([]);
   const [loadingJournals, setLoadingJournals] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [filteredJournals, setFilteredJournals] = useState([]);
+  const searchInputRef = useRef(null);
 
-  // ✅ Delete a journal
+  // Delete journal
   const handleDelete = async (journal) => {
     if (!currentUser) return;
 
@@ -39,7 +38,7 @@ export default function Journal() {
     }
   };
 
-  // ✅ Fetch journals from Firestore
+  // Fetch user's journals
   useEffect(() => {
     const fetchJournals = async () => {
       if (!currentUser) return;
@@ -55,7 +54,6 @@ export default function Journal() {
         }));
 
         setJournals(data);
-        setFilteredJournals(data);
         setLoadingJournals(false);
       } catch (error) {
         console.error("Error fetching journals:", error);
@@ -66,45 +64,42 @@ export default function Journal() {
     fetchJournals();
   }, [currentUser]);
 
-  // ✅ Filter journals when search term changes
+  // Debounced search
   useEffect(() => {
-    if (!searchTerm.trim()) {
-      setFilteredJournals(journals);
-    } else {
-      const lowerSearch = searchTerm.toLowerCase();
-      const filtered = journals.filter((journal) => {
-        const matchesTitle = journal.title?.toLowerCase().includes(lowerSearch);
-        const matchesTags = journal.tags?.some((tag) =>
-          tag.toLowerCase().includes(lowerSearch)
-        );
-        return matchesTitle || matchesTags;
-      });
-      setFilteredJournals(filtered);
-    }
+    const handler = setTimeout(() => {
+      if (!searchTerm.trim()) {
+        setFilteredJournals(journals);
+      } else {
+        const lowerSearch = searchTerm.toLowerCase();
+        const filtered = journals.filter((journal) => {
+          const matchesTitle = journal.title?.toLowerCase().includes(lowerSearch);
+          const matchesTags = journal.tags?.some((tag) =>
+            tag.toLowerCase().includes(lowerSearch)
+          );
+          return matchesTitle || matchesTags;
+        });
+        setFilteredJournals(filtered);
+      }
+    }, 300);
+
+    return () => clearTimeout(handler);
   }, [searchTerm, journals]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
+  const clearSearch = () => setSearchTerm("");
+
   if (!currentUser) {
     return (
       <div className="min-h-screen flex justify-center items-center">
-        <p className="text-gray-500 text-lg">
-          Please log in to view your journals.
-        </p>
+        <p className="text-gray-500 text-lg">Please log in to view your journals.</p>
       </div>
     );
   }
 
-  const tags = [
-    "Favorites",
-    "Work Goals",
-    "Vacation",
-    "Habit Building",
-    "Family Time",
-  ];
-
+  const tags = ["Favorites", "Work Goals", "Vacation", "Habit Building", "Family Time"];
   const topics = [
     "Work & Career",
     "Gratitude & Happiness",
@@ -122,9 +117,7 @@ export default function Journal() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        Loading...
-      </div>
+      <div className="flex justify-center items-center h-screen">Loading...</div>
     );
   }
 
@@ -134,99 +127,89 @@ export default function Journal() {
       <div className="w-full flex justify-between items-center px-4 mb-12">
         <div className="text-white">
           <h1 className="text-gray-400">
-            <span className="text-black dark:text-gray-400 hover:underline">
-              Pages
-            </span>{" "}
-            /{" "}
-            <span className="hover:underline dark:text-white text-black">
-              Dashboard
-            </span>{" "}
-            /{" "}
-            <span className="font-bold hover:underline dark:text-white text-black">
-              Journal
-            </span>
+            <span className="text-black dark:text-gray-400 hover:underline">Pages</span>{" "}
+            / <span className="hover:underline dark:text-white text-black">Dashboard</span>{" "}
+            / <span className="font-bold hover:underline dark:text-white text-black">Journal</span>
           </h1>
           <h1 className="text-gray-400 dark:text-white">Date goes here</h1>
         </div>
         <div className="flex flex-row items-center gap-4 text-violet-400">
-          <img
-            src="/avatar-default.svg"
-            alt="avatar"
-            className="bg-white rounded-full w-10 h-10"
-          />
-          <button>
-            <i className="fa-solid fa-gear text-2xl cursor-pointer bg-white p-2 rounded-xl"></i>
-          </button>
+          <img src="/avatar-default.svg" alt="avatar" className="bg-white rounded-full w-10 h-10" />
+          <button><i className="fa-solid fa-gear text-2xl cursor-pointer bg-white p-2 rounded-xl"></i></button>
           <AnimatedThemeToggler />
-          <button onClick={logout}>
-            <i className="fa-solid fa-right-from-bracket text-2xl cursor-pointer bg-white p-2 rounded-xl"></i>
-          </button>
+          <button onClick={logout}><i className="fa-solid fa-right-from-bracket text-2xl cursor-pointer bg-white p-2 rounded-xl"></i></button>
         </div>
       </div>
 
       <section className="max-w-6xl mx-auto">
-        {/* Title & Create Button */}
+        {/* Top Bar: Title + New Entry */}
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold dark:text-white">Your Journal</h1>
+          <h1 className="text-3xl font-bold">Your Journal</h1>
           <Link
             href={"/journal/new"}
-            className="flex items-center px-4 py-2 gap-2 cursor-pointer dark:bg-blue-600 bg-[#DFFF00] hover:bg-[#DFFF00]/80 text-black dark:text-white rounded-lg font-semibold dark:hover:bg-blue-700 transition"
+            className="flex items-center px-4 py-2 gap-2 cursor-pointer bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
           >
-            <Plus />
+            <i className="fa-solid fa-plus"></i>
             New Entry
           </Link>
         </div>
 
         {/* Search Bar */}
-        <div className="mb-8 w-full md:w-1/2">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            placeholder="What are you looking for?"
-            className="w-full p-4 rounded-3xl shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
-          />
-        </div>
-
-        {/* Filtered Journals */}
-        {loadingJournals ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, idx) => (
-              <div
-                key={idx}
-                className="h-48 bg-gray-200 animate-pulse rounded-xl"
-              />
-            ))}
+        <div className="p-6 flex flex-col gap-6">
+          <div className="relative w-1/2">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              placeholder="What are you looking for?"
+              ref={searchInputRef}
+              className="w-full p-4 rounded-3xl shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+            />
+            {searchTerm && (
+              <button
+                onClick={clearSearch}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                ✕
+              </button>
+            )}
           </div>
-        ) : filteredJournals.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {filteredJournals.map((journal) => (
-              <JournalCard
-                key={journal.id}
-                journal={journal}
-                onDelete={handleDelete}
-              />
+
+          {/* Tags */}
+          <ul className="flex flex-wrap gap-3">
+            {tags.map((tag) => (
+              <li
+                key={tag}
+                className="px-4 py-2 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition list-none cursor-pointer"
+              >
+                {tag}
+              </li>
             ))}
-          </div>
-        ) : (
-          <div className="text-center text-gray-500">No journals found.</div>
-        )}
+          </ul>
 
-        {/* Filter Tags */}
-        {/* <div className="flex flex-wrap gap-3 mb-8">
-          {tags.map((option) => (
-            <li
-              key={option}
-              className="px-4 py-2 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition list-none cursor-pointer"
-            >
-              {option}
-            </li>
-          ))}
-        </div> */}
+          {/* Latest Entries */}
+          <h2 className="text-2xl font-bold">Latest Entries</h2>
+          {filteredJournals.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredJournals.map((journal) => (
+                <JournalCard
+                  key={journal.id}
+                  journal={journal}
+                  onDelete={handleDelete}
+                  onTogglePin={() => {}}
+                  searchTerm={searchTerm} // optional for highlight
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 text-gray-500">
+              <FileText className="w-12 h-12 mx-auto mb-3" />
+              No journals found. Try a different search or create a new entry!
+            </div>
+          )}
 
-        {/* Topics Section */}
-        <div>
-          <h2 className="text-2xl font-bold mb-4 dark:text-white">Topics</h2>
+          {/* Topics Section */}
+          <h2 className="text-2xl font-bold mt-12 mb-4">Topics</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {topics.map((topic) => (
               <button
