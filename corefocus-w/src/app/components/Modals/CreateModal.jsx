@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import CreateHabitForm from "../Tabs/CreateHabitForm";
 import CreateGoalForm from "../Tabs/CreateGoalForm";
-import CreateJournalForm from "../Tabs/CreateJournalModal";
+import EditHabits from "../Tabs/EditHabits";
 import useModalStore from "@/app/store/modalStore";
 
 export default function CreateModal({ onClose }) {
@@ -58,14 +58,14 @@ return (
               <p className="inline-block ml-2">Goals</p>
             </span>
           </button>
-          {/* <button
+          <button
             onClick={() => setActiveTab("journal")}
             className={`px-4 py-2 rounded-lg font-semibold cursor-pointer transition-all ease-in-out duration-300 ${
               activeTab === "journal" ? "bg-blue-600 text-white" : "bg-gray-100"
             }`}
           >
-            Journal
-          </button> */}
+            Edit Habits
+          </button>
         </div>
 
         {/* Render active form */}
