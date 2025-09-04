@@ -4,12 +4,14 @@ import { useAuth } from "@/app/context/AuthContext";
 import { db } from "@/app/firebase";
 import { Timestamp, onSnapshot } from "firebase/firestore";
 import { OrbitingCircles } from "../magicui/orbiting-circles";
-import { CircleDot, Clock, Trophy  } from "lucide-react";
+import { CircleDot, Clock, Trophy } from "lucide-react";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import * as Dialog from "@radix-ui/react-dialog";
+import Link from "next/link";
 
 const calculateDaysRemaining = (deadlineTimestamp) => {
-  if (!deadlineTimestamp || !(deadlineTimestamp instanceof Timestamp)) return Infinity;
+  if (!deadlineTimestamp || !(deadlineTimestamp instanceof Timestamp))
+    return Infinity;
   const deadlineDate = deadlineTimestamp.toDate();
   const now = new Date();
   const diffInTime = deadlineDate.getTime() - now.getTime();
@@ -34,7 +36,7 @@ export default function GoalBoard() {
   });
 
   // Fetch goals from Firestore
-   useEffect(() => {
+  useEffect(() => {
     if (!currentUser) return;
 
     const goalsRef = collection(db, "users", currentUser.uid, "goals");
@@ -46,15 +48,24 @@ export default function GoalBoard() {
           const data = doc.data();
           let progress = 0;
           if (data.createdAt && data.deadline) {
-            const start = data.createdAt instanceof Timestamp ? data.createdAt.toDate() : new Date(data.createdAt);
-            const end = data.deadline instanceof Timestamp ? data.deadline.toDate() : new Date(data.deadline);
+            const start =
+              data.createdAt instanceof Timestamp
+                ? data.createdAt.toDate()
+                : new Date(data.createdAt);
+            const end =
+              data.deadline instanceof Timestamp
+                ? data.deadline.toDate()
+                : new Date(data.deadline);
             const now = new Date();
             if (now >= end) {
               progress = 100;
             } else if (now <= start) {
               progress = 0;
             } else {
-              progress = Math.min(100, Math.round(((now - start) / (end - start)) * 100));
+              progress = Math.min(
+                100,
+                Math.round(((now - start) / (end - start)) * 100)
+              );
             }
           }
           fetchedGoals.push({ id: doc.id, progress, ...data });
@@ -128,7 +139,8 @@ export default function GoalBoard() {
             {/* Outer shell (Urgent: < 30 days) */}
             <OrbitingCircles speed={0.7} radius={180}>
               {goalsByDeadline.outer.map((goal) => {
-                const config = priorityConfig[goal.goalPriority] || priorityConfig.High;
+                const config =
+                  priorityConfig[goal.goalPriority] || priorityConfig.High;
                 return (
                   <div key={goal.id}>
                     {renderIcon(config.icon, goal.goalName, goal, config.color)}
@@ -140,7 +152,8 @@ export default function GoalBoard() {
             {/* Middle shell (Medium: 31–90 days) */}
             <OrbitingCircles radius={120} speed={0.5} reverse={true}>
               {goalsByDeadline.middle.map((goal) => {
-                const config = priorityConfig[goal.goalPriority] || priorityConfig.Medium;
+                const config =
+                  priorityConfig[goal.goalPriority] || priorityConfig.Medium;
                 return (
                   <div key={goal.id}>
                     {renderIcon(config.icon, goal.goalName, goal, config.color)}
@@ -152,7 +165,8 @@ export default function GoalBoard() {
             {/* Inner shell (Long-term: > 90 days) */}
             <OrbitingCircles radius={60} speed={0.3}>
               {goalsByDeadline.inner.map((goal) => {
-                const config = priorityConfig[goal.goalPriority] || priorityConfig.Low;
+                const config =
+                  priorityConfig[goal.goalPriority] || priorityConfig.Low;
                 return (
                   <div key={goal.id}>
                     {renderIcon(config.icon, goal.goalName, goal, config.color)}
@@ -160,7 +174,6 @@ export default function GoalBoard() {
                 );
               })}
             </OrbitingCircles>
-
           </div>
         </div>
       </div>
@@ -209,14 +222,18 @@ export default function GoalBoard() {
 
             <div className="mt-6 space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-400 dark:text-violet-200/80">Priority</span>
+                <span className="text-sm text-gray-400 dark:text-violet-200/80">
+                  Priority
+                </span>
                 <span className="font-medium">
                   {selectedGoal?.goalPriority || "—"}
                 </span>
               </div>
 
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-400 dark:text-violet-200/80 dark:text-violet-200/80">Due</span>
+                <span className="text-sm text-gray-400 dark:text-violet-200/80 dark:text-violet-200/80">
+                  Due
+                </span>
                 <span className="font-medium">
                   {selectedGoal?.deadline instanceof Timestamp
                     ? selectedGoal.deadline.toDate().toLocaleDateString()
@@ -226,7 +243,9 @@ export default function GoalBoard() {
 
               {/* Progress */}
               <div>
-                <span className="text-sm text-gray-400 dark:text-violet-200/80">Progress</span>
+                <span className="text-sm text-gray-400 dark:text-violet-200/80">
+                  Progress
+                </span>
                 <div className="mt-2 h-2 w-full rounded-full bg-gray-300 dark:bg-white/10">
                   <div
                     className="h-2 rounded-full bg-gradient-to-r from-[#520dd0] to-[#500DCA]"
@@ -234,13 +253,14 @@ export default function GoalBoard() {
                   />
                 </div>
                 <div className="mt-1 text-right text-xs text-violet-200/70">
-                  {(selectedGoal?.progress ?? 0)}%
+                  {selectedGoal?.progress ?? 0}%
                 </div>
               </div>
-                  
 
               <div>
-                <span className="text-sm text-gray-400 dark:text-violet-200/800">Goal Motivation</span>
+                <span className="text-sm text-gray-400 dark:text-violet-200/800">
+                  Goal Motivation
+                </span>
                 <p className="mt-2 rounded-lg bg-gray-200 dark:bg-white/5 p-3 text-sm leading-relaxed">
                   {selectedGoal?.goalMotivation || "No goal motivation set."}
                 </p>
@@ -248,7 +268,9 @@ export default function GoalBoard() {
 
               {/* Notes */}
               <div>
-                <span className="text-sm text-gray-400 dark:text-violet-200/800">Notes</span>
+                <span className="text-sm text-gray-400 dark:text-violet-200/800">
+                  Notes
+                </span>
                 <p className="mt-2 rounded-lg bg-gray-200 dark:bg-white/5 p-3 text-sm leading-relaxed">
                   {selectedGoal?.notes || "No notes yet."}
                 </p>
@@ -260,9 +282,11 @@ export default function GoalBoard() {
               <button className="rounded-xl bg-gray-200 dark:bg-white/10 px-4 py-2 text-sm font-medium hover:bg-gray-200/80 dark:hover:bg-white/15 transition cursor-pointer">
                 Edit Goal
               </button>
-              <button className="rounded-xl text-white bg-[#520dd0] px-4 py-2 text-sm font-medium hover:bg-[#520dd0]/90 transition cursor-pointer">
-                Open Details
-              </button>
+              <Link href={"dashboard/viewer"} passHref>
+                <button className="rounded-xl text-white bg-[#520dd0] px-4 py-2 text-sm font-medium hover:bg-[#520dd0]/90 transition cursor-pointer">
+                  Open Details
+                </button>
+              </Link>
             </div>
           </Dialog.Content>
         </Dialog.Portal>
