@@ -6,6 +6,8 @@ import useModalStore from "@/app/store/modalStore";
 import useUIStore from "@/app/store/uiStore";
 import { SidebarActionItem } from "./SidebarActionItem";
 import { SidebarItem } from "./SidebarItem";
+import { GoalIcon } from "lucide-react";
+import { ClipboardList } from "lucide-react";
 
 export default function Sidebar() {
   const collapsed = useUIStore((state) => state.sidebarCollapsed);
@@ -47,7 +49,14 @@ export default function Sidebar() {
           collapsed={collapsed}
         />
 
-          <SidebarItem
+        <SidebarItem
+          href="/dashboard/goals"
+          icon="fa-chart-simple"
+          label="Analytics"
+          collapsed={collapsed}
+        />
+
+        <SidebarItem
           href="/dashboard/analytics"
           icon="fa-chart-simple"
           label="Analytics"
