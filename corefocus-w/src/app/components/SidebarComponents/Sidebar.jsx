@@ -6,8 +6,7 @@ import useModalStore from "@/app/store/modalStore";
 import useUIStore from "@/app/store/uiStore";
 import { SidebarActionItem } from "./SidebarActionItem";
 import { SidebarItem } from "./SidebarItem";
-import { GoalIcon } from "lucide-react";
-import { ClipboardList } from "lucide-react";
+import { GanttChartSquare } from "lucide-react";
 
 export default function Sidebar() {
   const collapsed = useUIStore((state) => state.sidebarCollapsed);
@@ -50,9 +49,9 @@ export default function Sidebar() {
         />
 
         <SidebarItem
-          href="/dashboard/goals"
-          icon="fa-chart-simple"
-          label="Analytics"
+          href="/dashboard/viewer"
+          lucideIcon={GanttChartSquare}
+          label="Viewer"
           collapsed={collapsed}
         />
 
