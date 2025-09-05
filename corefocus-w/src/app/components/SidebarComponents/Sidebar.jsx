@@ -6,7 +6,7 @@ import useModalStore from "@/app/store/modalStore";
 import useUIStore from "@/app/store/uiStore";
 import { SidebarActionItem } from "./SidebarActionItem";
 import { SidebarItem } from "./SidebarItem";
-import { GanttChartSquare } from "lucide-react";
+import { GanttChartSquare, LayoutDashboard } from "lucide-react";
 
 export default function Sidebar() {
   const collapsed = useUIStore((state) => state.sidebarCollapsed);
@@ -26,10 +26,10 @@ export default function Sidebar() {
       className="h-full dark:bg-[#070A29] text-white z-40 flex flex-col fixed top-0 left-0 shadow-3xl shadow-[#fff]"
     >
       {/* Menu Items */}
-      <div className="flex-1 overflow-y-none mt-4 px-1">
+      <div className="flex-1 overflow-y-none mt-4 px-1 mx-auto">
         <SidebarItem
           href="/dashboard"
-          icon="fa-table-columns"
+          lucideIcon={LayoutDashboard}
           label="Dashboard"
           collapsed={collapsed}
         />
