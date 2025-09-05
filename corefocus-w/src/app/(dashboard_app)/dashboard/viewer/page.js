@@ -82,7 +82,7 @@ useEffect(() => {
   }
 
   return (
-    <main className="flex flex-col min-h-screen px-4 py-10 bg-gradient-to-br from-[#FFFF8F] via-[#FFFDD0] to-[#DFFF00] dark:from-[#0B091A] dark:via-[#110E2D] dark:to-[#0B091A]">
+    <main className="flex flex-col min-h-screen px-4 py-10  bg-gradient-to-br from-[#B19CD7] via-[#EBE8FC] to-[#C0AFE2] dark:from-[#0B091A] dark:via-[#110E2D] dark:to-[#0B091A]">
       {/* Topbar */}
       <div className="w-full flex justify-between items-center p-6">
         <div>
@@ -121,7 +121,7 @@ useEffect(() => {
       </div>
 
       {/* Tabs */}
-      <div className="flex justify-start p-6 mb-2">
+      <div className="flex justify-center p-6 mb-2">
         <div className="bg-white dark:bg-[#1a1a1a] p-1 rounded-full shadow-lg flex space-x-2">
           <button
             onClick={() => setActiveTab("habits")}
