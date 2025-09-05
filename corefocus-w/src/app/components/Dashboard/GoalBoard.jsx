@@ -131,13 +131,13 @@ export default function GoalBoard() {
   return (
     <>
       {/* Main Goal Board */}
-      <div className="w-1/2 bg-gradient-to-br from-[#C0AFE2] via-[#CEC2EB] to-[#C0AFE2] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F] p-6 rounded-xl text-white">
+      <div className="bg-gradient-to-br from-[#C0AFE2] via-[#CEC2EB] to-[#C0AFE2] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F] p-6 rounded-xl text-white">
         <h2 className="text-xl font-semibold mb-2">🎯 Goal Board</h2>
 
         <div className="flex flex-row flex-wrap gap-4 p-6">
           <div className="relative h-[500px] w-[500px] mx-auto flex items-center justify-center">
             {/* Outer shell (Urgent: < 30 days) */}
-            <OrbitingCircles speed={0.7} radius={180}>
+            <OrbitingCircles speed={0.7} radius={240}>
               {goalsByDeadline.outer.map((goal) => {
                 const config =
                   priorityConfig[goal.goalPriority] || priorityConfig.High;
