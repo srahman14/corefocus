@@ -5,6 +5,8 @@ import { format } from "date-fns";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuth } from "../context/AuthContext";
+import EditHabitDialog from "./Dialogs/EditHabitDialog";
+import EditGoalDialog from "./Dialogs/EditGoalDialog";
 
 export default function PlannerCard({ item, type, onDelete, onEdit }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -63,10 +65,10 @@ export default function PlannerCard({ item, type, onDelete, onEdit }) {
   };
 
   return (
-    <div className="relative bg-gradient-to-br from-[#DFFF00] via-[#FCF55F] to-[#FCF55F] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F] rounded-xl shadow hover:shadow-lg transition p-5 flex flex-col">
+    <div className="relative bg-gradient-to-br from-[#CE9AD9] to-[#B19CD7]  dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F] rounded-xl shadow hover:shadow-lg transition p-5 flex flex-col">
       {/* Title & Dropdown Menu */}
       <div className="flex justify-between items-start mb-3">
-        <h2 className="text-xl font-semibold text-gray-800 dark:text-white line-clamp-2">
+        <h2 className="text-xl font-semibold tracking-tighter text-gray-800 dark:text-white line-clamp-2">
           {title || "Untitled"}
         </h2>
         <div ref={menuRef} className="relative shrink-0">
@@ -79,16 +81,16 @@ export default function PlannerCard({ item, type, onDelete, onEdit }) {
           </button>
 
           {menuOpen && (
-            <div className="absolute right-0 top-full mt-2 w-40 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 overflow-hidden">
+            <div className="absolute right-0 top-full mt-2 w-40 bg-white dark:bg-gray-300 rounded-md shadow-lg z-10 overflow-hidden">
               <button
                 onClick={() => setOpenEditDialog(true)}
-                className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-400 cursor-pointer"
               >
                 Edit
               </button>
               <button
                 onClick={() => setOpenDeleteDialog(true)}
-                className="w-full text-left px-4 py-2 hover:bg-red-50 text-red-600 dark:hover:bg-red-600/20"
+                className="w-full text-left px-4 py-2 hover:bg-red-50 text-red-600 dark:hover:bg-red-600/20 cursor-pointer"
               >
                 Delete
               </button>
@@ -132,7 +134,6 @@ export default function PlannerCard({ item, type, onDelete, onEdit }) {
                     : item.difficulty === "Medium"
                     ? "bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300"
                     : "bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300"
-                    
                 }`}
               >
                 {item.difficulty || ""}
@@ -164,11 +165,10 @@ export default function PlannerCard({ item, type, onDelete, onEdit }) {
         )}
 
         {description && <p className="line-clamp-3">{description}</p>}
-
       </div>
 
       {/* Footer: Dates */}
-      <div className="mt-auto flex justify-between items-center text-xs text-gray-400 dark:text-gray-500 pt-3 border-t border-gray-200 dark:border-gray-700">
+      <div className="mt-auto flex justify-between items-center text-xs text-gray-100 dark:text-gray-500 pt-3 border-t border-gray-200 dark:border-gray-700">
         <span>
           Added:{" "}
           {createdDate ? format(createdDate.toDate(), "dd MMM yyyy") : "—"}
@@ -214,93 +214,28 @@ export default function PlannerCard({ item, type, onDelete, onEdit }) {
       </Dialog.Root>
 
       {/* EDIT DIALOG */}
-      <Dialog.Root open={openEditDialog} onOpenChange={setOpenEditDialog}>
-        <Dialog.Portal>
-          <Dialog.Overlay className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50" />
-          <Dialog.Content className="fixed left-1/2 top-1/2 w-[90%] max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white dark:bg-gray-900 p-6 shadow-xl z-50">
-            <Dialog.Title className="text-lg font-semibold text-gray-900 dark:text-white">
-              Edit {type === "habit" ? "Habit" : "Goal"}
-            </Dialog.Title>
-            <Dialog.Description className="text-gray-600 dark:text-gray-300 mt-2">
-              Update the details below and save changes.
-            </Dialog.Description>
 
-            <form className="flex flex-col gap-4 mt-4">
-              <input
-                type="text"
-                defaultValue={item.habitName || item.goalName}
-                className="p-3 border rounded-lg bg-gray-100 dark:bg-gray-800 dark:text-white outline-none"
-                placeholder={`Enter ${
-                  type === "habit" ? "habit" : "goal"
-                } name`}
-              />
+{type === "habits" && (
+  <EditHabitDialog
+    open={openEditDialog}
+    onOpenChange={setOpenEditDialog}
+    habit={item}
+    onSave={(updatedItem) => {
+      onEdit(updatedItem);
+    }}
+  />
+)}
 
-              {type === "goal" && (
-                <>
-                  <input
-                    type="date"
-                    defaultValue={
-                      item.deadline
-                        ? new Date(
-                            item.deadline?.toDate
-                              ? item.deadline.toDate()
-                              : item.deadline
-                          )
-                            .toISOString()
-                            .split("T")[0]
-                        : "No deadline"
-                    }
-                    className="p-3 border rounded-lg bg-gray-100 dark:bg-gray-800 dark:text-white outline-none"
-                  />
-                  <textarea
-                    defaultValue={item.goalMotivation}
-                    className="p-3 border rounded-lg bg-gray-100 dark:bg-gray-800 dark:text-white outline-none"
-                    placeholder="Goal motivation..."
-                  />
-                </>
-              )}
-
-              {type === "habit" && (
-                <>
-                  <select
-                    defaultValue={item.category}
-                    className="p-3 border rounded-lg bg-gray-100 dark:bg-gray-800 dark:text-white outline-none"
-                  >
-                    <option value="positive">Positive</option>
-                    <option value="negative">Negative</option>
-                  </select>
-
-                  <select
-                    defaultValue={item.difficulty}
-                    className="p-3 border rounded-lg bg-gray-100 dark:bg-gray-800 dark:text-white outline-none"
-                  >
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                  </select>
-                </>
-              )}
-
-              <div className="flex justify-end gap-3 mt-6">
-                <Dialog.Close asChild>
-                  <button className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition">
-                    Cancel
-                  </button>
-                </Dialog.Close>
-                <button
-                  onClick={() => {
-                    onEdit(item);
-                    setOpenEditDialog(false);
-                  }}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                >
-                  Save Changes
-                </button>
-              </div>
-            </form>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog.Root>
+{type === "goals" && (
+  <EditGoalDialog
+    open={openEditDialog}
+    onOpenChange={setOpenEditDialog}
+    goal={item}
+    onSave={(updatedItem) => {
+      onEdit(updatedItem);
+    }}
+  />
+)}
     </div>
   );
 }
