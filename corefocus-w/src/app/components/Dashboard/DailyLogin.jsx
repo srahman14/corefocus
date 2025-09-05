@@ -139,7 +139,7 @@ export default function DailyLoginComponent() {
   return (
     <div className="container bg-gradient-to-br from-[#C0AFE2] via-[#CEC2EB] to-[#C0AFE2] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F] rounded-xl rounded-xl shadow-md text-white p-4">
       <div className="flex justify-end">
-        <span className={`flex items-center gap-3 p-8 ${
+        <span className={`flex items-center gap-3 p-6 ${
           weeklyStreak === 0 ? "hidden" : "text-[#7E4E9E] font-bold dark:text-yellow-400"
         }`}>
           <i className="fa-solid fa-fire"></i>
