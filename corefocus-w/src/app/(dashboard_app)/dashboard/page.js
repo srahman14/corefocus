@@ -125,22 +125,26 @@ export default function Dashboard() {
             <FocusCamp />
           </div>
         </div>
+        <div className="flex flex-col lg:flex-row gap-6">
+          <div className="w-full lg:w-1/2">
+            <GoalBoard />
+          </div>
+          <div className="w-full lg:w-1/2">
+            <ReadRoute />
+          </div>
+        </div>
 
         <div className="w-full flex items-center justify-center">
           <DailyLoginComponent />
         </div>
-        <div>
-          <GoalBoard />
-        </div>
+
 
 
         <div className="flex flex-col lg:flex-row gap-6">
           <div className="w-full lg:w-1/2">
             <TaskSync />
           </div>
-          <div className="w-full lg:w-1/2">
-            <ReadRoute />
-          </div>
+
         </div>
       </div>
     </main>
