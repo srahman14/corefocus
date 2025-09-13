@@ -279,9 +279,12 @@ export default function GoalBoard() {
 
             {/* Buttons */}
             <div className="mt-8 flex gap-3">
-              <button className="rounded-xl bg-gray-200 dark:bg-white/10 px-4 py-2 text-sm font-medium hover:bg-gray-200/80 dark:hover:bg-white/15 transition cursor-pointer">
-                Edit Goal
-              </button>
+              <Link href={"dashboard/viewer"} passHref>
+                <button className="rounded-xl bg-gray-200 dark:bg-white/10 px-4 py-2 text-sm font-medium hover:bg-gray-200/80 dark:hover:bg-white/15 transition cursor-pointer">
+                  Edit Goals
+                </button>
+              </Link>
+
               <Link href={"dashboard/viewer"} passHref>
                 <button className="rounded-xl text-white bg-[#520dd0] px-4 py-2 text-sm font-medium hover:bg-[#520dd0]/90 transition cursor-pointer">
                   Open Details
