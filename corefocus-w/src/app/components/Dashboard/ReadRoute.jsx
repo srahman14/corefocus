@@ -9,9 +9,9 @@ export default function ReadRoute() {
 
   return (
     <div className="bg-gradient-to-br from-[#C0AFE2] via-[#CEC2EB] to-[#C0AFE2] dark:from-[#13153F] dark:via-[#110E2D] dark:to-[#070C2F] rounded-xl shadow-md transition p-6 text-gray-800 dark:text-white h-full">
-      <h2 className="text-xl font-semibold mb-2">📚 Read Route</h2>
-      <p className="text-sm text-gray-800 dark:text-white mb-4">
-        Track your reading journey here.
+      <h2 className="text-xl text-white font-semibold mb-2">📚 Read Route</h2>
+      <p className="text-sm text-white mb-4">
+        Track your latest journals here.
       </p>
 
       {loading && <p className="text-gray-400">Loading journals...</p>}
