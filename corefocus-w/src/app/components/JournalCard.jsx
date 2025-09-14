@@ -85,15 +85,15 @@ const getExcerpt = (content) => {
       href={`/journal/${journal.id}`}
       className={`block relative rounded-xl shadow transition ${
         variant === "preview"
-          ? "bg-gradient-to-br from-blue-50 to-blue-100 dark:from-[#1f1a4a] dark:to-[#2a236b] p-4 mb-3"
-          : "bg-gradient-to-br from-[#DFFF00] via-[#FCF55F] to-[#FCF55F] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F] p-5 hover:shadow-lg"
+          ? "bg-gradient-to-br from-gray-100 to-gray-200 dark:from-[#1f1a4a] dark:to-[#2a236b] p-4 mb-3 shadow-md hover:m-1 transition-all ease-in-out duration-200"
+          : "bg-gradient-to-br from-[#B19CD7] to-[#C0AFE2] dark:from-[#1f1a4a] dark:to-[#2a236b] p-5 hover:shadow-lg hover:m-1 transition-all ease-in-out duration-200"
       }`}
     >
       {/* Title row */}
       <div className="flex justify-between items-start">
         <h2
-          className={`font-semibold text-gray-800 dark:text-white ${
-            variant === "preview" ? "text-base mb-1" : "text-xl mb-2 line-clamp-2"
+          className={`font-bold text-black-600 dark:text-white ${
+            variant === "preview" ? "font-semibold text-base mb-1" : "text-white text-2xl mb-2 line-clamp-2"
           }`}
         >
           {highlightText(journal.title || "Untitled Journal")}
@@ -103,7 +103,7 @@ const getExcerpt = (content) => {
           <div ref={menuRef} className="relative shrink-0">
             <button
               aria-label="Open card menu"
-              className="bg-gray-200 px-2 py-1 rounded-sm cursor-pointer hover:bg-gray-300 transition"
+              className="bg-gray-200 dark:bg-gray-100 px-2 py-1 rounded-sm cursor-pointer hover:bg-gray-300 transition"
               onClick={handleToggleMenu}
             >
               <i className="fa-solid fa-ellipsis" />
@@ -132,8 +132,8 @@ const getExcerpt = (content) => {
       {/* Excerpt */}
       {excerpt && (
         <p
-          className={`text-gray-600 dark:text-gray-300 ${
-            variant === "preview" ? "text-sm mb-2 line-clamp-2" : "text-base mb-3 line-clamp-3"
+          className={`text-[#ffffff] dark:text-gray-300 ${
+            variant === "preview" ? "text-sm text-black mb-2 line-clamp-2" : "italic text-base mb-3 line-clamp-3"
           }`}
         >
           {highlightText(excerpt)}
@@ -147,13 +147,13 @@ const getExcerpt = (content) => {
             journal.tags.map((tag, i) => (
               <span
                 key={i}
-                className="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded-md"
+                className="px-2 py-1 text-xs bg-pink-100 dark:bg-blue-100 text-blue-700 rounded-md"
               >
                 {highlightText(tag)}
               </span>
             ))
           ) : (
-            <span className="text-xs text-gray-400">No tags</span>
+            <span className="text-xs text-gray-600 bg-gray-200 p-1 rounded-md dark:text-black">No tags</span>
           )}
         </div>
       )}
