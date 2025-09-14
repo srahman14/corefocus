@@ -13,7 +13,7 @@ export default function StatusDropdown({ status, setStatus }) {
       {/* Button */}
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className="flex items-center justify-between w-full bg-gray-100 px-4 py-2 rounded-lg text-gray-700 font-medium hover:bg-gray-200 transition"
+        className="flex items-center justify-between w-full bg-gray-100 dark:bg-gray-500 px-4 py-2 rounded-lg text-gray-700 dark:text-white font-medium hover:bg-gray-200 transition cursor-pointer"
       >
         {status || "Select Status"}
         <ChevronDownIcon
@@ -40,7 +40,7 @@ export default function StatusDropdown({ status, setStatus }) {
                   setStatus(item);
                   setOpen(false);
                 }}
-                className={`w-full text-left px-4 py-2 rounded-md text-gray-700 hover:bg-indigo-100 transition ${
+                className={`w-full text-left px-4 py-2 rounded-md text-gray-700 dark:text-black hover:bg-indigo-100 transition cursor-pointer ${
                   status === item ? "bg-indigo-50 font-semibold" : ""
                 }`}
               >
