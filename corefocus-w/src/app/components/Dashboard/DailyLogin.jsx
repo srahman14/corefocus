@@ -148,7 +148,7 @@ export default function DailyLoginComponent() {
           </p>
         </span>
       </div>
-      <ul className="flex flex-row gap-25 justify-center items-center pb-18">
+      <ul className="flex flex-row gap-20 justify-center items-center pb-18">
         {weekdays.map((weekday) => {
           const isLoggedIn = loggedInDays.includes(weekday);
           return (
