@@ -15,6 +15,7 @@ import { Plus, FileText } from "lucide-react";
 import Link from "next/link";
 import JournalCard from "@/app/components/JournalCard";
 import { AnimatedThemeToggler } from "@/app/components/magicui/animated-theme-toggler";
+import { format } from "date-fns"
 
 export default function Journal() {
   const router = useRouter();
@@ -122,7 +123,7 @@ export default function Journal() {
   }
 
   return (
-    <main className="flex flex-col min-h-screen px-4 py-10 bg-gradient-to-br from-[#FFFF8F] via-[#FFFDD0] to-[#DFFF00] dark:from-[#0B091A] dark:via-[#110E2D] dark:to-[#0B091A]">
+    <main className="flex flex-col min-h-screen px-4 py-10 bg-gradient-to-br from-[#B19CD7] via-[#EBE8FC] to-[#C0AFE2] dark:from-[#0B091A] dark:via-[#110E2D] dark:to-[#0B091A]">
       {/* Header */}
       <div className="w-full flex justify-between items-center px-4 mb-12">
         <div className="text-white">
@@ -131,7 +132,8 @@ export default function Journal() {
             / <span className="hover:underline dark:text-white text-black">Dashboard</span>{" "}
             / <span className="font-bold hover:underline dark:text-white text-black">Journal</span>
           </h1>
-          <h1 className="text-gray-400 dark:text-white">Date goes here</h1>
+          <h1 className="text-gray-400 dark:text-white">{format(new Date(), "dd MMM yyyy")}</h1>
+          
         </div>
         <div className="flex flex-row items-center gap-4 text-violet-400">
           <img src="/avatar-default.svg" alt="avatar" className="bg-white rounded-full w-10 h-10" />
@@ -144,7 +146,7 @@ export default function Journal() {
       <section className="max-w-6xl mx-auto">
         {/* Top Bar: Title + New Entry */}
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold">Your Journal</h1>
+          <h1 className="text-3xl font-bold dark:text-white">Your Journal</h1>
           <Link
             href={"/journal/new"}
             className="flex items-center px-4 py-2 gap-2 cursor-pointer bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
@@ -188,7 +190,7 @@ export default function Journal() {
           </ul>
 
           {/* Latest Entries */}
-          <h2 className="text-2xl font-bold">Latest Entries</h2>
+          <h2 className="text-2xl font-bold dark:text-white">Latest Entries</h2>
           {filteredJournals.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredJournals.map((journal) => (
@@ -209,12 +211,12 @@ export default function Journal() {
           )}
 
           {/* Topics Section */}
-          <h2 className="text-2xl font-bold mt-12 mb-4">Topics</h2>
+          <h2 className="text-2xl font-bold mt-12 mb-4 dark:text-white">Topics</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {topics.map((topic) => (
               <button
                 key={topic}
-                className="bg-white text-gray-800 font-semibold text-md p-3 rounded-lg shadow hover:shadow-md cursor-pointer transition text-left"
+                className="bg-gradient-to-br from-[#B19CD7] to-[#C0AFE2] dark:from-[#1f1a4a] dark:to-[#2a236b] text-white font-semibold text-md p-3 rounded-lg shadow hover:shadow-md cursor-pointer transition text-left"
               >
                 {topic}
               </button>

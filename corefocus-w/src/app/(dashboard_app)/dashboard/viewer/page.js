@@ -6,6 +6,7 @@ import { useAuth } from "@/app/context/AuthContext";
 import { AnimatedThemeToggler } from "@/app/components/magicui/animated-theme-toggler";
 import PlannerCard from "@/app/components/PlannerCard";
 import GoalBoard from "@/app/components/Dashboard/GoalBoard";
+import { format } from "date-fns"
 
 export default function Planner() {
   const { currentUser, logout } = useAuth();
@@ -95,9 +96,8 @@ useEffect(() => {
               Planner
             </span>
           </h1>
-          <h1 className="text-gray-400 dark:text-white">
-            {new Date().toLocaleDateString()}
-          </h1>
+          <h1 className="text-black dark:text-white">{format(new Date(), "dd MMM yyyy")}</h1>
+
         </div>
 
         <div className="flex flex-row items-center gap-4 text-violet-400">

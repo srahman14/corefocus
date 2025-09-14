@@ -17,7 +17,7 @@ import { useAuth } from "@/app/context/AuthContext";
 import StatusDropdown from "@/app/components/StatusDropdown";
 import TagInput from "@/app/components/TagInput";
 import { X } from "lucide-react";
-
+import { AnimatedThemeToggler } from "@/app/components/magicui/animated-theme-toggler";
 
 export default function JournalEditor({ journalId }) {
   const editorInstance = useRef(null);
@@ -34,9 +34,7 @@ export default function JournalEditor({ journalId }) {
 
   const { currentUser } = useAuth();
 
-  /** -------------------------------
-   *  Initialize Journal Ref
-   * ------------------------------- */
+  //  Initialize Journal Ref
   useEffect(() => {
     if (!currentUser) return;
 
@@ -69,9 +67,7 @@ export default function JournalEditor({ journalId }) {
     }
   }, [currentUser, journalId]);
 
-  /** -------------------------------
-   *  Fetch Journal Data
-   * ------------------------------- */
+  // Fetch Journal Data
   const fetchJournal = useCallback(async () => {
     if (!currentUser || !journalRef.current) return;
 
@@ -90,9 +86,9 @@ export default function JournalEditor({ journalId }) {
     }
   }, [currentUser]);
 
-  /** -------------------------------
-   *  Initialize Editor.js
-   * ------------------------------- */
+
+  // Initialize Editor.js
+
   useEffect(() => {
     if (!editorInstance.current) {
       const editor = new EditorJS({
@@ -119,9 +115,9 @@ export default function JournalEditor({ journalId }) {
     };
   }, []);
 
-  /** -------------------------------
-   *  Save Journal (Create/Update)
-   * ------------------------------- */
+
+  // Save Journal (Create/Update)
+
   const saveNow = useCallback(async () => {
     if (!currentUser || !editorInstance.current || !journalRef.current) return;
 
@@ -156,39 +152,38 @@ export default function JournalEditor({ journalId }) {
     }
   }, [currentUser, title, tags, status, journalId]);
 
-  /** -------------------------------
-   *  Debounced Auto-Save
-   * ------------------------------- */
+    // Debounced Auto-Save
   const triggerAutoSave = useCallback(() => {
     if (saveTimeout.current) clearTimeout(saveTimeout.current);
     saveTimeout.current = setTimeout(saveNow, 2500);
   }, [saveNow]);
 
-  /** -------------------------------
-   *  Load Journal on Mount
-   * ------------------------------- */
+    // Load Journal on Mount
   useEffect(() => {
     fetchJournal();
   }, [fetchJournal]);
 
   return (
-    <div className="min-h-screen p-10 bg-gray-100">
-      <div className="max-w-4xl mx-auto bg-gray-200 p-10 rounded-xl h-[90vh] overflow-y-auto relative">
+    <div className="min-h-screen p-10 bg-gradient-to-br from-[#B19CD7] via-[#EBE8FC] to-[#C0AFE2] dark:from-[#0B091A] dark:via-[#110E2D] dark:to-[#0B091A]">
+      <div className="max-w-4xl mx-auto bg-gray-200 border-4 border-gray-400 dark:border-white  shadow-lg dark:bg-[#343434] dark:text-white p-10 rounded-xl h-[90vh] overflow-y-auto relative">
         <div className="flex justify-between items-center mb-6">
-          <p className="text-gray-500 text-sm">{saveState}</p>
-          <button
-            onClick={async () => {
-              await saveNow();
-              if (!journalId) {
-                localStorage.removeItem("latestJournalId");
-                localStorage.removeItem("latestJournalContent");
-              }
-              window.location.href = "/journal";
-            }}
-            className="p-2 rounded-lg hover:bg-gray-300 transition"
-          >
-            <X className="w-6 h-6 text-gray-700" />
-          </button>
+          <p className="text-gray-500 dark:text-white text-sm">{saveState}</p>
+          <div className="flex gap-2">
+            <AnimatedThemeToggler className={"hover:bg-gray-300 p-2 rounded-lg transition dark:hover:text-black"}/>
+            <button
+              onClick={async () => {
+                await saveNow();
+                if (!journalId) {
+                  localStorage.removeItem("latestJournalId");
+                  localStorage.removeItem("latestJournalContent");
+                }
+                window.location.href = "/journal";
+              }}
+              className="p-2 rounded-lg hover:bg-gray-300 ransition"
+            >
+              <X className="w-6 h-6 text-gray-700 dark:text-white" />
+            </button>
+          </div>
         </div>
 
         {/* Title */}
@@ -206,14 +201,14 @@ export default function JournalEditor({ journalId }) {
         {/* Metadata */}
         <div className="flex flex-wrap gap-6 mb-8">
           <div>
-            <p className="text-sm font-bold text-gray-600">Status</p>
+            <p className="text-sm font-bold text-gray-600 dark:text-white mb-2">Status</p>
             <div onChange={triggerAutoSave}>
               <StatusDropdown status={status} setStatus={setStatus} />
             </div>
           </div>
 
           <div className="flex flex-col gap-2 flex-1">
-            <p className="text-sm font-bold text-gray-600">Tags</p>
+            <p className="text-sm font-bold text-gray-600 dark:text-white">Tags</p>
             <TagInput
               tags={tags}
               setTags={(newTags) => {
@@ -224,12 +219,12 @@ export default function JournalEditor({ journalId }) {
           </div>
 
           <div>
-            <p className="text-sm font-bold text-gray-600">Created</p>
+            <p className="text-sm font-bold text-gray-600 dark:text-white">Created</p>
             <p>{createdAt.toLocaleDateString()}</p>
           </div>
 
           <div>
-            <p className="text-sm font-bold text-gray-600">Last Edited</p>
+            <p className="text-sm font-bold text-gray-600 dark:text-white">Last Edited</p>
             <p>{updatedAt.toLocaleDateString()}</p>
           </div>
         </div>
