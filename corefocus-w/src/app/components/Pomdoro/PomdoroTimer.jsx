@@ -54,29 +54,43 @@ export default function PomodoroTimer() {
     }
 
     if (timeLeft === 0 && isRunning) {
-
       const saveSession = async () => {
-        if (!currentUser.uid) {
+        if (!currentUser?.uid) {
           console.log("User not auth, cannot save session");
           return;
         }
+
+        // Only save Focus sessions
+        if (!isFocusMode) return;
+
         try {
-            const sessionData = {
-              sessionName: sessionName || (isFocusMode ? "Focus Session" : "Break Session"),
-              duration: isFocusMode ? focusDuration : breakDuration,
-              startTime: sessionStartTime,
-              endTime: serverTimestamp(),
-              type: isFocusMode ? "Focus" : "Break",
-            };
+          // Format today’s date (YYYY-MM-DD)
+          const sessionDate = new Date().toISOString().split("T")[0];
 
-            // Use a Firestore reference to the subcollection
-            const sessionsCollectionRef = collection(db, "users", currentUser.uid, "pomodoroSessions");
-            await addDoc(sessionsCollectionRef, sessionData);
+          const sessionData = {
+            sessionName: sessionName || "Focus Session",
+            duration: focusDuration, // in minutes
+            startTime: sessionStartTime,
+            endTime: serverTimestamp(),
+            type: "Focus",
+          };
 
-            console.log("Session saved successfully!");
-          } catch (error) {
-            console.error("Error saving session:", error);
-          }
+          // Reference: users/{uid}/pomodoroSessions/{date}/sessions/{autoId}
+          const sessionsCollectionRef = collection(
+            db,
+            "users",
+            currentUser.uid,
+            "pomodoroSessions",
+            sessionDate,
+            "sessions"
+          );
+
+          await addDoc(sessionsCollectionRef, sessionData);
+
+          console.log("Focus session saved under date:", sessionDate);
+        } catch (error) {
+          console.error("Error saving session:", error);
+        }
       };
       saveSession();
 
@@ -88,7 +102,15 @@ export default function PomodoroTimer() {
     }
 
     return () => clearInterval(intervalRef.current);
-  }, [isRunning, timeLeft, isFocusMode, focusDuration, breakDuration, sessionStartTime, sessionName]);
+  }, [
+    isRunning,
+    timeLeft,
+    isFocusMode,
+    focusDuration,
+    breakDuration,
+    sessionStartTime,
+    sessionName,
+  ]);
 
   const handleStartPause = () => {
     if (timeLeft === 0) return;
