@@ -81,56 +81,21 @@ export default function AnalyticsPage() {
 
     const fetchMonthlyHabits = async () => {
       try {
-        const userDocRef = doc(db, "habitLogs", currentUser.uid);
-        const userDocSnap = await getDoc(userDocRef);
-
-        if (!userDocSnap.exists()) {
-          //   console.log(
-          //     "[Analytics] No habitLogs doc found for user:",
-          //     currentUser.uid
-          //   );
+        const currentMonth = format(new Date(), "yyyy-MM");
+        const monthMetaRef = doc(db, "habitLogs", currentUser.uid, currentMonth, "meta")
+        const metaSnap = await getDoc(monthMetaRef)
+        if (metaSnap.exists()) {
+          setMonthlyHabitTotal(metaSnap.data().totalCount);
+        } else {
           setMonthlyHabitTotal(0);
-          return;
         }
-
-        const data = userDocSnap.data();
-        // console.log("[Analytics] habitLogs data keys:", Object.keys(data));
-
-        const now = new Date();
-        let total = 0;
-
-        Object.entries(data).forEach(([key, value]) => {
-          // Only process YYYY-MM-DD keys
-          const datePattern = /^\d{4}-\d{2}-\d{2}$/;
-          if (!datePattern.test(key)) return;
-
-          const date = new Date(`${key}T00:00:00`);
-          if (
-            date.getFullYear() === now.getFullYear() &&
-            date.getMonth() === now.getMonth()
-          ) {
-            const count =
-              value && typeof value.count === "number"
-                ? value.count
-                : Array.isArray(value?.completedHabits)
-                ? value.completedHabits.length
-                : 0;
-            total += count;
-          }
-        });
-
-        // console.log("[Analytics] total habits this month:", total);
-        setMonthlyHabitTotal(total);
       } catch (err) {
-        // console.error("[Analytics] Error fetching monthly habits:", err);
-        setMonthlyHabitTotal(0);
+        console.error("Error fetching meta: ", err);
       }
-    };
+    }; 
 
     fetchMonthlyHabits();
   }, [currentUser]);
-  // console.log("Current User: ", currentUser.uid)
-  // console.log("Current data: ", userData)
 
   useEffect(() => {
     console.log("Current dark mode:", isDark); // SHOULD show on load + toggle
