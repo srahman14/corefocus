@@ -4,7 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 .react-calendar-heatmap text {
-  fill: #d1d5db; 
+  stroke: #fff;
+  stroke-width: 0.6px;
   font-size: 2px;
 }
 
