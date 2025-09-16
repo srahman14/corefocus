@@ -7,14 +7,20 @@ import { addDays, format } from "date-fns";
 export default function Heatmap({ habitLogs }) {
   const today = new Date();
   const startDate = new Date(today.getFullYear(), 0, 1);
+  console.log("[Heatmap] raw habitLogs:", habitLogs);
 
-  const values = Object.entries(habitLogs || {}).map(([date, log]) => ({
-    date,
-    count: log.completedHabits?.length || 0,
-  }));
+  const values = Object.entries(habitLogs || {})
+    .filter(([docId]) => docId !== "meta") // ignore meta doc
+    .map(([date, log]) => {
+      const count = log.count ?? log.completedHabits?.length ?? 0;
+      console.log(`[Heatmap] processing date: ${date}, count: ${count}`);
+      return { date, count };
+    });
+
+  console.log("[Heatmap] final values array:", values);
 
   return (
-    <div className="bg-gray-900 p-4 rounded-xl shadow-xl container p-12">
+    <div className="bg-gradient-to-br from-[#C0AFE2] via-[#CEC2EB] to-[#C0AFE2] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F] p-4 rounded-xl shadow-xl container p-12">
       <h2 className="text-xl font-bold mb-4">Habit Heatmap</h2>
       <CalendarHeatmap
         startDate={startDate}
