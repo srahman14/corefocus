@@ -7,6 +7,7 @@ import {
   setDoc,
   doc,
   onSnapshot,
+  increment,
 } from "firebase/firestore";
 import debounce from "lodash.debounce";
 import { format } from "date-fns";
@@ -23,7 +24,7 @@ export default function TodaysHabits() {
   const [completedHabits, setCompletedHabits] = useState([]);
   const notificationSound = useRef(null);
   const { openModal } = useModalStore();
-  
+
   const fullToShortDayMap = {
     Sunday: "Sun",
     Monday: "Mon",
@@ -37,61 +38,64 @@ export default function TodaysHabits() {
   const todayFull = new Date().toLocaleDateString("en-US", { weekday: "long" });
   const today = fullToShortDayMap[todayFull];
 
-useEffect(() => {
-  if (!currentUser) return;
+  useEffect(() => {
+    if (!currentUser) return;
 
-  const fetchHabitsAndListen = async () => {
-    try {
-      const snapshot = await getDocs(
-        collection(db, "users", currentUser.uid, "habits")
-      );
+    const fetchHabitsAndListen = async () => {
+      try {
+        const snapshot = await getDocs(
+          collection(db, "users", currentUser.uid, "habits")
+        );
 
-      const habits = [];
-      const weekday = new Date().toLocaleDateString("en-US", {
-        weekday: "long",
-      });
-      const shortDay = fullToShortDayMap[weekday];
+        const habits = [];
+        const weekday = new Date().toLocaleDateString("en-US", {
+          weekday: "long",
+        });
+        const shortDay = fullToShortDayMap[weekday];
 
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        if (data.habitFreq?.includes(shortDay)) {
-          habits.push({ id: doc.id, ...data });
-        }
-      });
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          if (data.habitFreq?.includes(shortDay)) {
+            habits.push({ id: doc.id, ...data });
+          }
+        });
 
-      setTodaysHabits(habits);
+        setTodaysHabits(habits);
 
-      const todayFormatted = format(new Date(), "yyyy-MM-dd");
-      const logRef = doc(db, "habitLogs", currentUser.uid);
+        const todayFormatted = format(new Date(), "yyyy-MM-dd");
+        const currentMonth = format(new Date(), "yyyy-MM");
 
-      const unsubscribe = onSnapshot(logRef, (docSnap) => {
-        if (docSnap.exists()) {
-          const todayLog = docSnap.data()[todayFormatted];
-          if (todayLog?.completedHabits) {
-            setCompletedHabits(todayLog.completedHabits);
+        const logRef = doc(
+          db,
+          "habitLogs",
+          currentUser.uid,
+          currentMonth,
+          todayFormatted
+        );
+
+        const unsubscribe = onSnapshot(logRef, (docSnap) => {
+          if (docSnap.exists()) {
+            const todayLog = docSnap.data();
+            setCompletedHabits(todayLog.completedHabits || []);
           } else {
             setCompletedHabits([]);
           }
-        } else {
-          setCompletedHabits([]);
-        }
+        });
+
+        return unsubscribe;
+      } catch (err) {
+        console.error("Error fetching habits or logs:", err);
+      }
+    };
+
+    const unsubscribePromise = fetchHabitsAndListen();
+
+    return () => {
+      unsubscribePromise.then((unsubscribe) => {
+        if (typeof unsubscribe === "function") unsubscribe();
       });
-
-      return unsubscribe;
-    } catch (err) {
-      console.error("Error fetching habits or logs:", err);
-    }
-  };
-
-  const unsubscribePromise = fetchHabitsAndListen();
-
-  return () => {
-    // Make sure to clean up snapshot listener
-    unsubscribePromise.then((unsubscribe) => {
-      if (typeof unsubscribe === "function") unsubscribe();
-    });
-  };
-}, [currentUser]);
+    };
+  }, [currentUser]);
 
   function toggleHabit(habitId) {
     setCompletedHabits((prev) => {
@@ -107,28 +111,57 @@ useEffect(() => {
   const debouncedUpdateHabits = useCallback(
     debounce(async (updatedList) => {
       if (!currentUser) return;
-      const docRef = doc(db, "habitLogs", currentUser.uid);
+
       const todayFormatted = format(new Date(), "yyyy-MM-dd");
-      
+      const currentMonth = format(new Date(), "yyyy-MM");
+
+      const logRef = doc(
+        db,
+        "habitLogs",
+        currentUser.uid,
+        currentMonth,
+        todayFormatted
+      );
+      const monthMetaRef = doc(
+        db,
+        "habitLogs",
+        currentUser.uid,
+        currentMonth,
+        "meta"
+      );
+
       const toastId = toast.loading("Updating habits...");
-      // Debugging
-      // console.log("Debounced save for:", todayFormatted, updatedList);
 
       try {
+        // 1. Get the previous count before overwriting
+        const prevSnap = await getDoc(logRef);
+        const prevCount = prevSnap.exists() ? prevSnap.data().count || 0 : 0;
+        const newCount = updatedList.length;
+
+        // 2. Save today's updated habits
         await setDoc(
-          docRef,
+          logRef,
           {
-            [todayFormatted]: {
-              completedHabits: updatedList,
-              count: updatedList.length,
-            },
+            completedHabits: updatedList,
+            count: newCount,
           },
           { merge: true }
         );
-        
+
+        // 3. Update the monthly total (increment by diff)
+        const diff = newCount - prevCount;
+        if (diff !== 0) {
+          await setDoc(
+            monthMetaRef,
+            { totalCount: increment(diff) },
+            { merge: true }
+          );
+        }
+
         notificationSound.current?.play();
         toast.success("Habits saved!", { id: toastId });
       } catch (error) {
+        console.error("Error updating habit log:", error);
         toast.error("Failed to save habits", { id: toastId });
       }
     }, 500),
@@ -172,9 +205,13 @@ useEffect(() => {
     );
   }
 
-  return ( 
+  return (
     <div className="h-full rounded-xl shadow-md p-4 bg-gradient-to-br from-[#C0AFE2] via-[#CEC2EB] to-[#C0AFE2] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F]">
-      <audio ref={notificationSound} src="/sounds/notification.mp3" preload="auto" />
+      <audio
+        ref={notificationSound}
+        src="/sounds/notification.mp3"
+        preload="auto"
+      />
 
       <div className="py-4 flex flex-row justify-between items-center">
         <h2 className="text-xl font-bold mb-4 dark:text-white">
@@ -182,7 +219,7 @@ useEffect(() => {
         </h2>
 
         <button onClick={openModal} className="cursor-pointer">
-            <i className="fa-solid fa-plus text-white text-xl bg-[#7E4E9E] dark:bg-[#520dd0] p-2 rounded-lg hover:bg-[#520dd0]/80"></i>
+          <i className="fa-solid fa-plus text-white text-xl bg-[#7E4E9E] dark:bg-[#520dd0] p-2 rounded-lg hover:bg-[#520dd0]/80"></i>
         </button>
       </div>
 
