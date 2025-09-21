@@ -21,7 +21,7 @@ export default function Heatmap({ habitLogs }) {
 
   return (
     <div className="bg-gradient-to-br from-[#C0AFE2] via-[#CEC2EB] to-[#C0AFE2] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F] p-4 rounded-xl shadow-xl container p-12">
-      <h2 className="text-xl font-bold mb-4">Habit Heatmap</h2>
+      <h2 className="text-2xl font-bold mb-4 text-white">Habit Heatmap</h2>
       <CalendarHeatmap
         startDate={startDate}
         endDate={today}
