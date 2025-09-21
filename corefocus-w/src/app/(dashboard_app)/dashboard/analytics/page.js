@@ -5,6 +5,7 @@ import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useThemeStore } from "@/app/store/useThemeStore";
 import HeatmapComponent from "@/app/components/Dashboard/HeatmapComponent";
+import Heatmap from "@/app/components/Heatmap";
 import DailyLoginComponent from "@/app/components/Dashboard/DailyLogin";
 import {
   collection,
@@ -16,6 +17,7 @@ import {
 import { db } from "@/app/firebase";
 import { format, startOfMonth, endOfMonth } from "date-fns";
 import { AnimatedThemeToggler } from "@/app/components/magicui/animated-theme-toggler";
+import MonthlyHabitsChart from "@/app/components/Dashboard/Analytics/MonthlyHabitsChart";
 
 export default function AnalyticsPage() {
   const router = useRouter();
@@ -23,6 +25,34 @@ export default function AnalyticsPage() {
   const { currentUser, userData, loading, logout } = useAuth();
   const [monthlyHabitTotal, setMonthlyHabitTotal] = useState(0);
   const [monthlyFocusHours, setMonthlyFocusHours] = useState(0);
+  const [currentMonthLogs, setCurrentMonthLogs] = useState({});
+  
+  useEffect(() => {
+    if (!currentUser) return;
+
+    const fetchMonthlyHabitLogs = async () => {
+      try {
+        const today = new Date();
+        const currentMonth = today.toISOString().slice(0, 7); // "yyyy-MM"
+
+        // Reference to the subcollection for this month
+        const monthRef = collection(db, "habitLogs", currentUser.uid, currentMonth);
+        const snapshot = await getDocs(monthRef);
+
+        const logs = {};
+        snapshot.forEach((doc) => {
+          logs[doc.id] = doc.data();
+        });
+
+        console.log("[AnalyticsPage] fetched currentMonthLogs:", logs);
+        setCurrentMonthLogs(logs);
+      } catch (error) {
+        console.error("Error fetching monthly habit logs:", error);
+      }
+    };
+
+    fetchMonthlyHabitLogs();
+  }, [currentUser]);
 
   useEffect(() => {
     if (!currentUser) return;
@@ -199,11 +229,9 @@ export default function AnalyticsPage() {
       </div>
       <div className="p-4 md:p-6 lg:p-8 space-y-6">
         <div className="flex flex-col lg:flex-row gap-6">
-          <div className="w-full lg:w-1/2">
-            <p>
-              Graph content of weekly habits completed and focus sessions,
-              shuold be a toggle or dropdown to view focus sessions or habits
-            </p>
+          <div className="w-full h-full lg:w-2/3 mb-12">
+          <MonthlyHabitsChart habitLogs={currentMonthLogs}/>
+
           </div>
           <div className="w-full lg:w-1/2">
             <p>
@@ -213,7 +241,7 @@ export default function AnalyticsPage() {
         </div>
 
         <div>
-          <HeatmapComponent />
+          <Heatmap habitLogs={currentMonthLogs}/>
         </div>
 
         <div>
