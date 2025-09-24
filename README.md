@@ -1,5 +1,5 @@
 # corefocus
-Habit tracking app with additional features such as journaling, time-blocking, heatmaps and more, almost done
+Habit tracking app with additional features such as journaling, time-blocking, heatmaps and more, almost done.
 
 ## Project Structure
 ```pysqlite
