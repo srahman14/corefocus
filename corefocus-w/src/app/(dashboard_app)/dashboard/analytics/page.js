@@ -7,6 +7,8 @@ import { useThemeStore } from "@/app/store/useThemeStore";
 import HeatmapComponent from "@/app/components/Dashboard/HeatmapComponent";
 import Heatmap from "@/app/components/Heatmap";
 import DailyLoginComponent from "@/app/components/Dashboard/DailyLogin";
+import GoalsAnalytics from "@/app/components/Dashboard/Analytics/GoalsAnalytics";
+
 import {
   collection,
   getDocs,
@@ -26,7 +28,7 @@ export default function AnalyticsPage() {
   const [monthlyHabitTotal, setMonthlyHabitTotal] = useState(0);
   const [monthlyFocusHours, setMonthlyFocusHours] = useState(0);
   const [currentMonthLogs, setCurrentMonthLogs] = useState({});
-  
+
   useEffect(() => {
     if (!currentUser) return;
 
@@ -36,7 +38,12 @@ export default function AnalyticsPage() {
         const currentMonth = today.toISOString().slice(0, 7); // "yyyy-MM"
 
         // Reference to the subcollection for this month
-        const monthRef = collection(db, "habitLogs", currentUser.uid, currentMonth);
+        const monthRef = collection(
+          db,
+          "habitLogs",
+          currentUser.uid,
+          currentMonth
+        );
         const snapshot = await getDocs(monthRef);
 
         const logs = {};
@@ -112,8 +119,14 @@ export default function AnalyticsPage() {
     const fetchMonthlyHabits = async () => {
       try {
         const currentMonth = format(new Date(), "yyyy-MM");
-        const monthMetaRef = doc(db, "habitLogs", currentUser.uid, currentMonth, "meta")
-        const metaSnap = await getDoc(monthMetaRef)
+        const monthMetaRef = doc(
+          db,
+          "habitLogs",
+          currentUser.uid,
+          currentMonth,
+          "meta"
+        );
+        const metaSnap = await getDoc(monthMetaRef);
         if (metaSnap.exists()) {
           setMonthlyHabitTotal(metaSnap.data().totalCount);
         } else {
@@ -122,7 +135,7 @@ export default function AnalyticsPage() {
       } catch (err) {
         console.error("Error fetching meta: ", err);
       }
-    }; 
+    };
 
     fetchMonthlyHabits();
   }, [currentUser]);
@@ -228,20 +241,25 @@ export default function AnalyticsPage() {
         </div>
       </div>
       <div className="p-4 md:p-6 lg:p-8 space-y-6">
-        <div className="flex flex-col lg:flex-row gap-6">
-          <div className="w-full h-full lg:w-2/3 mb-12">
-          <MonthlyHabitsChart habitLogs={currentMonthLogs}/>
-
-          </div>
-          <div className="w-full lg:w-1/2">
-            <p>
-              You completed the most habits consistently on this day Name_of_Day
-            </p>
+        <div className="flex gap-6">
+          <div className="w-full h-full mb-12">
+            <MonthlyHabitsChart habitLogs={currentMonthLogs} />
           </div>
         </div>
 
         <div>
-          <Heatmap habitLogs={currentMonthLogs}/>
+            <GoalsAnalytics />
+        </div>
+
+        <div>
+            <Heatmap habitLogs={currentMonthLogs} />
+        </div>
+        <div className="flex flex-col md:flex-col lg:flex-row gap-6">
+          <div className="flex-1 w-full">
+          </div>
+
+          <div className="flex-1 w-full">
+          </div>
         </div>
 
         <div>
