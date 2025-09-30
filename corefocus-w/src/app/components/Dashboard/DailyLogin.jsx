@@ -137,7 +137,7 @@ export default function DailyLoginComponent() {
   }, [loggedInDays]);
 
   return (
-    <div className="container bg-gradient-to-br from-[#C0AFE2] via-[#CEC2EB] to-[#C0AFE2] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F] rounded-xl rounded-xl shadow-md text-white p-4">
+    <div className="container bg-gradient-to-br from-[#C0AFE2] via-[#CEC2EB] to-[#C0AFE2] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F] rounded-xl rounded-xl shadow-md text-white p-4 w-full lg:h-[280px]">
       <div className="flex justify-end">
         <span className={`flex items-center gap-3 p-6 ${
           weeklyStreak === 0 ? "hidden" : "text-[#7E4E9E] font-bold dark:text-yellow-400"
@@ -148,12 +148,12 @@ export default function DailyLoginComponent() {
           </p>
         </span>
       </div>
-      <ul className="flex flex-row gap-20 justify-center items-center pb-18">
+      <ul className="flex flex-row md:gap-10 lg:gap-18 justify-center items-center pb-18">
         {weekdays.map((weekday) => {
           const isLoggedIn = loggedInDays.includes(weekday);
           return (
             <li key={weekday} className="text-center text-xl font-semibold">
-              <div className="flex flex-col items-center gap-2 text-xl">
+              <div className="flex flex-col items-center gap-s text-xl">
                 <span className="text-white-400 text-2xl">{weekday.slice(0, 3)}</span>
                 <i
                   className={`fa-solid fa-circle-check text-6xl transition ${
