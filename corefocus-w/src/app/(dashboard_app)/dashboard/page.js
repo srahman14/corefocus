@@ -89,9 +89,9 @@ export default function Dashboard() {
       <div className="p-4 md:p-6 lg:p-8 space-y-6">
 
         {/* Second row */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="flex md:flex-col lg:flex-row items-center justify-center md:justify-start md:items-start gap-6">
           {/* Welcome Back card */}
-          <div className="lg:col-span-1 bg-gradient-to-br from-[#CE9AD9] to-[#B19CD7] dark:from-[#520dd0] dark:to-[#500DCA] rounded-2xl p-6 shadow-lg flex flex-col h-[240px]">
+          <div className="lg:flex-1 lg:col-span-1 bg-gradient-to-br from-[#CE9AD9] to-[#B19CD7] dark:from-[#520dd0] dark:to-[#500DCA] rounded-2xl p-6 shadow-lg flex flex-col h-[280px] justify-start">
             <h2 className="text-violet-100 dark:text-white text-2xl font-bold mb-2">
               Welcome back!
             </h2>
@@ -99,9 +99,11 @@ export default function Dashboard() {
               Let’s continue making progress on your goals today.
             </p>
           </div>
-
+          <div className="w-full lg:flex-3 lg:col-span-1">
+            <DailyLoginComponent />
+          </div>
           {/* Two smaller cards */}
-          <div className="bg-[#CEC2EB] dark:bg-[#1f1a4a] rounded-2xl p-6 shadow-lg flex flex-col h-[240px]">
+          {/* <div className="bg-[#CEC2EB] dark:bg-[#1f1a4a] rounded-2xl p-6 shadow-lg flex flex-col h-[240px]">
             <h3 className="text-black dark:text-white text-lg font-semibold">Quick summary for today (AI)</h3>
             <p className="text-gray-600 dark:text-violet-200 text-sm mt-2">
               Check your current streaks and completions.
@@ -113,7 +115,7 @@ export default function Dashboard() {
             <p className="text-gray-600 dark:text-violet-200 text-sm mt-2">
               Don’t miss what’s next on your schedule.
             </p>
-          </div>
+          </div> */}
         </div>
 
         {/* Main dashboard sections */}
@@ -136,7 +138,6 @@ export default function Dashboard() {
         </div>
 
         <div className="w-full flex items-center justify-center">
-          <DailyLoginComponent />
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6">
