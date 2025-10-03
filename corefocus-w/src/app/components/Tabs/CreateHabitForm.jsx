@@ -122,8 +122,8 @@ export default function CreateHabitForm() {
 
   return (
     <div className="min-w-[10rem] max-w-[40rem]">
-      <h2 className="text-4xl tracking-tighter font-semibold">Create Habit</h2>
-      <p className="w-140 font-light text-gray-400 text-lg">Start achieving your goals with achievable habits in place. Note that you should relate your habits to your overall goals.</p>
+      <h2 className="text-4xl tracking-tighter font-semibold text-white">Create Habit</h2>
+      <p className="w-140 font-semibold text-white text-lg">Start achieving your goals with achievable habits in place. Note that you should relate your habits to your overall goals.</p>
       <hr className="mb-4 bg-gray-300/90 min-h-1 border-none" />
 
       {/* Form contents */}
@@ -133,17 +133,17 @@ export default function CreateHabitForm() {
         <div className="flex flex-col gap-4">
           <div className="flex flex-row justify-start gap-8">
             <div>
-              <label className="block text-lg mb-2 font-semibold tracking-tighter">Habit name</label>
+              <label className="block text-lg mb-2 font-semibold tracking-tighter text-white">Habit name</label>
 
-              <div className="flex dark:bg-[#520dd0] rounded-lg overflow-hidden h-16">
-                  {/* Icon on the left */}
-                  <div className="flex items-center justify-center px-6 dark:bg-[#520dd0] text-white mr-2">
-                    <i className="fa-solid fa-t text-2xl"></i>
-                  </div>
+              <div className="flex dark:bg-[#520dd0] rounded-lg overflow-hidden h-16 w-full">
+                {/* Icon on the left */}
+                <div className="flex items-center justify-center px-6 dark:bg-[#520dd0] bg-[#bda3f0] rounded-lg text-white mr-2">
+                  <i className="fa-solid fa-t text-2xl"></i>
+                </div>
 
 
-                <div className="flex items-center justify-center dark:bg-[#520dd0]/50 h-full border-l dark:border-l-white/20 p-2">
-                  <input required value={habitName} onChange={(e) => setHabitName(e.target.value)} placeholder="e.g. Morning run" className="outline-none text-xl font-semibold"></input>
+                <div className="flex items-center justify-center dark:bg-[#520dd0]/50 h-full p-2 bg-[#C0AFE2] rounded-lg">
+                  <input required value={habitName} onChange={(e) => setHabitName(e.target.value)} placeholder="e.g. Morning run" className="outline-none text-xl font-semibold w-[30rem]"></input>
                 </div>
 
                </div>
@@ -174,7 +174,7 @@ export default function CreateHabitForm() {
 
             <div className="flex flex-wrap rounded-lg overflow-hidden h-16">
               {/* Icon on the left */}
-              <div className="flex items-center justify-center px-6 dark:bg-[#520dd0] text-white">
+              <div className="flex items-center justify-center px-6 dark:bg-[#520dd0] bg-[#bda3f0] text-white">
                 <i className="fa-solid fa-calendar-week text-2xl"></i>
               </div>
 
@@ -189,11 +189,11 @@ export default function CreateHabitForm() {
                             className={`h-full flex items-center px-4 dark:hover:bg-violet-200/90 hover:text-black cursor-pointer font-semibold tracking-tighter text-md duration-300 ease-in transition-all
                             ${darkMode 
                                 ? isSelected 
-                                ? "bg-blue-300 text-white" 
-                                : "bg-blue-600 text-white hover:bg-gray-700"
+                                ? "bg-[#C0AFE2] dark:bg-[#520dd0] text-white" 
+                                : "bg-[#C0AFE2] hover:dark:bg-[#520dd0] text-white"
                                 : isSelected 
-                                ? "bg-blue-500 text-white" 
-                                : "bg-gray-200 text-black hover:bg-gray-300"
+                                ? "bg-[#C0AFE2] dark:bg-[#520dd0] text-white" 
+                                : "bg-gray-200 text-black hover:bg-[#C0AFE2]/80 hover:dark:bg-[#520dd0]/10"
                             }`}>
                         {option}
                     </li>
@@ -202,11 +202,11 @@ export default function CreateHabitForm() {
 
                   <li 
                   onClick={() => handleToggleAll(HabitFrequency, habitFreq, setHabitFreq)}
-                  className={`h-full flex items-center px-4 hover:bg-blue-300 cursor-pointer font-semibold tracking-tighter text-md rounded-r-lg duration-300 ease-in transition-all
+                  className={`h-full flex items-center px-4 hover:bg-[#C0AFE2] cursor-pointer font-semibold tracking-tighter text-md rounded-r-lg duration-300 ease-in transition-all
                         ${
                         darkMode
                             ? habitFreq.length === HabitFrequency.length
-                            ? "bg-blue-300 text-white"
+                            ? "bg-[#C0AFE2] text-white"
                             : "bg-gray-600 text-white hover:bg-gray-700"
                             : habitFreq.length === HabitFrequency.length
                             ? "bg-blue-500 text-white"
