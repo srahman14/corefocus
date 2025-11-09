@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useThemeStore } from "../store/useThemeStore";
 import Magnet from "./Magnet";
+import { Leaf } from "lucide-react";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -40,19 +41,23 @@ export default function Navbar() {
       <div className="flex justify-between items-center">
         <div className="text-xl font-bold">
           <span className={`flex items-center gap-1 ${isDark ? "text-white" : "text-black"}`}>
-            {/* <img src="/logo.svg" className="w-14 rounded-lg"></img> */}
-            <p className="tracking-tighter font-semibold text-2xl text-[#b087fa]"><i>c</i>orefocus</p>
+                <div className="w-10 h-10 rounded-xl bg-linear-to-br from-purple-500/50 to-indigo-600 hover:from-purple-500/90 duration-300 transition-all ease-in-out flex items-center justify-center">
+                  <Link href={'/'}>
+                    <Leaf className="text-white"/>
+                  </Link>
+                </div>
+                <p className="tracking-tighter font-semibold text-2xl text-white"><i>C</i>orefocus</p>
           </span>
         </div>
 
         <ul className={`flex space-x-8 ${isDark ? "text-white" : "text-black"}`}>
-          <li className="hover:text-[#b087fa]/60 text-[#b087fa] transition-all duration-300 ease-in-out cursor-pointer font-semibold tracking-tighter text-xl p-1">
+          <li className="hover:text-[#b087fa]/60 text-[#fff] transition-all duration-300 ease-in-out cursor-pointer font-semibold tracking-tighter text-xl p-1">
             <Link href="/">Home</Link>
           </li>
-          <li className="hover:text-[#b087fa]/60 text-[#b087fa] transition-all duration-300 ease-in-out cursor-pointer font-semibold tracking-tighter text-xl p-1">
+          <li className="hover:text-[#b087fa]/60 text-white transition-all duration-300 ease-in-out cursor-pointer font-semibold tracking-tighter text-xl p-1">
             <Link href="/">Plans</Link>
           </li>
-          <li className="hover:text-[#b087fa]/60 text-[#b087fa] transition-all duration-300 ease-in-out cursor-pointer font-semibold tracking-tighter text-xl p-1">
+          <li className="hover:text-[#b087fa]/60 text-white transition-all duration-300 ease-in-out cursor-pointer font-semibold tracking-tighter text-xl p-1">
             <Link href="/login" prefetch={true}>Login</Link>
           </li>
           {/* <button
