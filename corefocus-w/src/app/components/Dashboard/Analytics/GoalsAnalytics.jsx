@@ -6,7 +6,7 @@ import { db } from "@/app/firebase";
 import { useAuth } from "@/app/context/AuthContext";
 import { CheckCircleIcon, CircleDashedIcon } from "lucide-react";
 
-export default function GoalsAnalytics() {
+export default function GoalsAnalytics({ onCompletedGoalsChange }) {
   const { currentUser } = useAuth(); // ensure you have access to uid
   const [goals, setGoals] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,11 +36,22 @@ export default function GoalsAnalytics() {
     fetchGoals();
   }, [currentUser]);
 
+  const today = new Date();
+
+  // Calculate completed and incomplete goals
+  const [completedGoalsCount, setCompletedGoalsCount] = useState(0);
+
+  useEffect(() => {
+    const completed = goals.filter((goal) => goal.deadline.toDate() < today);
+    setCompletedGoalsCount(completed.length);
+    if (onCompletedGoalsChange) {
+      onCompletedGoalsChange(completed.length);
+    }
+  }, [goals, today, onCompletedGoalsChange]);
+
   if (loading) {
     return <p className="text-gray-500 dark:text-gray-400">Loading goals...</p>;
   }
-
-  const today = new Date();
 
   const completedGoals = goals
     .filter((goal) => goal.deadline.toDate() < today)
