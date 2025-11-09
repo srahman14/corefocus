@@ -70,7 +70,33 @@ export default function DailyLoginComponent() {
     const thisWeekStart = getStartOfWeek();
     const docRef = doc(db, "users", uid, "tracking", "weeklyLogins");
 
-    const checkAndLogDailyLogin = async () => {
+    const updateStreakMeta = async (currentStreak) => {
+    const streakMetaRef = doc(db, "users", currentUser.uid, "tracking", "streakMeta");
+    const streakMetaSnap = await getDoc(streakMetaRef);
+    
+    if (!streakMetaSnap.exists()) {
+      // Calculate the current streak using the same logic
+      let initialStreak = calculateWeeklyStreak(loggedInDays);
+      // Use whichever streak is higher (new login might have increased it)
+      const highestStreak = Math.max(initialStreak, currentStreak);
+      console.log("Highest streak: ", highestStreak)
+      
+      await setDoc(streakMetaRef, {
+        longestStreak: highestStreak,
+        updatedAt: new Date()
+      });
+    } else {
+      const streakData = streakMetaSnap.data();
+      if (currentStreak > (streakData.longestStreak || 0)) {
+        await setDoc(streakMetaRef, {
+          longestStreak: currentStreak,
+          updatedAt: new Date()
+        });
+      }
+    }
+  };
+
+  const checkAndLogDailyLogin = async () => {
       try {
         const docSnap = await getDoc(docRef);
         const data = docSnap.data();
@@ -94,10 +120,15 @@ export default function DailyLoginComponent() {
           // Update the existing document with today's login
           const alreadyLogged = data.daysLoggedIn.includes(today);
           if (!alreadyLogged) {
+            const newDaysLoggedIn = [...data.daysLoggedIn, today];
             await updateDoc(docRef, {
-              daysLoggedIn: [...data.daysLoggedIn, today],
+              daysLoggedIn: newDaysLoggedIn,
               lastLoginDate: new Date(),
             });
+            
+            // Calculate and update streak meta
+            const currentStreak = calculateWeeklyStreak(newDaysLoggedIn);
+            await updateStreakMeta(currentStreak);
           }
         }
       } catch (err) {
@@ -137,7 +168,7 @@ export default function DailyLoginComponent() {
   }, [loggedInDays]);
 
   return (
-    <div className="container bg-gradient-to-br from-[#C0AFE2] via-[#CEC2EB] to-[#C0AFE2] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F] rounded-xl rounded-xl shadow-md text-white p-4 w-full lg:h-[280px]">
+    <div className="container bg-gradient-to-br from-[#C0AFE2] via-[#CEC2EB] to-[#C0AFE2] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F] rounded-xl shadow-md text-white p-4 w-full lg:h-[280px]">
       <div className="flex justify-end">
         <span className={`flex items-center gap-3 p-6 ${
           weeklyStreak === 0 ? "hidden" : "text-[#7E4E9E] font-bold dark:text-yellow-400"
