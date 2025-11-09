@@ -13,6 +13,7 @@ import {
   collection,
   getDocs,
   getDoc,
+  setDoc,
   doc,
   collectionGroup,
 } from "firebase/firestore";
@@ -28,6 +29,71 @@ export default function AnalyticsPage() {
   const [monthlyHabitTotal, setMonthlyHabitTotal] = useState(0);
   const [monthlyFocusHours, setMonthlyFocusHours] = useState(0);
   const [currentMonthLogs, setCurrentMonthLogs] = useState({});
+  const [completedGoalsCount, setCompletedGoalsCount] = useState(0);
+  const [longestStreak, setLongestStreak] = useState(0);
+
+  // Fetch longest streak
+  useEffect(() => {
+    if (!currentUser) return;
+
+    const fetchLongestStreak = async () => {
+      try {
+        // First get current week's streak
+        const weeklyLoginsRef = doc(db, "users", currentUser.uid, "tracking", "weeklyLogins");
+        const weeklyLoginsSnap = await getDoc(weeklyLoginsRef);
+        
+        let currentStreak = 0;
+        if (weeklyLoginsSnap.exists()) {
+          const weeklyData = weeklyLoginsSnap.data();
+          // Using the same streak calculation logic from DailyLogin component
+          const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+          const today = format(new Date(), "EEEE");
+          const todayIndex = weekdays.indexOf(today);
+          
+          for (let i = todayIndex; i >= 0; i--) {
+            const day = weekdays[i];
+            if (weeklyData.daysLoggedIn?.includes(day)) {
+              currentStreak++;
+            } else {
+              break;
+            }
+          }
+        }
+        console.log("Current week streak is: ", currentStreak);
+
+        // Now check streakMeta
+        const streakMetaRef = doc(db, "users", currentUser.uid, "tracking", "streakMeta");
+        const streakMetaSnap = await getDoc(streakMetaRef);
+        
+        if (!streakMetaSnap.exists()) {
+          // Initialize streakMeta with current streak
+          await setDoc(streakMetaRef, {
+            longestStreak: currentStreak,
+            updatedAt: new Date()
+          });
+          setLongestStreak(currentStreak);
+        } else {
+          // Compare current streak with stored longest streak
+          const storedStreak = streakMetaSnap.data().longestStreak || 0;
+          const highestStreak = Math.max(currentStreak, storedStreak);
+          
+          // Update if current streak is higher
+          if (currentStreak > storedStreak) {
+            await setDoc(streakMetaRef, {
+              longestStreak: currentStreak,
+              updatedAt: new Date()
+            });
+          }
+          
+          setLongestStreak(highestStreak);
+        }
+      } catch (err) {
+        console.error("[Analytics] Error fetching streak meta:", err);
+      }
+    };
+
+    fetchLongestStreak();
+  }, [currentUser]);
 
   useEffect(() => {
     if (!currentUser) return;
@@ -221,6 +287,12 @@ export default function AnalyticsPage() {
         </div>
         <div className="bg-[#1f1a4a]/70 backdrop-blur-md border border-purple-900/40 p-6 rounded-2xl shadow-lg">
           <h3 className="text-sm text-violet-200 font-medium">
+            Goals Completed (All time)
+          </h3>
+          <p className="text-3xl font-bold text-white mt-2">{completedGoalsCount}</p>
+        </div>
+        <div className="bg-[#1f1a4a]/70 backdrop-blur-md border border-purple-900/40 p-6 rounded-2xl shadow-lg">
+          <h3 className="text-sm text-violet-200 font-medium">
             Focus Hours (this month)
           </h3>
           <p className="text-3xl font-bold text-white mt-2">
@@ -229,15 +301,9 @@ export default function AnalyticsPage() {
         </div>
         <div className="bg-[#1f1a4a]/70 backdrop-blur-md border border-purple-900/40 p-6 rounded-2xl shadow-lg">
           <h3 className="text-sm text-violet-200 font-medium">
-            Goals Completed
+            Longest Streak
           </h3>
-          <p className="text-3xl font-bold text-white mt-2">7</p>
-        </div>
-        <div className="bg-[#1f1a4a]/70 backdrop-blur-md border border-purple-900/40 p-6 rounded-2xl shadow-lg">
-          <h3 className="text-sm text-violet-200 font-medium">
-            Current Streak
-          </h3>
-          <p className="text-3xl font-bold text-white mt-2">15 days</p>
+          <p className="text-3xl font-bold text-white mt-2">{longestStreak} days</p>
         </div>
       </div>
       <div className="p-4 md:p-6 lg:p-8 space-y-6">
@@ -248,7 +314,7 @@ export default function AnalyticsPage() {
         </div>
 
         <div>
-            <GoalsAnalytics />
+            <GoalsAnalytics onCompletedGoalsChange={setCompletedGoalsCount} />
         </div>
 
         <div>
@@ -264,15 +330,6 @@ export default function AnalyticsPage() {
 
         <div>
           <DailyLoginComponent />
-        </div>
-
-        <div className="flex flex-col lg:flex-row gap-6">
-          <div className="w-full lg:w-1/2">
-            <p>CONTENT</p>
-          </div>
-          <div className="w-full lg:w-1/2">
-            <p>CONTENT</p>
-          </div>
         </div>
       </div>
     </main>
