@@ -55,28 +55,15 @@ export default function Dashboard() {
           <h1 className="text-gray-400 dark:text-white">{format(new Date(), "dd MMM yyyy")}</h1>
         </div>
         <div className="flex flex-row items-center gap-4 text-violet-400">
-          <input
-            placeholder="Type here"
-            className="
-              bg-[#F0EBFF] text-purple-700
-              dark:bg-[#1f1a4a] dark:text-violet-400
-              p-3 text-lg font-semibold rounded-xl outline-none
-            "          
-            />
-          <img
-            src="/avatar-default.svg"
-            alt="avatar"
-            className="bg-white rounded-full w-10 h-10"
-          />
-          <button>
+          {/* <button>
             <i className="fa-solid fa-gear text-2xl cursor-pointer bg-white p-2 rounded-xl"></i>
-          </button>
-          <div>
+          </button> */}
+          <div className="">
             {/* {isDark ? <i className="fa-jelly text-2xl cursor-pointer fa-regular fa-sun bg-white p-2 rounded-xl"></i> : <i className="fa-solid fa-regular fa-moon text-2xl cursor-pointer bg-white p-2 rounded-xl"></i>} */}
-            <AnimatedThemeToggler />
+            <AnimatedThemeToggler className={'bg-white hover:bg-white/90 ease-in-out duration-200 p-2 rounded-xl text-purple-900 cursor-pointer'} />
           </div>
           <button onClick={logout}>
-            <i className="fa-solid fa-right-from-bracket text-2xl cursor-pointer bg-white p-2 rounded-xl"></i>
+            <i className="fa-solid fa-right-from-bracket text-2xl cursor-pointer bg-white hover:bg-white/90 ease-in-out duration-200 text-purple-900 p-2 rounded-xl"></i>
           </button>
         </div>
       </div>
