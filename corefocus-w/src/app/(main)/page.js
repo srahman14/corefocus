@@ -376,7 +376,7 @@ export default function Home() {
             />
             <FAQItem
               question="What actully is Corefocus?"
-              answer="Corefocus at core is a productivity app. It's core functionality revolves around habit & goal tracking, journalling, tracking progress (analytics) and a built-in [خو يي حححححححسسسسسسسس"
+              answer="Corefocus at core is a productivity app. It's core functionality revolves around habit & goal tracking, journalling, tracking progress (analytics) and a built-in pomodoro focus timer."
             />
           </div>
         </div>
