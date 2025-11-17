@@ -61,7 +61,8 @@ export default function GoalsAnalytics({ onCompletedGoalsChange }) {
     .filter((goal) => goal.deadline.toDate() >= today)
     .sort((a, b) => a.deadline.toDate() - b.deadline.toDate());
 
-  const displayGoals = activeTab === "completed" ? completedGoals : incompleteGoals;
+  const displayGoals =
+    activeTab === "completed" ? completedGoals : incompleteGoals;
 
   return (
     <div className="w-full">
@@ -104,14 +105,15 @@ export default function GoalsAnalytics({ onCompletedGoalsChange }) {
             return (
               <div
                 key={goal.id}
-                className="p-4 rounded-xl shadow bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
+                className="p-4 rounded-xl shadow bg-gradient-to-br from-[#B19CD7] to-[#C0AFE2] dark:from-[#0B091A] dark:to-[#0B091A]"
               >
                 <span className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold">{goal.goalName}</h3>
-                    {isCompleted
-                    ? <CheckCircleIcon className="text-green-500"/>
-                    : <CircleDashedIcon className="text-orange-400"/>}
-                        
+                  <h3 className="text-lg font-semibold">{goal.goalName}</h3>
+                  {isCompleted ? (
+                    <CheckCircleIcon className="text-green-500" />
+                  ) : (
+                    <CircleDashedIcon className="text-orange-400" />
+                  )}
                 </span>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   {isCompleted

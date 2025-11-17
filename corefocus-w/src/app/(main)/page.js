@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useThemeStore } from "../store/useThemeStore";
 import { useState, useEffect, useRef } from "react";
 import { Highlighter } from "../components/magicui/highlighter";
+import Image from "next/image";
 
 export default function Home() {
   const { isDark, toggleTheme } = useThemeStore();
@@ -68,10 +69,10 @@ export default function Home() {
 
   return (
     <main
-      className={`min-h-screen flex flex-col flex-wrap items-center justify-center transition-all duration-300 ease-in-out bg-black text-white`}
+      className={`min-h-screen overflow-hidden flex flex-col flex-wrap items-center justify-center transition-all duration-300 ease-in-out bg-black text-white`}
     >
       {/* HERO SECTION */}
-      <section className="relative w-full h-[65vh] overflow-hidden flex items-center justify-center bg-white text-white">
+      <section className="relative w-full h-[65vh] overflow-hidden flex items-center justify-center text-white">
         {/* Background */}
         <div className="absolute inset-0 z-0">
           <DarkVeil />
@@ -132,7 +133,7 @@ export default function Home() {
                   <p>Get Started</p>
                 </Link>
                 <Link
-                  href="/"
+                  href="#about"
                   className="rounded-4xl tracking-tighter text-sm md:text-2xl ease-in-out bg-[#222] hover:bg-[#222]/80 transition-colors duration-300 text-white font-semibold px-6 md:px-12 py-4 shadow-lg shadow-[#fff]/10"
                 >
                   <p>About Us</p>
@@ -169,7 +170,7 @@ export default function Home() {
           </div>
         </header>
 
-        <div className="w-full px-6 py-16">
+        <div className="w-full px-6 py-16" id="about">
           <div className="max-w-7xl mx-auto flex flex-col gap-28">
             {/* Feature Row */}
             <div className="flex flex-col md:flex-row items-center gap-12">
@@ -186,20 +187,21 @@ export default function Home() {
                   View and learn from your progress with analytics and heatmaps
                   for all-time activity. <br></br>
                 </p>
-                <button className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-xl shadow-lg hover:bg-purple-700 transition">
+                <Link
+                  href={"/signup"}
+                  className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-xl shadow-lg hover:bg-purple-700 transition"
+                >
                   Learn More
-                </button>
+                </Link>
               </div>
 
               {/* Right Content with Gradient Border */}
               <div className="flex-1 flex justify-center">
-                <div className="rounded">
-                  <div className="bg-[#000] rounded-2xl overflow-hidden">
-                    <img
-                      src="/mon.png"
-                      alt="Dashboard preview"
-                      className="w-full h-auto"
-                    />
+                <div className="relative rounded-2xl p-[2px] before:absolute before:inset-0 before:rounded-2xl before:p-[2px] before:bg-gradient-to-r before:from-blue-500 before:to-purple-600 before:-z-10">
+                  <div className="bg-[#000]  rounded-2xl overflow-hidden">
+                    <video autoPlay loop muted playsInline controls={false}>
+                      <source src="/dashboard.mp4" type="video/mp4" />
+                    </video>
                   </div>
                 </div>
               </div>
@@ -209,20 +211,26 @@ export default function Home() {
             <div className="flex flex-col md:flex-row-reverse items-center gap-12">
               {/* Left Content */}
               <div className="flex-1 text-center md:text-left">
-                <h3 className="font-light tracking-widest">TRACKING HABITS</h3>
+                <h3 className="font-light tracking-widest">JOURNALLING</h3>
                 <h2 className="text-3xl font-bold text-white mb-4">
-                  Track Your Habits Easily
+                  Journal with Ease
                 </h2>
                 <p className="text-lg text-gray-300 mb-6">
-                  Stay consistent with daily tracking of your habits. <br></br>
-                  Your habits are automatically synced across all devices in
-                  real-time. <br></br>
-                  View and learn from your progress with analytics and heatmaps
-                  for all-time activity. <br></br>
+                  Capture your thoughts, ideas, and reflections effortlessly.{" "}
+                  <br></br>
+                  Organize entries by tags and topics for easy retrieval.{" "}
+                  <br></br>
+                  Reflect on your personal growth with a beautifully designed
+                  journal experience. <br></br>
+                  Search and filter your entries to find inspiration anytime.{" "}
+                  <br></br>
                 </p>
-                <button className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-xl shadow-lg hover:bg-purple-700 transition">
+                <Link
+                  href={"/signup"}
+                  className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-xl shadow-lg hover:bg-purple-700 transition"
+                >
                   Learn More
-                </button>
+                </Link>
               </div>
 
               {/* Right Content with Gradient Border */}
@@ -230,7 +238,7 @@ export default function Home() {
                 <div className="pl-[0] pb-[0] bg-gradient-to-br from-purple-500 via-pink-500 to-indigo-500 rounded-2xl">
                   <div className="bg-[#0f172a] rounded-2xl overflow-hidden">
                     <img
-                      src="/habit_tracker.png"
+                      src="/journals.png"
                       alt="Dashboard preview"
                       className="w-full h-auto"
                     />
@@ -243,20 +251,26 @@ export default function Home() {
             <div className="flex flex-col md:flex-row items-center gap-12">
               {/* Left Content */}
               <div className="flex-1 text-center md:text-left">
-                <h3 className="font-light tracking-widest">TRACKING HABITS</h3>
+                <h3 className="font-light tracking-widest">
+                  PERSONAL ANALYTICS
+                </h3>
                 <h2 className="text-3xl font-bold text-white mb-4">
-                  Track Your Habits Easily
+                  Personalised Analytics, track your progress
                 </h2>
                 <p className="text-lg text-gray-300 mb-6">
-                  Stay consistent with daily tracking of your habits. <br></br>
-                  Your habits are automatically synced across all devices in
-                  real-time. <br></br>
-                  View and learn from your progress with analytics and heatmaps
-                  for all-time activity. <br></br>
+                  Unlock powerful insights into your habits and goals. <br></br>
+                  Visualize your progress with interactive charts and heatmaps.{" "}
+                  <br></br>
+                  Discover trends, streaks, and areas for improvement. <br></br>
+                  Make data-driven decisions to optimize your productivity and
+                  well-being. <br></br>
                 </p>
-                <button className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-xl shadow-lg hover:bg-purple-700 transition">
+                <Link
+                  href={"/signup"}
+                  className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-xl shadow-lg hover:bg-purple-700 transition"
+                >
                   Learn More
-                </button>
+                </Link>
               </div>
 
               {/* Right Content with Gradient Border */}
@@ -264,7 +278,7 @@ export default function Home() {
                 <div className="shadow-5xl shadow-[#0f172a] rounded-2xl">
                   <div className="bg-[#0f172a] rounded-2xl overflow-hidden">
                     <img
-                      src="/habit_tracker.png"
+                      src="/analytics.png"
                       alt="Dashboard preview"
                       className="w-full h-auto"
                     />

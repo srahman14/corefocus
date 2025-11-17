@@ -15,7 +15,8 @@ import { Plus, FileText } from "lucide-react";
 import Link from "next/link";
 import JournalCard from "@/app/components/JournalCard";
 import { AnimatedThemeToggler } from "@/app/components/magicui/animated-theme-toggler";
-import { format } from "date-fns"
+import { format } from "date-fns";
+import Topbar from "@/app/components/Topbar";
 
 export default function Journal() {
   const router = useRouter();
@@ -31,7 +32,9 @@ export default function Journal() {
     if (!currentUser) return;
 
     try {
-      await deleteDoc(doc(db, "users", currentUser.uid, "journals", journal.id));
+      await deleteDoc(
+        doc(db, "users", currentUser.uid, "journals", journal.id)
+      );
       setJournals((prev) => prev.filter((j) => j.id !== journal.id));
     } catch (error) {
       console.error("Error deleting journal:", error);
@@ -45,7 +48,12 @@ export default function Journal() {
       if (!currentUser) return;
 
       try {
-        const journalsRef = collection(db, "users", currentUser.uid, "journals");
+        const journalsRef = collection(
+          db,
+          "users",
+          currentUser.uid,
+          "journals"
+        );
         const q = query(journalsRef, orderBy("updatedAt", "desc"));
         const snapshot = await getDocs(q);
 
@@ -73,7 +81,9 @@ export default function Journal() {
       } else {
         const lowerSearch = searchTerm.toLowerCase();
         const filtered = journals.filter((journal) => {
-          const matchesTitle = journal.title?.toLowerCase().includes(lowerSearch);
+          const matchesTitle = journal.title
+            ?.toLowerCase()
+            .includes(lowerSearch);
           const matchesTags = journal.tags?.some((tag) =>
             tag.toLowerCase().includes(lowerSearch)
           );
@@ -95,12 +105,20 @@ export default function Journal() {
   if (!currentUser) {
     return (
       <div className="min-h-screen flex justify-center items-center">
-        <p className="text-gray-500 text-lg">Please log in to view your journals.</p>
+        <p className="text-gray-500 text-lg">
+          Please log in to view your journals.
+        </p>
       </div>
     );
   }
 
-  const tags = ["Favorites", "Work Goals", "Vacation", "Habit Building", "Family Time"];
+  const tags = [
+    "Favorites",
+    "Work Goals",
+    "Vacation",
+    "Habit Building",
+    "Family Time",
+  ];
   const topics = [
     "Work & Career",
     "Gratitude & Happiness",
@@ -118,7 +136,9 @@ export default function Journal() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">Loading...</div>
+      <div className="flex justify-center items-center h-screen">
+        Loading...
+      </div>
     );
   }
 
@@ -130,7 +150,9 @@ export default function Journal() {
       <section className="max-w-6xl mx-auto">
         {/* Top Bar: Title + New Entry */}
         <div className="flex justify-between items-center md:mb-6">
-          <h1 className="text-3xl font-bold dark:text-white hidden md:flex">Your Journal</h1>
+          <h1 className="text-3xl font-bold dark:text-white hidden md:flex">
+            Your Journal
+          </h1>
           {/* Desktop: standard button */}
           <Link
             href={"/journal/new"}
