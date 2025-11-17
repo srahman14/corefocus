@@ -360,23 +360,23 @@ export default function Home() {
         <div className="flex flex-col items-center justify-center md:flex-row md:items-start md:justify-between md:m-16 gap-8">
           <div className="w-75 md:mr-20">
             <h2 className="text-6xl font-semibold">FAQs</h2>
-            <p className="text-2xl font-light">
-              Got a different question? Email support@corefocus.ai
-            </p>
+            {/* <p className="text-2xl font-light">
+              Got a different question? Submit a question here
+            </p> */}
           </div>
 
           <div className="w-[70%] max-h-[400px] overflow-y-auto pr-4">
             <FAQItem
               question="How do I create an account?"
-              answer="The steps to create an account can be found here."
+              answer="The steps to create an account can be found below, click get started to be redirected to the signup page."
             />
             <FAQItem
               question="Is Corefocus free for all users?"
-              answer="Corefocus has options for everyone, plans can be found here."
+              answer="Yes, Corefocus is free for everyone."
             />
             <FAQItem
-              question="How is my data managed?"
-              answer="Corefocus is in lines with the GDPR 2010, the privacy policy can be found here."
+              question="What actully is Corefocus?"
+              answer="Corefocus at core is a productivity app. It's core functionality revolves around habit & goal tracking, journalling, tracking progress (analytics) and a built-in [خو يي حححححححسسسسسسسس"
             />
           </div>
         </div>
