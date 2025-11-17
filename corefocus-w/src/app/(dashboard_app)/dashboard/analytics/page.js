@@ -21,6 +21,8 @@ import { db } from "@/app/firebase";
 import { format, startOfMonth, endOfMonth } from "date-fns";
 import { AnimatedThemeToggler } from "@/app/components/magicui/animated-theme-toggler";
 import MonthlyHabitsChart from "@/app/components/Dashboard/Analytics/MonthlyHabitsChart";
+import Link from "next/link";
+import Topbar from "@/app/components/Topbar";
 
 export default function AnalyticsPage() {
   const router = useRouter();
@@ -229,48 +231,23 @@ export default function AnalyticsPage() {
   return (
     <main className="flex h-full min-h-screen flex-col overflow-y-auto bg-gradient-to-br from-[#B19CD7] via-[#EBE8FC] to-[#C0AFE2] dark:from-[#0B091A] dark:via-[#110E2D] dark:to-[#0B091A]">
       {/* Topbar */}
-      <div className="w-full flex justify-between items-center p-6">
+           {/* Header */}
+      {/* <div className="p-6 w-full flex flex-row justify-start md:justify-between items-start pb-12 gap-12">
         <div className="text-white ">
-          <h1 className="text-gray-400">
-            <span className="text-black dark:text-gray-400 hover:underline">
-              Pages
-            </span>{" "}
-            /{" "}
-            <span className="font-bold hover:underline dark:text-white text-black">
-              Dashboard
-            </span>
-          </h1>
-          <h1 className="text-gray-400 dark:text-white">
-            {format(new Date(), "dd MMM yyyy")}
-          </h1>
+          <p></p>
+          <h1 className="text-black dark:text-white">{format(new Date(), "dd MMM yyyy")}</h1>
         </div>
         <div className="flex flex-row items-center gap-4 text-violet-400">
-          <input
-            placeholder="Type here"
-            className="
-              bg-[#F0EBFF] text-purple-700
-              dark:bg-[#1f1a4a] dark:text-violet-400
-              p-3 text-lg font-semibold rounded-xl outline-none
-            "
-          />
-          <img
-            src="/avatar-default.svg"
-            alt="avatar"
-            className="bg-white rounded-full w-10 h-10"
-          />
-          <button>
-            <i className="fa-solid fa-gear text-2xl cursor-pointer bg-white p-2 rounded-xl"></i>
-          </button>
           <div>
-            {/* {isDark ? <i className="fa-jelly text-2xl cursor-pointer fa-regular fa-sun bg-white p-2 rounded-xl"></i> : <i className="fa-solid fa-regular fa-moon text-2xl cursor-pointer bg-white p-2 rounded-xl"></i>} */}
-            <AnimatedThemeToggler />
+            <AnimatedThemeToggler className={'bg-white hover:bg-white/90 ease-in-out duration-200 p-2 rounded-xl text-purple-900 cursor-pointer'} />
           </div>
           <button onClick={logout}>
-            <i className="fa-solid fa-right-from-bracket text-2xl cursor-pointer bg-white p-2 rounded-xl"></i>
+            <i className="fa-solid fa-right-from-bracket text-2xl cursor-pointer bg-white hover:bg-white/90 ease-in-out duration-200 text-purple-900 p-2 rounded-xl"></i>
           </button>
         </div>
-      </div>
+      </div> */}
 
+        <Topbar />
       {/* Welcome Heading */}
       <div className="px-8">
         <h1 className="text-4xl text-white font-bold mb-6">Analytics</h1>

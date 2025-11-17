@@ -167,9 +167,22 @@ export default function DailyLoginComponent() {
     setWeeklyStreak(calculateWeeklyStreak(loggedInDays));
   }, [loggedInDays]);
 
+  // Mobile: compute previous, current and next weekday for compact view
+  const todayWeekday = getTodayWeekday();
+  const todayIndex = weekdays.indexOf(todayWeekday);
+  const prevDay = weekdays[(todayIndex - 1 + 7) % 7];
+  const currentDay = weekdays[todayIndex];
+  const nextDay = weekdays[(todayIndex + 1) % 7];
+  const isPrevLoggedIn = loggedInDays.includes(prevDay);
+  const isCurrentLoggedIn = loggedInDays.includes(currentDay);
+  const isNextLoggedIn = loggedInDays.includes(nextDay);
+
   return (
     <div className="container bg-gradient-to-br from-[#C0AFE2] via-[#CEC2EB] to-[#C0AFE2] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F] rounded-xl shadow-md text-white p-4 w-full lg:h-[280px]">
-      <div className="flex justify-end">
+      <div className="flex justify-between items-center md:justify-end">
+        <span className="md:hidden flex font-bold text-2xl tracking-tighter px-4 text-[#7E4E9E]">
+          Daily Login
+        </span>
         <span className={`flex items-center gap-3 p-6 ${
           weeklyStreak === 0 ? "hidden" : "text-[#7E4E9E] font-bold dark:text-yellow-400"
         }`}>
@@ -179,15 +192,15 @@ export default function DailyLoginComponent() {
           </p>
         </span>
       </div>
-      <ul className="flex flex-row md:gap-10 lg:gap-18 justify-center items-center pb-18">
+      <ul className="hidden md:flex flex-row md:gap-10 justify-center items-center pb-18">
         {weekdays.map((weekday) => {
           const isLoggedIn = loggedInDays.includes(weekday);
           return (
             <li key={weekday} className="text-center text-xl font-semibold">
-              <div className="flex flex-col items-center gap-s text-xl">
+              <div className="flex flex-col items-center gap-1 text-xl">
                 <span className="text-white-400 text-2xl">{weekday.slice(0, 3)}</span>
                 <i
-                  className={`fa-solid fa-circle-check text-6xl transition ${
+                  className={`fa-solid fa-circle-check text-5xl transition ${
                     isLoggedIn ? "text-[#7E4E9E] dark:text-violet-500" : "text-gray-200"
                   }`}
                 ></i>
@@ -196,6 +209,41 @@ export default function DailyLoginComponent() {
           );
         })}
       </ul>
+
+      {/* Mobile compact view: show previous, current and next day (small screens only) */}
+      <div className="block md:hidden mt-4 md:gap-10 justify-center items-center pb-18">
+        <div className="flex justify-center gap-6 items-end">
+          {/* Previous day */}
+          <div className="text-center">
+            <span className="text-white-400 text-sm block">{prevDay.slice(0, 3)}</span>
+            <i
+              className={`fa-solid fa-circle-check text-5xl mt-2 transition ${
+                isPrevLoggedIn ? "text-[#7E4E9E] dark:text-violet-500" : "text-gray-200"
+              }`}
+            ></i>
+          </div>
+
+          {/* Current day (center) */}
+          <div className="text-center">
+            <span className="text-white-400 text-sm block font-semibold">{currentDay.slice(0, 3)}</span>
+            <i
+              className={`fa-solid fa-circle-check text-6xl mt-2 transition ${
+                isCurrentLoggedIn ? "text-[#7E4E9E] dark:text-violet-500" : "text-gray-200"
+              }`}
+            ></i>
+          </div>
+
+          {/* Next day */}
+          <div className="text-center">
+            <span className="text-white-400 text-sm block">{nextDay.slice(0, 3)}</span>
+            <i
+              className={`fa-solid fa-circle-check text-5xl mt-2 transition ${
+                isNextLoggedIn ? "text-[#7E4E9E] dark:text-violet-500" : "text-gray-300/60"
+              }`}
+            ></i>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

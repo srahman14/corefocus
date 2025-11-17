@@ -131,13 +131,14 @@ export default function GoalBoard() {
   return (
     <>
       {/* Main Goal Board */}
-      <div className="bg-gradient-to-br from-[#C0AFE2] via-[#CEC2EB] to-[#C0AFE2] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F] p-6 rounded-xl text-white">
-        <h2 className="text-xl font-semibold mb-2">🎯 Goal Board</h2>
+      <div className="bg-gradient-to-br w-full from-[#C0AFE2] via-[#CEC2EB] to-[#C0AFE2] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F] p-4 sm:p-6 rounded-xl text-white">
+        <h2 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-4">🎯 Goal Board</h2>
 
-        <div className="flex flex-row flex-wrap gap-4 p-6">
-          <div className="relative h-[500px] w-[500px] mx-auto flex items-center justify-center">
+        <div className="flex flex-row flex-wrap gap-2 sm:gap-4 p-2 sm:p-6 w-full">
+          <div className="relative h-[300px] md:h-[400px] lg:h-[550px] w-full max-w-[550px] mx-auto flex items-center justify-center">
             {/* Outer shell (Urgent: < 30 days) */}
-            <OrbitingCircles speed={0.7} radius={240}>
+            <div className="hidden md:flex">
+                  <OrbitingCircles speed={0.7} radius={230}>
               {goalsByDeadline.outer.map((goal) => {
                 const config =
                   priorityConfig[goal.goalPriority] || priorityConfig.High;
@@ -148,6 +149,21 @@ export default function GoalBoard() {
                 );
               })}
             </OrbitingCircles>
+            </div>
+
+                        <div className="flex md:hidden">
+                          <OrbitingCircles speed={0.7} radius={90}>
+              {goalsByDeadline.outer.map((goal) => {
+                const config =
+                  priorityConfig[goal.goalPriority] || priorityConfig.High;
+                return (
+                  <div key={goal.id}>
+                    {renderIcon(config.icon, goal.goalName, goal, config.color)}
+                  </div>
+                );
+              })}
+            </OrbitingCircles>
+            </div>
 
             {/* Middle shell (Medium: 31–90 days) */}
             <OrbitingCircles radius={120} speed={0.5} reverse={true}>

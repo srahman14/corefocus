@@ -12,6 +12,7 @@ import ReadRoute from "@/app/components/Dashboard/ReadRoute";
 import DailyLoginComponent from "@/app/components/Dashboard/DailyLogin";
 import { AnimatedThemeToggler } from "@/app/components/magicui/animated-theme-toggler";
 import { format } from "date-fns"
+import Topbar from "@/app/components/Topbar";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -44,69 +45,32 @@ export default function Dashboard() {
 
   return (
     // bg-gradient-to-br from-[#f5f3ff] via-[#ede9fe] to-[#e0e7ff]
-    <main className="flex h-full min-h-screen flex-col overflow-y-auto bg-gradient-to-br from-[#B19CD7] via-[#EBE8FC] to-[#C0AFE2] dark:from-[#0B091A] dark:via-[#110E2D] dark:to-[#0B091A]">
+    <main className="flex h-screen overflow-auto w-full flex-col bg-gradient-to-br from-[#B19CD7] via-[#EBE8FC] to-[#C0AFE2] dark:from-[#0B091A] dark:via-[#110E2D] dark:to-[#0B091A]">
       {/* Topbar */}
-      <div className="w-full flex justify-between items-center p-6">
-        <div className="text-white ">
-          <h1 className="text-gray-400">
-            <span className="text-black dark:text-gray-400 hover:underline">Pages</span> /{" "}
-            <span className="font-bold hover:underline dark:text-white text-black">Dashboard</span>
-          </h1>
-          <h1 className="text-gray-400 dark:text-white">{format(new Date(), "dd MMM yyyy")}</h1>
-        </div>
-        <div className="flex flex-row items-center gap-4 text-violet-400">
-          {/* <button>
-            <i className="fa-solid fa-gear text-2xl cursor-pointer bg-white p-2 rounded-xl"></i>
-          </button> */}
-          <div className="">
-            {/* {isDark ? <i className="fa-jelly text-2xl cursor-pointer fa-regular fa-sun bg-white p-2 rounded-xl"></i> : <i className="fa-solid fa-regular fa-moon text-2xl cursor-pointer bg-white p-2 rounded-xl"></i>} */}
-            <AnimatedThemeToggler className={'bg-white hover:bg-white/90 ease-in-out duration-200 p-2 rounded-xl text-purple-900 cursor-pointer'} />
-          </div>
-          <button onClick={logout}>
-            <i className="fa-solid fa-right-from-bracket text-2xl cursor-pointer bg-white hover:bg-white/90 ease-in-out duration-200 text-purple-900 p-2 rounded-xl"></i>
-          </button>
-        </div>
+      <div className="flex-shrink-0">
+        <Topbar />
       </div>
 
-      {/* Welcome Heading
-        <div className="px-8 pt-6">
-            <h1 className="text-4xl text-white font-bold mb-6">Welcome to your Dashboard</h1>
-        </div> */}
-
-      <div className="p-4 md:p-6 lg:p-8 space-y-6">
-
+      <div className="flex-1 w-[85%] md:w-[100%]">
+        <div className="p-2 md:p-4 lg:p-6 space-y-3 sm:space-y-4">
         {/* Second row */}
-        <div className="flex md:flex-col lg:flex-row items-center justify-center md:justify-start md:items-start gap-6">
+        <div className="flex flex-col md:flex-row w-full items-start md:items-center justify-start md:justify-center gap-2 sm:gap-3 md:gap-4">
           {/* Welcome Back card */}
-          <div className="lg:flex-1 lg:col-span-1 bg-gradient-to-br from-[#CE9AD9] to-[#B19CD7] dark:from-[#520dd0] dark:to-[#500DCA] rounded-2xl p-6 shadow-lg flex flex-col h-[280px] justify-start">
-            <h2 className="text-violet-100 dark:text-white text-2xl font-bold mb-2">
+          <div className="w-full md:w-auto md:flex-1 bg-gradient-to-br from-[#CE9AD9] to-[#B19CD7] dark:from-[#520dd0] dark:to-[#500DCA] rounded-2xl p-2 sm:p-3 md:p-4 lg:p-6 shadow-lg min-h-[60px] sm:min-h-[75px] md:h-[200px] lg:h-[280px]">
+            <h2 className="text-violet-100 dark:text-white text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-1 sm:mb-1.5 md:mb-2">
               Welcome back!
             </h2>
-            <p className="text-violet-200 text-sm">
-              Let’s continue making progress on your goals today.
+            <p className="text-violet-200 text-xs sm:text-xs md:text-sm lg:text-base">
+              Let's continue making progress on your goals today.
             </p>
           </div>
-          <div className="w-full lg:flex-3 lg:col-span-1">
+          <div className="w-full md:flex-1">
             <DailyLoginComponent />
           </div>
-          {/* Two smaller cards */}
-          {/* <div className="bg-[#CEC2EB] dark:bg-[#1f1a4a] rounded-2xl p-6 shadow-lg flex flex-col h-[240px]">
-            <h3 className="text-black dark:text-white text-lg font-semibold">Quick summary for today (AI)</h3>
-            <p className="text-gray-600 dark:text-violet-200 text-sm mt-2">
-              Check your current streaks and completions.
-            </p>
-          </div>
-
-          <div className="bg-[#CEC2EB] dark:bg-[#1f1a4a] rounded-2xl p-6 shadow-lg flex flex-col h-[240px]">
-            <h3 className="text-black dark:text-white text-lg font-semibold">Upcoming Tasks</h3>
-            <p className="text-gray-600 dark:text-violet-200 text-sm mt-2">
-              Don’t miss what’s next on your schedule.
-            </p>
-          </div> */}
         </div>
 
         {/* Main dashboard sections */}
-        <div className="flex flex-col lg:flex-row gap-6">
+        <div className="flex flex-col lg:flex-row gap-3 sm:gap-4 md:gap-6 w-full">
           <div className="w-full lg:w-1/2">
             <HabitTracker />
           </div>
@@ -115,23 +79,23 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6">
-          <div className="w-full lg:w-1/2">
-            <GoalBoard />
-          </div>
+        <div className="flex flex-col lg:flex-row gap-3 sm:gap-4 md:gap-6 w-full">
           <div className="w-full lg:w-1/2">
             <ReadRoute />
+          </div>
+          <div className="w-full lg:w-1/2">
+            <GoalBoard />
           </div>
         </div>
 
         <div className="w-full flex items-center justify-center">
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6">
+        {/* <div className="flex flex-col lg:flex-row gap-6 w-[80%] md:w-[90%]">
           <div className="w-full lg:w-1/2">
             <TaskSync />
           </div>
-
+        </div> */}
         </div>
       </div>
     </main>

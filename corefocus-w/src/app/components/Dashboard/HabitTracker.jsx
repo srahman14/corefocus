@@ -206,35 +206,35 @@ export default function TodaysHabits() {
   }
 
   return (
-    <div className="h-full rounded-xl shadow-md p-4 bg-gradient-to-br from-[#C0AFE2] via-[#CEC2EB] to-[#C0AFE2] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F]">
+    <div className="h-full w-full rounded-xl shadow-md p-2 sm:p-3 md:p-4 bg-gradient-to-br from-[#C0AFE2] via-[#CEC2EB] to-[#C0AFE2] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F] flex flex-col overflow-hidden">
       <audio
         ref={notificationSound}
         src="/sounds/notification.mp3"
         preload="auto"
       />
 
-      <div className="py-4 flex flex-row justify-between items-center">
-        <h2 className="text-xl font-bold mb-4 dark:text-white">
+      <div className="py-1.5 sm:py-2 md:py-3 flex flex-row justify-between items-center gap-2 flex-shrink-0">
+        <h2 className="text-sm sm:text-base md:text-lg font-bold dark:text-white">
           Habits for Today
         </h2>
 
-        <button onClick={openModal} className="cursor-pointer">
-          <i className="fa-solid fa-plus text-white text-xl bg-[#7E4E9E] dark:bg-[#520dd0] p-2 rounded-lg hover:bg-[#520dd0]/80"></i>
+        <button onClick={openModal} className="cursor-pointer flex-shrink-0">
+          <i className="fa-solid fa-plus text-white text-sm sm:text-base md:text-lg bg-[#7E4E9E] dark:bg-[#520dd0] p-1 sm:p-1.5 md:p-2 rounded-lg hover:bg-[#520dd0]/80 transition-colors"></i>
         </button>
       </div>
 
       {todaysHabits.length === 0 ? (
-        <p className="text-gray-500 italic">No habits scheduled for today.</p>
+        <p className="text-gray-500 italic text-xs sm:text-sm">No habits scheduled for today.</p>
       ) : (
         <>
-          <ul className="space-y-3">
+          <ul className="space-y-1 sm:space-y-1.5 md:space-y-2 overflow-y-auto flex-1">
             {todaysHabits.map((habit) => (
               <li
                 key={habit.id}
-                className="flex items-center gap-3 p-3 border border-gray-200 dark:border-gray-700 rounded-lg"
+                className="flex items-center gap-1.5 sm:gap-2 md:gap-3 p-1.5 sm:p-2 md:p-3 border border-gray-200 dark:border-gray-700 rounded-lg"
               >
                 <Checkbox.Root
-                  className="flex size-[25px] min-w-[25px] appearance-none items-center justify-center rounded-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 shadow focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  className="flex size-[18px] sm:size-[20px] md:size-[25px] min-w-[18px] sm:min-w-[20px] md:min-w-[25px] appearance-none items-center justify-center rounded-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 shadow focus:outline-none focus:ring-2 focus:ring-violet-500"
                   checked={completedHabits.includes(habit.id)}
                   onCheckedChange={() => toggleHabit(habit.id)}
                   id={`habit-${habit.id}`}
@@ -245,7 +245,7 @@ export default function TodaysHabits() {
                 </Checkbox.Root>
                 <label
                   htmlFor={`habit-${habit.id}`}
-                  className={`text-lg select-none cursor-pointer ${
+                  className={`text-xs sm:text-sm md:text-base select-none cursor-pointer break-words flex-1 ${
                     completedHabits.includes(habit.id)
                       ? "line-through text-gray-400"
                       : "text-white"
@@ -257,16 +257,16 @@ export default function TodaysHabits() {
             ))}
           </ul>
 
-          <div className="mt-6">
-            <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300 mb-1">
+          <div className="mt-2 sm:mt-3 md:mt-4 flex-shrink-0">
+            <div className="flex justify-between text-xs sm:text-xs md:text-sm text-gray-600 dark:text-gray-300 mb-1">
               <span>
                 {completedHabits.length} of {todaysHabits.length} complete
               </span>
               <span>{progress}%</span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 sm:h-2.5 md:h-3">
               <div
-                className="bg-[#7E4E9E] dark:bg-[#520dd0] h-3 rounded-full transition-all"
+                className="bg-[#7E4E9E] dark:bg-[#520dd0] h-2 sm:h-2.5 md:h-3 rounded-full transition-all"
                 style={{ width: `${progress}%` }}
               />
             </div>

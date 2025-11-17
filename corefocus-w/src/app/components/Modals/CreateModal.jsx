@@ -25,37 +25,37 @@ export default function CreateModal({ onClose }) {
 
 return (
     <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/20">
-      <div className="bg-gradient-to-br from-[#C0AFE2] via-[#CEC2EB] to-[#C0AFE2] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F] dark:text-white min-h-[60rem] min-w-[40rem] p-6 rounded-xl shadow-xl relative">
+      <div className="bg-gradient-to-br from-[#C0AFE2] via-[#CEC2EB] to-[#C0AFE2] dark:from-[#070C2F] dark:via-[#110E2D] dark:to-[#13153F] dark:text-white w-[95%] sm:w-[90%] max-w-sm md:max-w-2xl max-h-[90vh] overflow-y-auto p-4 sm:p-6 md:min-h-[60rem] md:min-w-[40rem] rounded-xl sm:rounded-xl shadow-xl relative">
         {/* Close button */}
         <button
           onClick={closeModal}
-          className="absolute top-4 right-4 text-gray-500 hover:text-red-500 font-semibold text-xl"
+          className="absolute top-3 sm:top-4 right-3 sm:right-4 text-gray-500 hover:text-red-500 font-semibold text-lg sm:text-xl"
         >
           &times;
         </button>
 
         {/* Tab switcher */}
-        <div className="mb-6 flex gap-4">
+        <div className="mb-4 sm:mb-6 flex gap-2 sm:gap-4">
           <button
             onClick={() => setActiveTab("habit")}
-            className={`px-4 py-2 rounded-lg font-semibold cursor-pointer transition-all ease-in-out duration-300 ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-sm sm:text-base font-semibold cursor-pointer transition-all ease-in-out duration-300 ${
               activeTab === "habit" ? "bg-[#520dd0] text-white" : "bg-gray-100 dark:text-black"
             }`}
           >
             <span>
               <i className="fa-sharp fa-solid fa-bell"></i>
-              <p className="inline-block ml-2">Habit</p>
+              <p className="inline-block ml-1 sm:ml-2">Habit</p>
             </span>
           </button>
           <button
             onClick={() => setActiveTab("goal")}
-            className={`px-4 py-2 rounded-lg font-semibold cursor-pointer transition-all ease-in-out duration-300 ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-sm sm:text-base font-semibold cursor-pointer transition-all ease-in-out duration-300 ${
               activeTab === "goal" ? "bg-[#520dd0] text-white" : "bg-gray-100 dark:text-black"
             }`}
           >
             <span>
               <i className="fa-solid fa-chart-area"></i>
-              <p className="inline-block ml-2">Goals</p>
+              <p className="inline-block ml-1 sm:ml-2">Goals</p>
             </span>
           </button>
         </div>
@@ -63,7 +63,6 @@ return (
         {/* Render active form */}
         {activeTab === "habit" && <CreateHabitForm />}
         {activeTab === "goal" && <CreateGoalForm />}
-        {/* {activeTab === "journal" && <CreateJournalForm />} */}
       </div>
     </div>
   );

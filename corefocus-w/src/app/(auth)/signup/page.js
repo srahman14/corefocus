@@ -182,7 +182,7 @@ export default function SignUp() {
         </div>
 
 
-        <div className="container flex justify-center items-center overflow-y-auto">
+        <div className="container hidden md:flex justify-center items-center overflow-hidden">
           <div style={{ height: '600px', position: 'relative' }}>
             <MetaBalls
             color="#000"

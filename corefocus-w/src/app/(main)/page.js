@@ -8,12 +8,12 @@ import FAQItem from "../components/FAQComponent";
 import DarkVeil from "../components/ui/DarkVeil";
 import Link from "next/link";
 import { useThemeStore } from "../store/useThemeStore";
-import { useState, useEffect, useRef} from "react";
+import { useState, useEffect, useRef } from "react";
 import { Highlighter } from "../components/magicui/highlighter";
 
 export default function Home() {
   const { isDark, toggleTheme } = useThemeStore();
-   const features = [
+  const features = [
     {
       icon: "fa-solid fa-bell",
       title: "Habit Tracker",
@@ -65,16 +65,18 @@ export default function Home() {
       ],
     },
   ];
-  
+
   return (
-      <main className={`min-h-screen flex flex-col flex-wrap items-center justify-center transition-all duration-300 ease-in-out bg-black text-white`}>
+    <main
+      className={`min-h-screen flex flex-col flex-wrap items-center justify-center transition-all duration-300 ease-in-out bg-black text-white`}
+    >
       {/* HERO SECTION */}
-      <section className="relative w-full h-[65vh] overflow-hidden flex items-center justify-center bg-white text-white">        
+      <section className="relative w-full h-[65vh] overflow-hidden flex items-center justify-center bg-white text-white">
         {/* Background */}
         <div className="absolute inset-0 z-0">
           <DarkVeil />
         </div>
-        
+
         <AnimatedContent
           direction="horizontal"
           reverse={true}
@@ -94,161 +96,184 @@ export default function Home() {
               //   backgroundSize: "90px 90px",
               // }}
             >
-              <div>
-                <h1 className="font-bold text-center text-5xl md:text-6xl lg:text-7xl mb-6 tracking-tighter">
-                  master your {" "}
-                  <Highlighter action="highlight" color="#520dd0" animationDuration={800} >habits</Highlighter>
-                  <br />
-                  achieve what {" "}
-                  <Highlighter action="highlight" color="#520dd0" animationDuration={700} iterations={3}>matters</Highlighter>
+              <div className="mt-20">
+                <h1 className="font-bold text-center text-5xl md:text-6xl lg:text-7xl mb-6 tracking-tighter flex flex-col gap-4">
+                  <span>
+                    master your{" "}
+                    <Highlighter
+                      action="highlight"
+                      color="#520dd0"
+                      animationDuration={800}
+                      className
+                    >
+                      habits
+                    </Highlighter>
+                  </span>
+                  <span>
+                    achieve what{" "}
+                    <Highlighter
+                      action="highlight"
+                      color="#520dd0"
+                      animationDuration={700}
+                      iterations={3}
+                    >
+                      matters
+                    </Highlighter>
+                  </span>
                 </h1>
-                {/* <p className="font-light text-3xl md:text-4xl lg:text-4xl mb-12 tracking-tight text-white text-center">
-                  build consistent routines, align your actions with your goals,
-                  and stay accountable.
-                </p> */}
               </div>
 
-              <div className="flex mt-15 x-space-4 justify-center">
+              <div className="flex mt-15 gap-4 justify-center">
                 <Link
                   href="/signup"
                   prefetch={true}
-                  className="mr-4 rounded-4xl font-semibold tracking-tighter text-xl md:text-2xl transition ease-in-out duration-300 inline-block bg-[#520dd0] hover:bg-[#7c53ff] transition-colors duration-300 text-white font-semibold text-xl px-12 py-4 shadow-xl shadow-[#520dd0]/40"
+                  className="rounded-4xl font-semibold tracking-tighter text-sm md:text-2xl ease-in-out bg-[#520dd0] hover:bg-[#7c53ff] transition-colors duration-300 text-white px-6 md:px-12 py-4 shadow-xl shadow-[#520dd0]/40"
                 >
-                  Get Started
+                  <p>Get Started</p>
                 </Link>
                 <Link
                   href="/"
-                  className="rounded-4xl font-semibold tracking-tighter text-xl md:text-2xl transition ease-in-out duration-300 inline-block bg-[#222] hover:bg-[#222]/80 transition-colors duration-300 text-white font-semibold text-xl px-12 py-4 shadow-lg shadow-[#fff]/10"
+                  className="rounded-4xl tracking-tighter text-sm md:text-2xl ease-in-out bg-[#222] hover:bg-[#222]/80 transition-colors duration-300 text-white font-semibold px-6 md:px-12 py-4 shadow-lg shadow-[#fff]/10"
                 >
-                  Explore Plans
+                  <p>About Us</p>
                 </Link>
               </div>
             </div>
           </div>
         </AnimatedContent>
       </section>
-        
+
       <div className="container mb-42">
         <ImageMarquee></ImageMarquee>
       </div>
       {/* KEY FEATURES SECTION */}
       <section className="container flex flex-col justify-center px-8 py-16">
-        <header className="flex flex-row items-center justify-between w-full mb-12 px-4">
-          <h1 className="font-bold text-6xl">
-            our key {" "}
-            <Highlighter action="highlight" strokeWidth={"6px"} color="#520dd0" iterations={1}><p className="tracking-tighter">features</p></Highlighter>  
-          </h1>
-          <p className="font-light text-xl text-gray-300 max-w-md">
-            Designed to help you stay on track, effortlessly
-          </p>
+        <header className="flex flex-row items-center justify-center md:justify-between w-full mb-4 md:mb-12 md:px-4">
+          <div className="flex flex-1">
+            <h1 className="text-center md:text-start font-bold text-7xl md:text-6xl">
+              our key{" "}
+              <Highlighter
+                action="highlight"
+                strokeWidth={"6px"}
+                color="#520dd0"
+                iterations={1}
+              >
+                <p className="tracking-tighter">features</p>
+              </Highlighter>
+            </h1>
+          </div>
+          <div className="hidden md:flex">
+            <p className="font-light text-xl text-gray-300 max-w-md">
+              Designed to help you stay on track, effortlessly
+            </p>
+          </div>
         </header>
 
-    <div className="w-full px-6 py-16">
-      <div className="max-w-7xl mx-auto flex flex-col gap-28">
+        <div className="w-full px-6 py-16">
+          <div className="max-w-7xl mx-auto flex flex-col gap-28">
+            {/* Feature Row */}
+            <div className="flex flex-col md:flex-row items-center gap-12">
+              {/* Left Content */}
+              <div className="flex-1 text-center md:text-left">
+                <h3 className="font-light tracking-widest">TRACKING HABITS</h3>
+                <h2 className="text-3xl font-bold text-white mb-4">
+                  Track Your Habits Easily
+                </h2>
+                <p className="text-lg text-gray-300 mb-6">
+                  Stay consistent with daily tracking of your habits. <br></br>
+                  Your habits are automatically synced across all devices in
+                  real-time. <br></br>
+                  View and learn from your progress with analytics and heatmaps
+                  for all-time activity. <br></br>
+                </p>
+                <button className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-xl shadow-lg hover:bg-purple-700 transition">
+                  Learn More
+                </button>
+              </div>
 
-        {/* Feature Row */}
-        <div className="flex flex-col md:flex-row items-center gap-12">
-          {/* Left Content */}
-          <div className="flex-1 text-center md:text-left">
-            <h3 className="font-light tracking-widest">TRACKING HABITS</h3>
-            <h2 className="text-3xl font-bold text-white mb-4">
-              Track Your Habits Easily
-            </h2>
-            <p className="text-lg text-gray-300 mb-6">
-              Stay consistent with daily tracking of your habits. <br></br>
-              Your habits are automatically synced across all devices in real-time. <br></br>
-              View and learn from your progress with analytics and heatmaps for all-time activity. <br></br>
-              
+              {/* Right Content with Gradient Border */}
+              <div className="flex-1 flex justify-center">
+                <div className="rounded">
+                  <div className="bg-[#000] rounded-2xl overflow-hidden">
+                    <img
+                      src="/mon.png"
+                      alt="Dashboard preview"
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
 
-            </p>
-            <button className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-xl shadow-lg hover:bg-purple-700 transition">
-              Learn More
-            </button>
-          </div>
+            {/* Feature Row */}
+            <div className="flex flex-col md:flex-row-reverse items-center gap-12">
+              {/* Left Content */}
+              <div className="flex-1 text-center md:text-left">
+                <h3 className="font-light tracking-widest">TRACKING HABITS</h3>
+                <h2 className="text-3xl font-bold text-white mb-4">
+                  Track Your Habits Easily
+                </h2>
+                <p className="text-lg text-gray-300 mb-6">
+                  Stay consistent with daily tracking of your habits. <br></br>
+                  Your habits are automatically synced across all devices in
+                  real-time. <br></br>
+                  View and learn from your progress with analytics and heatmaps
+                  for all-time activity. <br></br>
+                </p>
+                <button className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-xl shadow-lg hover:bg-purple-700 transition">
+                  Learn More
+                </button>
+              </div>
 
-          {/* Right Content with Gradient Border */}
-          <div className="flex-1 flex justify-center">
-            <div className="rounded">
-              <div className="bg-[#000] rounded-2xl overflow-hidden">
-                <img
-                  src="/mon.png"
-                  alt="Dashboard preview"
-                  className="w-full h-auto"
-                />
+              {/* Right Content with Gradient Border */}
+              <div className="flex-1 flex justify-center">
+                <div className="pl-[0] pb-[0] bg-gradient-to-br from-purple-500 via-pink-500 to-indigo-500 rounded-2xl">
+                  <div className="bg-[#0f172a] rounded-2xl overflow-hidden">
+                    <img
+                      src="/habit_tracker.png"
+                      alt="Dashboard preview"
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Feature Row */}
+            <div className="flex flex-col md:flex-row items-center gap-12">
+              {/* Left Content */}
+              <div className="flex-1 text-center md:text-left">
+                <h3 className="font-light tracking-widest">TRACKING HABITS</h3>
+                <h2 className="text-3xl font-bold text-white mb-4">
+                  Track Your Habits Easily
+                </h2>
+                <p className="text-lg text-gray-300 mb-6">
+                  Stay consistent with daily tracking of your habits. <br></br>
+                  Your habits are automatically synced across all devices in
+                  real-time. <br></br>
+                  View and learn from your progress with analytics and heatmaps
+                  for all-time activity. <br></br>
+                </p>
+                <button className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-xl shadow-lg hover:bg-purple-700 transition">
+                  Learn More
+                </button>
+              </div>
+
+              {/* Right Content with Gradient Border */}
+              <div className="flex-1 flex justify-center">
+                <div className="shadow-5xl shadow-[#0f172a] rounded-2xl">
+                  <div className="bg-[#0f172a] rounded-2xl overflow-hidden">
+                    <img
+                      src="/habit_tracker.png"
+                      alt="Dashboard preview"
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-        {/* Feature Row */}
-        <div className="flex flex-col md:flex-row-reverse items-center gap-12">
-          {/* Left Content */}
-          <div className="flex-1 text-center md:text-left">
-            <h3 className="font-light tracking-widest">TRACKING HABITS</h3>
-            <h2 className="text-3xl font-bold text-white mb-4">
-              Track Your Habits Easily
-            </h2>
-            <p className="text-lg text-gray-300 mb-6">
-              Stay consistent with daily tracking of your habits. <br></br>
-              Your habits are automatically synced across all devices in real-time. <br></br>
-              View and learn from your progress with analytics and heatmaps for all-time activity. <br></br>
-              
-
-            </p>
-            <button className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-xl shadow-lg hover:bg-purple-700 transition">
-              Learn More
-            </button>
-          </div>
-
-          {/* Right Content with Gradient Border */}
-          <div className="flex-1 flex justify-center">
-            <div className="pl-[0] pb-[0] bg-gradient-to-br from-purple-500 via-pink-500 to-indigo-500 rounded-2xl">
-              <div className="bg-[#0f172a] rounded-2xl overflow-hidden">
-                <img
-                  src="/habit_tracker.png"
-                  alt="Dashboard preview"
-                  className="w-full h-auto"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Feature Row */}
-        <div className="flex flex-col md:flex-row items-center gap-12">
-          {/* Left Content */}
-          <div className="flex-1 text-center md:text-left">
-            <h3 className="font-light tracking-widest">TRACKING HABITS</h3>
-            <h2 className="text-3xl font-bold text-white mb-4">
-              Track Your Habits Easily
-            </h2>
-            <p className="text-lg text-gray-300 mb-6">
-              Stay consistent with daily tracking of your habits. <br></br>
-              Your habits are automatically synced across all devices in real-time. <br></br>
-              View and learn from your progress with analytics and heatmaps for all-time activity. <br></br>
-              
-
-            </p>
-            <button className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-xl shadow-lg hover:bg-purple-700 transition">
-              Learn More
-            </button>
-          </div>
-
-          {/* Right Content with Gradient Border */}
-          <div className="flex-1 flex justify-center">
-            <div className="shadow-5xl shadow-[#0f172a] rounded-2xl">
-              <div className="bg-[#0f172a] rounded-2xl overflow-hidden">
-                <img
-                  src="/habit_tracker.png"
-                  alt="Dashboard preview"
-                  className="w-full h-auto"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
         {/* <div className="flex flex-wrap justify-center gap-10">
           {features.map(({ icon, title, tagline, details }) => (
             <FeatureCard
@@ -318,8 +343,8 @@ export default function Home() {
 
       {/* FAQ SECTION  */}
       <section className="container flex flex-col justify-center">
-        <div className="flex flex-col items-center justify-center lg:flex-row lg:items-start lg:justify-between lg:m-16 gap-8">
-          <div className="w-75 mr-20">
+        <div className="flex flex-col items-center justify-center md:flex-row md:items-start md:justify-between md:m-16 gap-8">
+          <div className="w-75 md:mr-20">
             <h2 className="text-6xl font-semibold">FAQs</h2>
             <p className="text-2xl font-light">
               Got a different question? Email support@corefocus.ai
@@ -343,7 +368,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="w-full mt-40 mb-40 flex justify-center">
+      <footer className="w-[80%] md:w-full mt-40 mb-40 flex justify-center">
         <div
           className="rounded-3xl px-12 py-16 max-w-6xl w-full text-white"
           style={{
@@ -352,12 +377,20 @@ export default function Home() {
           }}
         >
           <div className="flex flex-col items-center gap-6">
-            <h1 className="text-5xl font-bold text-center">Ready to <span className="text-[#fff]">begin?</span></h1>
-            <p className="text-white/70 max-w-sm text-center text-lg px-4">Start your journey towards mastering your habits, take the first step today!</p>
-            <Link href={"/signup"} className="rounded-4xl font-semibold tracking-tighter text-xl md:text-2xl transition ease-in-out duration-300 inline-block bg-[#222] hover:bg-[#222]/80 transition-colors duration-300 text-white font-semibold text-xl px-12 py-4 shadow-lg shadow-[#fff]/10 cursor-pointer">
-              <span className="">
-                <p className="inline-block mr-4">Get started now</p>
-                <i className="fa-solid fa-beat-fade fa-angles-right text-xl"></i>
+            <h1 className="text-5xl font-bold text-center">
+              Ready to <span className="text-[#fff]">begin?</span>
+            </h1>
+            <p className="text-white/70 max-w-sm text-center text-lg px-4">
+              Start your journey towards mastering your habits, take the first
+              step today!
+            </p>
+            <Link
+              href={"/signup"}
+              className="rounded-4xl tracking-tighter md:text-2xl ease-in-out inline-block bg-[#222] hover:bg-[#222]/80 transition-colors duration-300 text-white font-semibold text-xl px-12 py-4 shadow-lg shadow-[#fff]/10 cursor-pointer"
+            >
+              <span className="flex justify-center items-center gap-3">
+                <p className="">Get started</p>
+                <i className="fa-solid fa-beat-fade fa-angles-right text-sm md:text-lg"></i>
               </span>
             </Link>
           </div>
@@ -385,13 +418,12 @@ function FeatureCard({ icon, title, tagline, details }) {
     <SpotlightCard
       className="bg-violet-600/60 border-none p-8 rounded-xl w-72 flex flex-col cursor-pointer"
       spotlightColor="rgba(255, 255, 255, 0.2)"
-
     >
-      <div className="flex flex-col items-center text-white flex-grow  p-2 rounded-xl"
-
-      onClick={() => setExpanded((prev) => !prev)}
-      aria-expanded={expanded}
-      aria-controls={`${title}-details`}
+      <div
+        className="flex flex-col items-center text-white flex-grow  p-2 rounded-xl"
+        onClick={() => setExpanded((prev) => !prev)}
+        aria-expanded={expanded}
+        aria-controls={`${title}-details`}
       >
         <i className={`${icon} text-5xl mb-4`} aria-hidden="true"></i>
         <h3 className="font-bold text-2xl mb-2">{title}</h3>

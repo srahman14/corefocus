@@ -72,7 +72,7 @@ export default function SignUp() {
     <>
       {/* HERO SECTION */}
       <section className="w-full h-screen flex flex-row gap-20 justify-between items-center">
-        <div className="container flex justify-center items-center overflow-y-auto">
+        <div className="container justify-center items-center overflow-y-auto hidden md:flex">
             <div style={{ height: '600px', position: 'relative' }}>
                 <MetaBalls
                 color="#000"
@@ -88,7 +88,7 @@ export default function SignUp() {
                 />
             </div>       
         </div>  
-        <div className="container h-screen bg-black text-white flex flex-col justify-center items-center">
+        <div className="container h-screen bg-black text-white flex flex-col justify-center items-center overflow-hidden">
             <AnimatedContent
                 direction="horizontal"
                 reverse={false}

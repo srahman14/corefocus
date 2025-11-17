@@ -123,42 +123,35 @@ export default function Journal() {
   }
 
   return (
-    <main className="flex flex-col min-h-screen px-4 py-10 bg-gradient-to-br from-[#B19CD7] via-[#EBE8FC] to-[#C0AFE2] dark:from-[#0B091A] dark:via-[#110E2D] dark:to-[#0B091A]">
+    <main className="flex flex-col h-full px-4 py-10 bg-gradient-to-br from-[#B19CD7] via-[#EBE8FC] to-[#C0AFE2] dark:from-[#0B091A] dark:via-[#110E2D] dark:to-[#0B091A] overflow-y-auto">
       {/* Header */}
-      <div className="w-full flex justify-between items-center px-4 mb-12">
-        <div className="text-white">
-          <h1 className="text-gray-400">
-            <span className="text-black dark:text-gray-400 hover:underline">Pages</span>{" "}
-            / <span className="hover:underline dark:text-white text-black">Dashboard</span>{" "}
-            / <span className="font-bold hover:underline dark:text-white text-black">Journal</span>
-          </h1>
-          <h1 className="text-gray-400 dark:text-white">{format(new Date(), "dd MMM yyyy")}</h1>
-          
-        </div>
-        <div className="flex flex-row items-center gap-4 text-violet-400">
-          <img src="/avatar-default.svg" alt="avatar" className="bg-white rounded-full w-10 h-10" />
-          <button><i className="fa-solid fa-gear text-2xl cursor-pointer bg-white p-2 rounded-xl"></i></button>
-          <AnimatedThemeToggler />
-          <button onClick={logout}><i className="fa-solid fa-right-from-bracket text-2xl cursor-pointer bg-white p-2 rounded-xl"></i></button>
-        </div>
-      </div>
+      <Topbar />
 
       <section className="max-w-6xl mx-auto">
         {/* Top Bar: Title + New Entry */}
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold dark:text-white">Your Journal</h1>
+        <div className="flex justify-between items-center md:mb-6">
+          <h1 className="text-3xl font-bold dark:text-white hidden md:flex">Your Journal</h1>
+          {/* Desktop: standard button */}
           <Link
             href={"/journal/new"}
-            className="flex items-center px-4 py-2 gap-2 cursor-pointer bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+            className="hidden md:flex items-center px-4 py-2 gap-2 cursor-pointer bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
           >
             <i className="fa-solid fa-plus"></i>
             New Entry
           </Link>
         </div>
 
+        {/* Mobile: floating action button (bottom-right) */}
+        <Link
+          href={"/journal/new"}
+          className="md:hidden fixed bottom-6 right-6 w-14 h-14 flex items-center justify-center bg-blue-600 text-white rounded-full hover:bg-blue-700 transition shadow-lg hover:shadow-xl z-50"
+        >
+          <i className="fa-solid fa-plus text-xl"></i>
+        </Link>
+
         {/* Search Bar */}
         <div className="p-6 flex flex-col gap-6">
-          <div className="relative w-1/2">
+          <div className="relative md:w-1/2">
             <input
               type="text"
               value={searchTerm}
@@ -178,7 +171,7 @@ export default function Journal() {
           </div>
 
           {/* Tags */}
-          <ul className="flex flex-wrap gap-3">
+          {/* <ul className="flex flex-wrap gap-3">
             {tags.map((tag) => (
               <li
                 key={tag}
@@ -187,7 +180,7 @@ export default function Journal() {
                 {tag}
               </li>
             ))}
-          </ul>
+          </ul> */}
 
           {/* Latest Entries */}
           <h2 className="text-2xl font-bold dark:text-white">Latest Entries</h2>
@@ -211,7 +204,7 @@ export default function Journal() {
           )}
 
           {/* Topics Section */}
-          <h2 className="text-2xl font-bold mt-12 mb-4 dark:text-white">Topics</h2>
+          {/* <h2 className="text-2xl font-bold mt-12 mb-4 dark:text-white">Topics</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {topics.map((topic) => (
               <button
@@ -221,7 +214,7 @@ export default function Journal() {
                 {topic}
               </button>
             ))}
-          </div>
+          </div> */}
         </div>
       </section>
     </main>

@@ -86,7 +86,6 @@ export default function JournalEditor({ journalId }) {
     }
   }, [currentUser]);
 
-
   // Initialize Editor.js
 
   useEffect(() => {
@@ -114,7 +113,6 @@ export default function JournalEditor({ journalId }) {
       }
     };
   }, []);
-
 
   // Save Journal (Create/Update)
 
@@ -152,24 +150,28 @@ export default function JournalEditor({ journalId }) {
     }
   }, [currentUser, title, tags, status, journalId]);
 
-    // Debounced Auto-Save
+  // Debounced Auto-Save
   const triggerAutoSave = useCallback(() => {
     if (saveTimeout.current) clearTimeout(saveTimeout.current);
     saveTimeout.current = setTimeout(saveNow, 2500);
   }, [saveNow]);
 
-    // Load Journal on Mount
+  // Load Journal on Mount
   useEffect(() => {
     fetchJournal();
   }, [fetchJournal]);
 
   return (
-    <div className="min-h-screen p-10 bg-gradient-to-br from-[#B19CD7] via-[#EBE8FC] to-[#C0AFE2] dark:from-[#0B091A] dark:via-[#110E2D] dark:to-[#0B091A]">
-      <div className="max-w-4xl mx-auto bg-gray-200 border-4 border-gray-400 dark:border-white  shadow-lg dark:bg-[#343434] dark:text-white p-10 rounded-xl h-[90vh] overflow-y-auto relative">
+    <div className="md:h-full md:py-10 md:bg-gradient-to-br md:from-[#B19CD7] md:via-[#EBE8FC] md:to-[#C0AFE2] dark:md:from-[#0B091A] dark:md:via-[#110E2D] dark:md:to-[#0B091A] bg-gray-200 dark:bg-[#343434]">
+      <div className="h-screen md:h-auto md:max-w-4xl max-w-3xl w-[57%] md:w-[100%] md:mx-auto bg-gray-200 dark:bg-[#343434] border-0 md:border-4 md:border-gray-400 dark:md:border-white shadow-lg dark:text-white p-6 md:p-10 md:rounded-xl md:overflow-y-auto relative flex flex-col">
         <div className="flex justify-between items-center mb-6">
           <p className="text-gray-500 dark:text-white text-sm">{saveState}</p>
           <div className="flex gap-2">
-            <AnimatedThemeToggler className={"hover:bg-gray-300 p-2 rounded-lg transition dark:hover:text-black"}/>
+            <AnimatedThemeToggler
+              className={
+                "hover:bg-gray-300 p-2 rounded-lg transition dark:hover:text-black"
+              }
+            />
             <button
               onClick={async () => {
                 await saveNow();
@@ -195,20 +197,25 @@ export default function JournalEditor({ journalId }) {
             triggerAutoSave();
           }}
           placeholder="Untitled Journal"
-          className="w-full text-4xl font-bold bg-transparent border-none focus:outline-none placeholder-gray-500 mb-8"
+          className="w-full text-2xl md:text-4xl font-bold bg-transparent border-none focus:outline-none placeholder-gray-500 mb-8 break-words"
+          style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}
         />
 
         {/* Metadata */}
         <div className="flex flex-wrap gap-6 mb-8">
           <div>
-            <p className="text-sm font-bold text-gray-600 dark:text-white mb-2">Status</p>
+            <p className="text-sm font-bold text-gray-600 dark:text-white mb-2">
+              Status
+            </p>
             <div onChange={triggerAutoSave}>
               <StatusDropdown status={status} setStatus={setStatus} />
             </div>
           </div>
 
           <div className="flex flex-col gap-2 flex-1">
-            <p className="text-sm font-bold text-gray-600 dark:text-white">Tags</p>
+            <p className="text-sm font-bold text-gray-600 dark:text-white">
+              Tags
+            </p>
             <TagInput
               tags={tags}
               setTags={(newTags) => {
@@ -219,12 +226,16 @@ export default function JournalEditor({ journalId }) {
           </div>
 
           <div>
-            <p className="text-sm font-bold text-gray-600 dark:text-white">Created</p>
+            <p className="text-sm font-bold text-gray-600 dark:text-white">
+              Created
+            </p>
             <p>{createdAt.toLocaleDateString()}</p>
           </div>
 
           <div>
-            <p className="text-sm font-bold text-gray-600 dark:text-white">Last Edited</p>
+            <p className="text-sm font-bold text-gray-600 dark:text-white">
+              Last Edited
+            </p>
             <p>{updatedAt.toLocaleDateString()}</p>
           </div>
         </div>
@@ -232,7 +243,8 @@ export default function JournalEditor({ journalId }) {
         <div
           id="editorjs"
           onKeyUp={triggerAutoSave}
-          className="prose prose-invert max-w-none focus:outline-none"
+          className="flex-1 w-full overflow-y-auto focus:outline-none break-words"
+          style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}
         ></div>
       </div>
     </div>

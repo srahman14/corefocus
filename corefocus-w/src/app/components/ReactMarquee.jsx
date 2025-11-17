@@ -11,11 +11,11 @@ const cards = [
     description: "Set and reflect on your monthly and yearly goals. Build discipline with intentional planning.",
     icon: <i className="fa-solid fa-chart-area h-[16px] w-[16px] text-[#520dd0]" />,
   },
-  {
-    title: "TaskSync",
-    description: "Integrate with your calendar to sync daily to-dos and spiritual goals effortlessly.",
-    icon: <i className="fa-solid fa-list-check h-[16px] w-[16px] text-[#520dd0]" />,
-  },
+  // {
+  //   title: "TaskSync",
+  //   description: "Integrate with your calendar to sync daily to-dos and spiritual goals effortlessly.",
+  //   icon: <i className="fa-solid fa-list-check h-[16px] w-[16px] text-[#520dd0]" />,
+  // },
   {
     title: "ReadRoute",
     description: "Capture insights from your readings and reflections with our minimal journaling system.",
@@ -34,7 +34,7 @@ export default function ImageMarquee() {
       {[...cards, ...cards].map((card, idx) => (
         <div
           key={idx}
-          className="flex flex-col cursor-pointer items-center justify-center text-center bg-black-500 rounded-lg p-4 mx-4 w-52 h-55"
+          className="flex flex-col cursor-default items-center justify-center text-center bg-black-500 rounded-lg p-4 mx-4 w-52 h-55"
         >
           <div className="text-4xl mb-2 mr-4">{card.icon}</div>
           {/* THESE H3s WILL BECOME LINKS IN THE FUTURE, THE LINK WILL BE ADDED TO CARDS LIST */}

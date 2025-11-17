@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useThemeStore } from "../store/useThemeStore";
 import Magnet from "./Magnet";
-import { Leaf } from "lucide-react";
+import { Home, Leaf, LogIn } from "lucide-react";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -46,19 +46,22 @@ export default function Navbar() {
                     <Leaf className="text-white"/>
                   </Link>
                 </div>
-                <p className="tracking-tighter font-semibold text-2xl text-white"><i>C</i>orefocus</p>
+                <p className="hidden md:flex tracking-tighter font-semibold text-2xl text-white"><i>C</i>orefocus</p>
           </span>
         </div>
 
-        <ul className={`flex space-x-8 ${isDark ? "text-white" : "text-black"}`}>
+        <ul className={`flex md:space-x-8 ${isDark ? "text-white" : "text-black"}`}>
           <li className="hover:text-[#b087fa]/60 text-[#fff] transition-all duration-300 ease-in-out cursor-pointer font-semibold tracking-tighter text-xl p-1">
-            <Link href="/">Home</Link>
+            <Link href="/">
+              <Home className="flex md:hidden" />
+              <p className="hidden md:flex">Home</p>
+            </Link>
           </li>
           <li className="hover:text-[#b087fa]/60 text-white transition-all duration-300 ease-in-out cursor-pointer font-semibold tracking-tighter text-xl p-1">
-            <Link href="/">Plans</Link>
-          </li>
-          <li className="hover:text-[#b087fa]/60 text-white transition-all duration-300 ease-in-out cursor-pointer font-semibold tracking-tighter text-xl p-1">
-            <Link href="/login" prefetch={true}>Login</Link>
+            <Link href="/login" prefetch={true}>
+              <LogIn className="flex md:hidden" />
+              <p className="hidden md:flex">Login</p>
+            </Link>
           </li>
           {/* <button
           onClick={toggleTheme}
