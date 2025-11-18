@@ -279,8 +279,7 @@ export default function AnalyticsPage() {
             Total Habits (this month)
           </h3>
           <p className="text-3xl font-bold text-white mt-2">
-            {/* {monthlyHabitTotal} */}
-            76
+            {monthlyHabitTotal}
           </p>
         </div>
         <div className="bg-[#1f1a4a]/70 backdrop-blur-md border border-purple-900/40 p-6 rounded-2xl shadow-lg">
@@ -288,7 +287,7 @@ export default function AnalyticsPage() {
             Goals Completed (All time)
           </h3>
           <p className="text-3xl font-bold text-white mt-2">
-            {/* {completedGoalsCount} */}6
+            {completedGoalsCount}
           </p>
         </div>
         <div className="bg-[#1f1a4a]/70 backdrop-blur-md border border-purple-900/40 p-6 rounded-2xl shadow-lg">
@@ -296,8 +295,7 @@ export default function AnalyticsPage() {
             Focus Hours (this month)
           </h3>
           <p className="text-3xl font-bold text-white mt-2">
-            {/* {monthlyFocusHours} */}
-            2hrs 48m
+            {monthlyFocusHours}
           </p>
         </div>
         <div className="bg-[#1f1a4a]/70 backdrop-blur-md border border-purple-900/40 p-6 rounded-2xl shadow-lg">
@@ -305,8 +303,7 @@ export default function AnalyticsPage() {
             Longest Streak
           </h3>
           <p className="text-3xl font-bold text-white mt-2">
-            {/* {longestStreak} days */}
-            15 days
+            {longestStreak} days
           </p>
         </div>
       </div>
