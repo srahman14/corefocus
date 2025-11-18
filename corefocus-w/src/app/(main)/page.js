@@ -195,7 +195,6 @@ export default function Home() {
                 </Link>
               </div>
 
-              {/* Right Content with Gradient Border */}
               <div className="flex-1 flex justify-center">
                 <div className="relative rounded-2xl p-[2px] before:absolute before:inset-0 before:rounded-2xl before:p-[2px] before:bg-gradient-to-r before:from-blue-500 before:to-purple-600 before:-z-10">
                   <div className="bg-[#000]  rounded-2xl overflow-hidden">
@@ -237,8 +236,10 @@ export default function Home() {
               <div className="flex-1 flex justify-center">
                 <div className="pl-[0] pb-[0] bg-gradient-to-br from-purple-500 via-pink-500 to-indigo-500 rounded-2xl">
                   <div className="bg-[#0f172a] rounded-2xl overflow-hidden">
-                    <img
+                    <Image
                       src="/journals.png"
+                      width={600}
+                      height={500}
                       alt="Dashboard preview"
                       className="w-full h-auto"
                     />
@@ -273,12 +274,13 @@ export default function Home() {
                 </Link>
               </div>
 
-              {/* Right Content with Gradient Border */}
               <div className="flex-1 flex justify-center">
                 <div className="shadow-5xl shadow-[#0f172a] rounded-2xl">
                   <div className="bg-[#0f172a] rounded-2xl overflow-hidden">
-                    <img
+                    <Image
                       src="/analytics.png"
+                      width={600}
+                      height={500}
                       alt="Dashboard preview"
                       className="w-full h-auto"
                     />
@@ -288,72 +290,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        {/* <div className="flex flex-wrap justify-center gap-10">
-          {features.map(({ icon, title, tagline, details }) => (
-            <FeatureCard
-              key={title}
-              icon={icon}
-              title={title}
-              tagline={tagline}
-              details={details}
-            />
-          ))}
-        </div> */}
       </section>
-
-      {/* HOW IT WORKS SECTION */}
-      {/* <section className="container flex flex-col justify-center">
-        <AnimatedContent
-          direction="horizontal"
-          reverse={true}
-          duration={0.6}
-          ease="in"
-          animateOpacity
-          threshold={0.2}
-        >
-          <header className="flex items-center justify-center mr-8">
-            <h1 className="font-bold text-5xl ml-20">
-              How to get <i className="tracking-tighter">started?</i>
-            </h1>
-          </header>
-
-          <div className="flex flex-row flex-wrap justify-center items-center p-3 m-20 mt-10">
-            <SpotlightCard
-              className="custom-spotlight-card bg-[#222] m-10 sm:min-h-85 sm:w-82 lg:min-h-100 lg:w-92 text-center cursor-default text-white flex flex-col items-center justify-center"
-              spotlightColor="rgba(234, 230, 238, 0.2)"
-            >
-              <h2 className="text-4xl font-bold mb-3">Step 1: Sign-Up</h2>
-              <p>Create an account to join the Corefocus community today</p>
-            </SpotlightCard>
-
-            <SpotlightCard
-              className="custom-spotlight-card m-10 sm:min-h-85 sm:w-82 md:w-75 lg:min-h-100 lg:w-92 text-center cursor-default text-white flex flex-col items-center justify-center"
-              spotlightColor="rgba(234, 230, 238, 0.2)"
-            >
-              <h2 className="text-4xl font-bold mb-3">
-                Step 2: Set Habits & End Goals
-              </h2>
-              <p>
-                Establish long-term and short-term commitments to meet your
-                goals
-              </p>
-            </SpotlightCard>
-
-            <SpotlightCard
-              className="custom-spotlight-card m-10 sm:min-h-85 sm:w-82 md:w-75 lg:min-h-100 lg:w-92 text-center cursor-default text-white flex flex-col items-center justify-center"
-              spotlightColor="rgba(234, 230, 238, 0.2)"
-            >
-              <h2 className="text-4xl font-bold mb-3">
-                Step 3: Track & Reflect
-              </h2>
-              <p>
-                Regularly check-in to maintain your goals and reflect on wins
-                and shortcomings
-              </p>
-            </SpotlightCard>
-          </div>
-        </AnimatedContent>
-      </section> */}
 
       {/* FAQ SECTION  */}
       <section className="container flex flex-col justify-center">

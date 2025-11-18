@@ -213,7 +213,7 @@ export default function SignUp() {
                 </p>
 
                 <p className="w-50 text-center text-gray-200 font-light">
-                  Already't have an account?
+                  Already have an account?
                   <Link href={"/login"} className="hover:underline">
                     Login here
                   </Link>

@@ -11,7 +11,7 @@ import TaskSync from "@/app/components/Dashboard/TaskSync";
 import ReadRoute from "@/app/components/Dashboard/ReadRoute";
 import DailyLoginComponent from "@/app/components/Dashboard/DailyLogin";
 import { AnimatedThemeToggler } from "@/app/components/magicui/animated-theme-toggler";
-import { format } from "date-fns"
+import { format } from "date-fns";
 import Topbar from "@/app/components/Topbar";
 
 export default function Dashboard() {
@@ -53,45 +53,44 @@ export default function Dashboard() {
 
       <div className="flex-1 w-[85%] md:w-[100%]">
         <div className="p-2 md:p-4 lg:p-6 space-y-3 sm:space-y-4">
-        {/* Second row */}
-        <div className="flex flex-col md:flex-row w-full items-start md:items-center justify-start md:justify-center gap-2 sm:gap-3 md:gap-4">
-          {/* Welcome Back card */}
-          <div className="w-full md:w-auto md:flex-1 bg-gradient-to-br from-[#CE9AD9] to-[#B19CD7] dark:from-[#520dd0] dark:to-[#500DCA] rounded-2xl p-2 sm:p-3 md:p-4 lg:p-6 shadow-lg min-h-[60px] sm:min-h-[75px] md:h-[200px] lg:h-[280px]">
-            <h2 className="text-violet-100 dark:text-white text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-1 sm:mb-1.5 md:mb-2">
-              Welcome back!
-            </h2>
-            <p className="text-violet-200 text-xs sm:text-xs md:text-sm lg:text-base">
-              Let's continue making progress on your goals today.
-            </p>
+          {/* Second row */}
+          <div className="flex flex-col md:flex-row w-full items-start md:items-center justify-start md:justify-center gap-2 sm:gap-3 md:gap-4">
+            {/* Welcome Back card */}
+            <div className="w-full md:w-auto md:flex-1 bg-gradient-to-br from-[#CE9AD9] to-[#B19CD7] dark:from-[#520dd0] dark:to-[#500DCA] rounded-2xl p-2 sm:p-3 md:p-4 lg:p-6 shadow-lg min-h-[60px] sm:min-h-[75px] md:h-[200px] lg:h-[280px]">
+              <h2 className="text-violet-100 dark:text-white text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-1 sm:mb-1.5 md:mb-2">
+                Welcome back!
+              </h2>
+              <p className="text-violet-200 text-xs sm:text-xs md:text-sm lg:text-base">
+                Let&apos;s continue making progress on your goals today.
+              </p>
+            </div>
+            <div className="w-full md:flex-1">
+              <DailyLoginComponent />
+            </div>
           </div>
-          <div className="w-full md:flex-1">
-            <DailyLoginComponent />
-          </div>
-        </div>
 
-        {/* Main dashboard sections */}
-        <div className="flex flex-col lg:flex-row gap-3 sm:gap-4 md:gap-6 w-full">
-          <div className="w-full lg:w-1/2">
-            <HabitTracker />
+          {/* Main dashboard sections */}
+          <div className="flex flex-col lg:flex-row gap-3 sm:gap-4 md:gap-6 w-full">
+            <div className="w-full lg:w-1/2">
+              <HabitTracker />
+            </div>
+            <div className="w-full lg:w-1/2">
+              <FocusCamp />
+            </div>
           </div>
-          <div className="w-full lg:w-1/2">
-            <FocusCamp />
-          </div>
-        </div>
 
-        <div className="flex flex-col lg:flex-row gap-3 sm:gap-4 md:gap-6 w-full">
-          <div className="w-full lg:w-1/2">
-            <ReadRoute />
+          <div className="flex flex-col lg:flex-row gap-3 sm:gap-4 md:gap-6 w-full">
+            <div className="w-full lg:w-1/2">
+              <ReadRoute />
+            </div>
+            <div className="w-full lg:w-1/2">
+              <GoalBoard />
+            </div>
           </div>
-          <div className="w-full lg:w-1/2">
-            <GoalBoard />
-          </div>
-        </div>
 
-        <div className="w-full flex items-center justify-center">
-        </div>
+          <div className="w-full flex items-center justify-center"></div>
 
-        {/* <div className="flex flex-col lg:flex-row gap-6 w-[80%] md:w-[90%]">
+          {/* <div className="flex flex-col lg:flex-row gap-6 w-[80%] md:w-[90%]">
           <div className="w-full lg:w-1/2">
             <TaskSync />
           </div>
