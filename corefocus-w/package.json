@@ -41,7 +41,7 @@
     "lexical": "^0.33.1",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.539.0",
-    "next": "15.3.3",
+    "next": "15.3.6",
     "ogl": "^1.0.11",
     "react": "^19.0.0",
     "react-calendar-heatmap": "^1.10.0",
