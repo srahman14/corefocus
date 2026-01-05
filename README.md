@@ -48,7 +48,7 @@ A comprehensive habit tracking and personal productivity app designed to help yo
 - **Persistent Storage** - All data safely stored in Firebase Firestore
 - **Beautiful UI** - Modern, intuitive interface with smooth animations
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 corefocus-w/
@@ -73,7 +73,7 @@ corefocus-w/
 └── public/
 ```
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer                  | Technology                |
 | ---------------------- | ------------------------- |
@@ -139,6 +139,6 @@ This project demonstrates:
 - React hooks and custom hook patterns
 - Component composition and reusability
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
